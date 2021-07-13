@@ -7,6 +7,7 @@
 
 <script>
 var gitment = new Gitment({
+  id: '{{ page.title }}'
   owner: '{{ theme.gitment.githubID }}',
   repo: '{{ theme.gitment.repo }}',
   oauth: {
