@@ -638,7 +638,7 @@ livere_uid: # <your_uid>
 # Introduction: https://imsun.net/posts/gitment-introduction/
 gitment:
   enable: true
-  githubID: malonglei.com@gmail.com
+  githubID: malonglei
   repo: malonglei.github.io
   ClientID: 95a6b54d1178a9b19672
   ClientSecret: a7de95a5c73cc6931db99e697eb4fc4e081c4b0e
