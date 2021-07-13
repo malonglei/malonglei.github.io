@@ -7,6 +7,10 @@ title:
   schedule: Schedule
 
 menu:
+  java: Java
+  go: Go
+  linux: Linux
+  kubernetes: Kubenetes
   home: Home
   archives: Archives
   categories: Categories
