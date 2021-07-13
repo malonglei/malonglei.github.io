@@ -412,7 +412,7 @@ github_banner:
 # ---------------------------------------------------------------
 
 font:
-  enable: false
+  enable: true
 
   # Uri of fonts host, e.g. https://fonts.googleapis.com (Default).
   host:
@@ -426,7 +426,7 @@ font:
   global:
     external: true
     family: Lato
-    size:
+    size: 0.8
 
   # Font settings for site title (.site-title).
   title:
@@ -569,8 +569,8 @@ comments:
   # Available values: tabs | buttons
   style: tabs
   # Choose a comment system to be displayed by default.
-  # Available values: changyan | disqus | disqusjs | gitalk | livere | valine
-  active:
+  # Available values: changyan | disqus | disqusjs | gitalk | livere | valine | gitment
+  active: gitment
   # Setting `true` means remembering the comment system selected by the visitor.
   storage: true
   # Lazyload all comment systems.
@@ -633,6 +633,15 @@ valine:
 # LiveRe comments system
 # You can get your uid from https://livere.com/insight/myCode (General web site)
 livere_uid: # <your_uid>
+
+# Gitment
+# Introduction: https://imsun.net/posts/gitment-introduction/
+gitment:
+  enable: true
+  githubID: malonglei.com@gmail.com
+  repo: malonglei.github.io
+  ClientID: 95a6b54d1178a9b19672
+  ClientSecret: a7de95a5c73cc6931db99e697eb4fc4e081c4b0e
 
 # Gitalk
 # For more information: https://gitalk.github.io, https://github.com/gitalk/gitalk
@@ -953,6 +962,12 @@ vendors:
   # gitalk_css: //cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css
   gitalk_js:
   gitalk_css:
+
+  # Gitment
+  # gitment_js: //imsun.github.io/gitment/dist/gitment.browser.js
+  # gitment_css: //imsun.github.io/gitment/style/default.css
+  gitment_js:
+  gitment_css:
 
   # Algolia Search
   # algolia_search: //cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js
