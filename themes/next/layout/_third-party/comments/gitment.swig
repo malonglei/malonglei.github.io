@@ -7,7 +7,6 @@
 
 <script>
 var gitment = new Gitment({
-  id: '', // 可选。默认为 location.href
   owner: '{{ theme.gitment.githubID }}',
   repo: '{{ theme.gitment.repo }}',
   oauth: {
