@@ -65,4 +65,682 @@
         <tag>Docker</tag>
       </tags>
   </entry>
+  <entry>
+    <title>JAVA实现数字千位分隔符</title>
+    <url>/Java/java-number-separator/</url>
+    <content><![CDATA[<h3 id="DecimalFormat"><a href="#DecimalFormat" class="headerlink" title="DecimalFormat"></a>DecimalFormat</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">new DecimalFormat(&quot;,###&quot;).format(new BigDecimal(1234567890).longValue())</span><br></pre></td></tr></table></figure>
+
+<h3 id="String-format"><a href="#String-format" class="headerlink" title="String.format"></a>String.format</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">String.format(&quot;%,d&quot;,new BigDecimal(1234567890).longValue())</span><br></pre></td></tr></table></figure>
+
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">String.valueOf(new BigDecimal(1234567890).longValue()).replaceAll(&quot;(\\d)(?=(\\d&#123;3&#125;)+\$)&quot;, &quot;\$1,&quot;)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS安装Jenkins</title>
+    <url>/Linux/centos-install-jenkins/</url>
+    <content><![CDATA[<h3 id="系统要求"><a href="#系统要求" class="headerlink" title="系统要求"></a>系统要求</h3><p>最低推荐配置:</p>
+<ul>
+<li>256MB可用内存</li>
+<li>1GB可用磁盘空间(作为一个Docker容器运行jenkins的话推荐10GB)</li>
+</ul>
+<p>为小团队推荐的硬件配置:</p>
+<ul>
+<li>1GB+可用内存</li>
+<li>50 GB+ 可用磁盘空间</li>
+</ul>
+<p>Jenkins版本分为两条主线,长期支持版本和每周迭代版本</p>
+<h3 id="长期稳定版本"><a href="#长期稳定版本" class="headerlink" title="长期稳定版本"></a>长期稳定版本</h3><p>长期支持版本每12周发版一次稳定版本,建议生产环境使用,比较稳定</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo wget -O /etc/yum.repos.d/jenkins.repo \</span><br><span class="line">    https://pkg.jenkins.io/redhat-stable/jenkins.repo</span><br><span class="line">sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key</span><br><span class="line">sudo yum -y upgrade</span><br><span class="line"># java-11-openjdk-devel可选，如果已经有java环境则不用安装</span><br><span class="line">sudo yum install jenkins java-11-openjdk-devel</span><br><span class="line">sudo systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+
+<h3 id="每周更新版本"><a href="#每周更新版本" class="headerlink" title="每周更新版本"></a>每周更新版本</h3><p>每周迭代版本每周更新一次,主要面向开发人员修复一些功能,较为稳定</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo wget -O /etc/yum.repos.d/jenkins.repo \</span><br><span class="line">    https://pkg.jenkins.io/redhat/jenkins.repo</span><br><span class="line">sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key</span><br><span class="line">sudo yum -y upgrade</span><br><span class="line"># java-11-openjdk-devel可选，如果已经有java环境则不用安装</span><br><span class="line">sudo yum install jenkins java-11-openjdk-devel</span><br><span class="line">sudo systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动Jenkins"><a href="#启动Jenkins" class="headerlink" title="启动Jenkins"></a>启动Jenkins</h3><p>你可以使用下面命令启动jenkins</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 加入开机启动</span><br><span class="line">sudo systemctl enable jenkins</span><br><span class="line"># 启动Jenkins</span><br><span class="line">sudo systemctl start jenkins</span><br></pre></td></tr></table></figure>
+
+<p>你可以使用下面命令检查Jenkins状态</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo systemctl status jenkins</span><br></pre></td></tr></table></figure>
+
+<p>当你成功启动以后,可以从控制台看到以下输出</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Loaded: loaded (/etc/rc.d/init.d/jenkins; generated)</span><br><span class="line">Active: active (running) since Tue 2018-11-13 16:19:01 +03; 4min 57s ago</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装向导"><a href="#安装向导" class="headerlink" title="安装向导"></a>安装向导</h3><p>下载安装并运行Jenkins后，开始进入安装向导。</p>
+<p>此安装向导会</p>
+<ul>
+<li>引导您解锁Jenkins</li>
+<li>自定义使用插件</li>
+<li>创建第一个Jenkins的管理员用户。</li>
+</ul>
+<h4 id="解锁-Jenkins"><a href="#解锁-Jenkins" class="headerlink" title="解锁 Jenkins"></a>解锁 Jenkins</h4><p>当您第一次访问Jenkins时，系统会要求您使用自动生成的密码对其进行解锁。</p>
+<p>浏览到 <a href="http://localhost:8080/">http://localhost:8080</a> （或安装时为Jenkins配置的任何端口），等待解锁 Jenkins 页面出现。</p>
+<p><img src="https://www.jenkins.io/zh/doc/book/resources/tutorials/setup-jenkins-01-unlock-jenkins-page.jpg"></p>
+<p>从Jenkins控制台日志输出中，复制自动生成的字母数字密码（在两组星号之间）。</p>
+<p><img src="https://www.jenkins.io/zh/doc/book/resources/tutorials/setup-jenkins-02-copying-initial-admin-password.png"></p>
+<p>将此 密码 粘贴到管理员密码字段中，然后单击 继续 。</p>
+<blockquote>
+<p>如果您在向导中跳过了后续的管理员用户创建步骤， 则此密码作为默认admininstrator帐户的密码（用户名“admin”）</p>
+</blockquote>
+<h4 id="自定义jenkins插件"><a href="#自定义jenkins插件" class="headerlink" title="自定义jenkins插件"></a>自定义jenkins插件</h4><p>解锁 Jenkins之后，在 Customize Jenkins 页面内， 您可以安装任何插件作为您初始步骤的一部分。</p>
+<p>两个选项可以设置:</p>
+<ul>
+<li>安装建议的插件 - 安装推荐的一组插件，这些插件基于最常见的用例</li>
+<li>选择要安装的插件 - 选择安装的插件集。当你第一次访问插件选择页面时，默认选择建议的插件</li>
+</ul>
+<blockquote>
+<p>如果您不确定需要哪些插件，请选择 安装建议的插件 。 您可以通过Jenkins中的Manage Jenkins &gt; Manage Plugins 页面在稍后的时间点安装（或删除）其他Jenkins插件</p>
+</blockquote>
+<h4 id="创建第一个管理员用户"><a href="#创建第一个管理员用户" class="headerlink" title="创建第一个管理员用户"></a>创建第一个管理员用户</h4><p>最后，在customizing Jenkins with plugins之后，Jenkins要求您创建第一个管理员用户。出现“ 创建第一个管理员用户 ”页面时， 请在各个字段中指定管理员用户的详细信息，然后单击 保存完成</p>
+<p>当 Jenkins准备好了 出现时，单击<em>开始使用 Jenkins</em>。</p>
+<blockquote>
+<p>如果该页面在一分钟后不会自动刷新，请使用Web浏览器手动刷新页面</p>
+</blockquote>
+<p>从这时起，你可以开始使用jenkins了。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS安装GitLab</title>
+    <url>/Linux/centos-install-gitlab/</url>
+    <content><![CDATA[<h3 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h3><p>在CentOS中,以下命令将在系统防火墙中打开HTTP，HTTPS和SSH访问</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y curl policycoreutils-python openssh-server perl</span><br><span class="line">sudo systemctl enable sshd</span><br><span class="line">sudo systemctl start sshd</span><br><span class="line">sudo firewall-cmd --permanent --add-service=http</span><br><span class="line">sudo firewall-cmd --permanent --add-service=https</span><br><span class="line">sudo systemctl reload firewalld</span><br></pre></td></tr></table></figure>
+
+<p>接下来，安装Postfix用来发送通知电子邮件。如果要使用其他方式发送电子邮件，请跳过此步骤并在安装GitLab之后配置外部SMTP服务器</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install postfix</span><br><span class="line">sudo systemctl enable postfix</span><br><span class="line">sudo systemctl start postfix</span><br></pre></td></tr></table></figure>
+
+<p>在安装Postfix的过程中，可能会出现一些配置选项。选择“ Internet Site”，然后按Enter。使用服务器的外部DNS作为“mail name”，然后按Enter。如果出现其他选项，请继续按Enter接受默认设置。</p>
+<h3 id="添加仓库并安装"><a href="#添加仓库并安装" class="headerlink" title="添加仓库并安装"></a>添加仓库并安装</h3><p>添加GitLab软件包存储库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure>
+
+<p>接下来，安装GitLab软件包。确保已正确设置DNS，然后更改 <a href="https://gitlab.example.com/">https://gitlab.example.com</a> 为要访问GitLab实例的URL。安装将自动配置并在该URL上启动GitLab。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo EXTERNAL_URL=&quot;http://gitlab.example.com&quot; </span><br><span class="line">sudo yum install -y gitlab-ee</span><br></pre></td></tr></table></figure>
+
+<h3 id="浏览登录"><a href="#浏览登录" class="headerlink" title="浏览登录"></a>浏览登录</h3><p>执行完以上操作,GitLab已经成功安装,可以直接访问设置的域名进行访问。首次访问时,将被重定向到密码重置界面。提供初始管理员帐户的密码，然后重定向到登录界面。使用默认帐户的用户名<code>root</code>进行登录。</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><table>
+<thead>
+<tr>
+<th>执行命令</th>
+<th>命令功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sudo gitlab-ctl reconfigure</td>
+<td>重启配置，并启动gitlab服务</td>
+</tr>
+<tr>
+<td>sudo gitlab-ctl start</td>
+<td>启动所有 gitlab</td>
+</tr>
+<tr>
+<td>sudo gitlab-ctl restart</td>
+<td>重新启动GitLab</td>
+</tr>
+<tr>
+<td>sudo gitlab-ctl stop</td>
+<td>停止所有 gitlab</td>
+</tr>
+<tr>
+<td>sudo gitlab-ctl status</td>
+<td>查看服务状态</td>
+</tr>
+<tr>
+<td>sudo gitlab-ctl tail</td>
+<td>查看Gitlab日志</td>
+</tr>
+<tr>
+<td>sudo vim /etc/gitlab/gitlab.rb</td>
+<td>修改默认的配置文件</td>
+</tr>
+<tr>
+<td>gitlab-rake gitlab:check SANITIZE=true –trace</td>
+<td>检查gitlab</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>GitLab</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Keepalived搭建Nginx高可用集群</title>
+    <url>/Linux/keepalived-nginx-cluster/</url>
+    <content><![CDATA[<h3 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h3><p>keepalived是检测服务器状态的软件，如果有一台web服务器宕机，Keepalived将检测到，并将有故障的服务器从系统中删除，同时使用其他服务器代替该服务器的工作，当服务器工作正常后Keepalived自动将服务器加入到服务器集群中，这些工作全部自动完成，不需要人工干涉，需要人工做的只是修复故障的服务器。</p>
+<h3 id="为什么"><a href="#为什么" class="headerlink" title="为什么"></a>为什么</h3><p>下面图片是我们日常比较常见的一种服务架构</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/Snipaste_2021-03-18_13-53-58.png"></p>
+<p>我们通常将Nginx作为我们的Web服务,当客户端向服务器发送请求时, 由Nginx负责接收,然后转发到我们具体的微服务进行处理</p>
+<p>这种结构有一个问题,Nginx是单点的,如果Nginx发生了故障或者机器故障导致无法响应服务,即使后端的各个微服务是正常启动的也无法处理请求</p>
+<p>针对这种情况,我们需要对Nginx进行高可用的集群搭建,或者给Nginx配置一个备份机器,当主机器发生故障时,自动将请求转换到备用机器,此时我们的Keepalived就登场了</p>
+<p>下图是我们使用keepalived高可用的服务示意图</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616048298-Snipaste_2021-03-18_14-17-54.png"></p>
+<p>利用keepalived生成一个虚拟IP,客户端发送请求到虚拟IP,然后keepalived会将虚拟IP映射到主机器,如果主机器正常，就会正确的响应服务。当主机器发生故障时,keepalived会将虚拟IP自动切换到备用机器，由备用机器响应服务，此过程由keepalived自动切换，当主机器恢复后，keepalived会再次将虚拟IP切换到主机器</p>
+<h3 id="搭建Keepalived"><a href="#搭建Keepalived" class="headerlink" title="搭建Keepalived"></a>搭建Keepalived</h3><p>我们首先搭建Keepalived,实现虚拟IP的自动切换</p>
+<p>准备两台机器</p>
+<table>
+<thead>
+<tr>
+<th align="center">IP地址</th>
+<th align="center">主/备</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">192.168.8.53</td>
+<td align="center">主节点</td>
+</tr>
+<tr>
+<td align="center">192.168.8.146</td>
+<td align="center">备节点</td>
+</tr>
+</tbody></table>
+<p>在两台机器上分别安装Keepalived</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y install keepalived</span><br></pre></td></tr></table></figure>
+
+<p>在主节点上添加keepalived配置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat  &lt;&lt;EOF &gt; /etc/keepalived/keepalived.conf</span><br><span class="line">global_defs &#123;</span><br><span class="line">      router_id keepalive-master</span><br><span class="line">&#125;</span><br><span class="line">vrrp_instance VI-Nginx-master &#123;</span><br><span class="line">      state MASTER</span><br><span class="line">      interface ens33</span><br><span class="line">      virtual_router_id 68</span><br><span class="line">      priority 100</span><br><span class="line">      dont_track_primary</span><br><span class="line">      advert_int 1</span><br><span class="line">      virtual_ipaddress &#123;</span><br><span class="line">        192.168.8.88</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>在备节点上添加keepalived配置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt; /etc/keepalived/keepalived.conf</span><br><span class="line">global_defs &#123;</span><br><span class="line">    router_id keepalive-backup</span><br><span class="line">&#125;</span><br><span class="line">vrrp_instance VI-Nginx-master &#123;</span><br><span class="line">    state BACKUP</span><br><span class="line">    interface ens33</span><br><span class="line">    virtual_router_id 68</span><br><span class="line">    priority 99</span><br><span class="line">    dont_track_primary</span><br><span class="line">    advert_int 1</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">      192.168.8.88</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>配置项说明</p>
+<ul>
+<li>router_id 指定唯一路由id</li>
+<li>state 节点状态</li>
+<li>interface 指定网卡名称,使用 ifconfig 查看</li>
+<li>virtual_router_id 虚拟路由id</li>
+<li>priority 权重</li>
+<li>dont_track_primary 忽略VRRP接口故障</li>
+<li>advert_int 节点之间心跳间隔 1S</li>
+<li>virtual_ipaddress 指定生成的虚拟IP地址</li>
+</ul>
+<p>在主节点和备节点上先后分别启动keepalived服务</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl enable keepalived</span><br><span class="line">systemctl start keepalived</span><br></pre></td></tr></table></figure>
+
+<p>查看服务启动状态</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl status keepalived</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-8.png"></p>
+<p>如上图所示，keepalived已经成功启动，我们可以在主机器上查看当前的虚拟IP是否增加成功</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看当前的虚拟IP状态</span><br><span class="line">ip a</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-9.png"></p>
+<p>我们配置的虚拟IP 192.168.8.88 已经成功映射到我们的主机器</p>
+<p>我们在主机器手动关闭keepalived服务</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl stop keepalived</span><br></pre></td></tr></table></figure>
+
+
+<p>然后再次查看主机器和备用机器的虚拟IP绑定状态，会发现此时虚拟IP已经自动切换到备用机器</p>
+<p>然后启动主机器的keepalived服务，虚拟IP会再次切换到主机器</p>
+<p>至此,keepalived的自动切换服务我们已经完成</p>
+<h3 id="安装Nginx服务"><a href="#安装Nginx服务" class="headerlink" title="安装Nginx服务"></a>安装Nginx服务</h3><p>我们在两台机器上分别安装nginx服务，然后将nginx服务和keepalived关联起来，首先先安装nginx服务</p>
+<p>安装工具包</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install yum-utils</span><br></pre></td></tr></table></figure>
+
+
+<p>添加yum仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt; EOF &gt; /etc/yum.repos.d/nginx.repo</span><br><span class="line">[nginx-stable]</span><br><span class="line">name=nginx stable repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/\$releasever/\$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://nginx.org/keys/nginx_signing.key</span><br><span class="line">module_hotfixes=true</span><br><span class="line"></span><br><span class="line">[nginx-mainline]</span><br><span class="line">name=nginx mainline repo</span><br><span class="line">baseurl=http://nginx.org/packages/mainline/centos/\$releasever/\$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=0</span><br><span class="line">gpgkey=https://nginx.org/keys/nginx_signing.key</span><br><span class="line">module_hotfixes=true</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+
+<p>安装nginx</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum -y install nginx</span><br></pre></td></tr></table></figure>
+
+
+<p>启动nginx</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl enable nginx</span><br><span class="line">systemctl start nginx</span><br></pre></td></tr></table></figure>
+
+
+<p>nginx服务已经安装完成，我们可以打开浏览器直接输入虚拟IP来访问nginx主页。</p>
+<p>如果本机器可以正常访问，外部无法访问，可以检测一下防火墙状态，如果开启了，可以暂时关闭防火墙，或者将80端口加入允许</p>
+<p>如果此时我们关闭主机器的Nginx服务，访问就直接没有响应了，因为此时Nginx还没有和keepalived做联动，我们只是通过虚拟IP直接访问了服务</p>
+<h3 id="检测keepalived切换状态"><a href="#检测keepalived切换状态" class="headerlink" title="检测keepalived切换状态"></a>检测keepalived切换状态</h3><p>为了区分两台机器的服务，我们修改一下nginx主页，来区分不同机器</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 主节点执行</span><br><span class="line">sed -i &#x27;s/Welcome to nginx!/主节点/g&#x27; /usr/share/nginx/html/index.html</span><br><span class="line"># 备节点执行</span><br><span class="line">sed -i &#x27;s/Welcome to nginx!/备节点/g&#x27; /usr/share/nginx/html/index.html</span><br></pre></td></tr></table></figure>
+
+
+<p>此时我们访问keepalived设置的虚拟IP地址，可以直接访问主机器的服务</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-6.png"></p>
+<p>我们手动关闭主节点的keepalived服务，让虚拟IP切换到备用机器，然后再次访问一下</p>
+<p>首先关闭主机器的keepalived服务</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl stop keepalived</span><br></pre></td></tr></table></figure>
+
+<p>再次访问虚拟ip</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-7.png"></p>
+<p>可以看到，此时虚拟IP已经成功切换到备用机器。</p>
+<p>我们的高可用集群基本已经搭建，只差将keepalived服务状态和nginx服务状态绑定就可以完成跟随nginx服务状态来自动切换虚拟IP</p>
+<h3 id="Nginx利用Keepalived搭建高可用集群"><a href="#Nginx利用Keepalived搭建高可用集群" class="headerlink" title="Nginx利用Keepalived搭建高可用集群"></a>Nginx利用Keepalived搭建高可用集群</h3><p>上例中，我们手动关闭keepalived服务实现了虚拟ip的自动切换，但在实际运用中，我们不可能手动去控制服务状态，服务一般都是突发问题导致的。我们可以编写一个脚本，让Keepalived去检测nginx服务的状态</p>
+<h4 id="Nginx自动检测脚本"><a href="#Nginx自动检测脚本" class="headerlink" title="Nginx自动检测脚本"></a>Nginx自动检测脚本</h4><p>这个脚本会查看nginx是否启动，如果没启动则启动，如果启动不起来，停掉keepalived服务，此时心跳断掉，虚拟IP自动切换</p>
+<figure class="highlight plaintext"><figcaption><span><< EOF ></span><a href="/etc/keepalived/nginx_check.sh">link</a></figcaption><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">counter=\$(ps -C nginx --no-heading|wc -l)</span><br><span class="line">if [ &quot;\$&#123;counter&#125;&quot; = &quot;0&quot; ]; then</span><br><span class="line">    /usr/sbin/nginx</span><br><span class="line">    sleep 2</span><br><span class="line">    counter=\$(ps -C nginx --no-heading|wc -l)</span><br><span class="line">    if [ &quot;\$&#123;counter&#125;&quot; = &quot;0&quot; ]; then</span><br><span class="line">        systemctl stop keepalived</span><br><span class="line">    fi</span><br><span class="line">fi</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>重新配置主机器的keepalived配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt; EOF &gt; /etc/keepalived/keepalived.conf</span><br><span class="line">global_defs &#123;</span><br><span class="line">      router_id keepalive-master</span><br><span class="line">&#125;</span><br><span class="line">vrrp_script nginx_check &#123;</span><br><span class="line">      script &quot;/etc/keepalived/nginx_check.sh&quot;</span><br><span class="line">      interval 1</span><br><span class="line">&#125;</span><br><span class="line">vrrp_instance VI-Nginx-master &#123;</span><br><span class="line">      state MASTER</span><br><span class="line">      interface ens33</span><br><span class="line">      virtual_router_id 68</span><br><span class="line">      priority 100</span><br><span class="line">      dont_track_primary</span><br><span class="line">      advert_int 1</span><br><span class="line">      virtual_ipaddress &#123;</span><br><span class="line">        192.168.8.88</span><br><span class="line">      &#125;</span><br><span class="line">      track_script &#123;</span><br><span class="line">        nginx_check</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+
+<p>重新配置备用机器的keepalived配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt; EOF &gt; /etc/keepalived/keepalived.conf</span><br><span class="line">global_defs &#123;</span><br><span class="line">     router_id keepalive-backup</span><br><span class="line">&#125;</span><br><span class="line">vrrp_script nginx_check &#123;</span><br><span class="line">     script &quot;/etc/keepalived/nginx_check.sh&quot;</span><br><span class="line">     interval 1</span><br><span class="line">&#125;</span><br><span class="line">vrrp_instance VI-Nginx-master &#123;</span><br><span class="line">     state BACKUP</span><br><span class="line">     interface ens33</span><br><span class="line">     virtual_router_id 68</span><br><span class="line">     priority 99</span><br><span class="line">     dont_track_primary</span><br><span class="line">     advert_int 1</span><br><span class="line">     virtual_ipaddress &#123;</span><br><span class="line">       192.168.8.88</span><br><span class="line">     &#125;</span><br><span class="line">     track_script &#123;</span><br><span class="line">        nginx_check</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>重启两台机器上的keepalived服务</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">systemctl restart keepalived</span><br></pre></td></tr></table></figure>
+
+<p>此时我们的使用Keepalived搭建Nginx高可用集群已经完成</p>
+<p>我们可以关闭nginx服务来进行测试，验证一下</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Keepalived</tag>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Docker部署Spring Boot</title>
+    <url>/Java/docker-build-spring-boot/</url>
+    <content><![CDATA[<p>随着云原生的普及以及成熟，越来越多的项目开始用容器装载。</p>
+<p>Docker已经是容器的准则了，我们学习如何将Spring Boot项目装载在Docker容器内，然后启动部署。</p>
+<h3 id="创建Spring-Boot项目"><a href="#创建Spring-Boot项目" class="headerlink" title="创建Spring Boot项目"></a>创建Spring Boot项目</h3><ol>
+<li>导航到<a href="https://start.spring.io/">https://start.spring.io</a>。该网站可以选择依赖关系，并自动为我们完成项目设置。</li>
+<li>选择<strong>Gradle</strong>或<strong>Maven</strong>以及要使用的语言。</li>
+<li>单击<strong>Dependencies</strong>，然后选择<strong>Spring Web依赖</strong>。</li>
+<li>点击<strong>生成</strong>。</li>
+<li>下载生成的ZIP文件，然后用IDEA打开项目</li>
+</ol>
+<h3 id="设置Spring-Web项目"><a href="#设置Spring-Web项目" class="headerlink" title="设置Spring Web项目"></a>设置Spring Web项目</h3><p>现在我们简单来创建一个API接口</p>
+<p>编辑src/main/java/hello/Application.java文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package hello;</span><br><span class="line"></span><br><span class="line">import org.springframework.boot.SpringApplication;</span><br><span class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line">@SpringBootApplication</span><br><span class="line">@RestController</span><br><span class="line">public class Application &#123;</span><br><span class="line"></span><br><span class="line">  @RequestMapping(&quot;/&quot;)</span><br><span class="line">  public String home() &#123;</span><br><span class="line">     return &quot;Hello World&quot;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static void main(String[] args) &#123;</span><br><span class="line">     SpringApplication.run(Application.class, args);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>项目已经准备完成，我们可以直接运行</p>
+<p>如果使用gradle，执行下面命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gradle build &amp;&amp; java -jar build/libs/spring-boot-docker-0.0.1.jar</span><br></pre></td></tr></table></figure>
+
+<p>如果使用maven，执行下面命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mvn package &amp;&amp; java -jar target/spring-boot-docker-0.0.1.jar</span><br></pre></td></tr></table></figure>
+
+<p>现在我们可以打开<a href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a>查看</p>
+<h3 id="容器化"><a href="#容器化" class="headerlink" title="容器化"></a>容器化</h3><p>Docker提供了简单的Dockerfile文件来构建镜像，首先在项目跟路径创建Dockerfile文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 指定基础镜像</span><br><span class="line">FROM java:8</span><br><span class="line"># 构建参数，默认是target/*.jar，如果指定则覆盖</span><br><span class="line">ARG JAR_FILE=target/*.jar</span><br><span class="line"># 将jar包添加进镜像中</span><br><span class="line">COPY $&#123;JAR_FILE&#125; app.jar</span><br><span class="line"># 镜像入口，部署镜像时将被执行</span><br><span class="line">ENTRYPOINT [&quot;java&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>如果使用gradle，执行下面命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker build --build-arg JAR_FILE=build/libs/\*.jar -t spring-boot-docker:0.0.1 .</span><br></pre></td></tr></table></figure>
+
+<p>如果使用maven，执行下面命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker build -t spring-boot-docker:0.0.1 .</span><br></pre></td></tr></table></figure>
+
+<p>这个命令会构建Docker镜像，镜像名称为spring-boot-docker，镜像版本为0.0.1</p>
+<h3 id="部署容器"><a href="#部署容器" class="headerlink" title="部署容器"></a>部署容器</h3><p>我们的Spring Boot项目已经构建成Docker镜像</p>
+<p>执行下面命令启动Docker镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -p 8080:8080 spring-boot-docker:0.0.1</span><br></pre></td></tr></table></figure>
+
+<p>现在我们可以打开<a href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a>查看</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>Java</tag>
+        <tag>Spring Boot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS安装Harbor</title>
+    <url>/Linux/centos-install-harbor/</url>
+    <content><![CDATA[<p>Harbor是一个开源的容器管理项目，用于存储、签名和扫描容器。Harbor具备安全性、身份和管理功能来管理Docker容器。Harbor支持在服务之间复制映像，还提供高级安全功能，如用户管理、访问控制和活动审核。</p>
+<h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><p>安装过程请查看另一篇文章<a href="https://www.mllweb.com/archives/93">CentOS安装Docker</a>来进行安装</p>
+<p>安装完启动docker</p>
+<h2 id="安装docker-compose"><a href="#安装docker-compose" class="headerlink" title="安装docker-compose"></a>安装docker-compose</h2><p>运行以下命令下载Docker Compose的当前稳定版本：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>二进制文件添加执行权限</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Harbor"><a href="#安装Harbor" class="headerlink" title="安装Harbor"></a>安装Harbor</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>前往<a href="https://github.com/goharbor/harbor/releases">https://github.com/goharbor/harbor/releases</a>下载harbor的文件</p>
+<p>harbor分为离线安装和在线安装，选择离线安装即可</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://github.com/goharbor/harbor/releases/download/v2.1.4/harbor-offline-installer-v2.1.4.tgz</span><br></pre></td></tr></table></figure>
+
+<p>解压后文件列表如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">common.sh</span><br><span class="line">harbor.v2.1.4.tar.gz</span><br><span class="line">harbor.yml.tmpl</span><br><span class="line">install.sh</span><br><span class="line">LICENSE</span><br><span class="line">prepare</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h3><p>harbor提供了配置的模版文件，我们复制一份</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cp harbor.yml.tmpl cp harbor.yml</span><br></pre></td></tr></table></figure>
+
+<p>我们需要修改一下<strong>harbor.yml.tmpl</strong>配置信息，将<strong>hostname</strong>修改为本机当前IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#The IP address or hostname to access admin UI and registry service.</span><br><span class="line">#DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.</span><br><span class="line">hostname: 192.168.8.197</span><br></pre></td></tr></table></figure>
+
+<p>harbor默认开启了https访问，如果你有https证书可以配置一下，如果没有证书则可以注释掉相关配置信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#https related config</span><br><span class="line">#https:</span><br><span class="line">  # https port for harbor, default is 443</span><br><span class="line">  # port: 443</span><br><span class="line">  # The path of cert and key files for nginx</span><br><span class="line">  # certificate: /your/certificate/path</span><br><span class="line">  # private_key: /your/private/key/path</span><br></pre></td></tr></table></figure>
+
+<p>harbor默认的登陆密码是<strong>Harbor12345</strong>，如果需要更换，可以在配置信息中修改</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># The initial password of Harbor admin</span><br><span class="line"># It only works in first time to install harbor</span><br><span class="line"># Remember Change the admin password from UI after launching Harbor.</span><br><span class="line">harbor_admin_password: Harbor12345</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>修改完配置信息以后，执行<strong>install.sh</strong>安装脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./install.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-10.png"></p>
+<p>出现以上内容说明Harbor已经成功安装</p>
+<h2 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h2><p>harbor默认的登陆账号是<strong>admin</strong>，密码是<strong>Harbor12345</strong></p>
+<p>默认端口是80，我们直接在浏览器输入ip地址进行访问就可以</p>
+<h2 id="上传测试"><a href="#上传测试" class="headerlink" title="上传测试"></a>上传测试</h2><p>修改 **/etc/hosts **将本机ip映射到 harbor.custom.com 下 ,然后将本机已有的镜像push到仓库进行测试</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-11.png"></p>
+<p>说明镜像已经成功推送到harbor仓库，至此，我们的harbor搭建完成。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Harbor</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS安装Nginx</title>
+    <url>/Linux/centos-install-nginx/</url>
+    <content><![CDATA[<p>Nginx是一款轻量级的Web服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器，在BSD-like 协议下发行。其特点是占有内存少，并发能力强。</p>
+<p>通常的安装方式有两种：yum安装/源码安装</p>
+<p><strong>yum安装</strong> 优点：安装快捷方便，缺点：无法指定特殊版本、无法指定扩展功能</p>
+<p><strong>源码安装</strong> 优点：可完全定制化扩展，缺点：相当于yum安装繁琐一些</p>
+<h2 id="yum安装"><a href="#yum安装" class="headerlink" title="yum安装"></a>yum安装</h2><p>安装准备条件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum -y install yum-utils</span><br></pre></td></tr></table></figure>
+
+<p>配置仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt; EOF &gt; /etc/yum.repos.d/nginx.repo</span><br><span class="line">[nginx-stable]</span><br><span class="line">name=nginx stable repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/\$releasever/\$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://nginx.org/keys/nginx_signing.key</span><br><span class="line">module_hotfixes=true</span><br><span class="line">[nginx-mainline]</span><br><span class="line">name=nginx mainline repo</span><br><span class="line">baseurl=http://nginx.org/packages/mainline/centos/\$releasever/\$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=0</span><br><span class="line">gpgkey=https://nginx.org/keys/nginx_signing.key</span><br><span class="line">module_hotfixes=true</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下，使用稳定的nginx软件包的存储库。如果要使用主线nginx软件包，请运行以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum-config-manager --enable nginx-mainline</span><br></pre></td></tr></table></figure>
+
+<p>安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum -y install nginx</span><br><span class="line">sudo systemctl enable --now nginx</span><br></pre></td></tr></table></figure>
+
+<h2 id="源码安装"><a href="#源码安装" class="headerlink" title="源码安装"></a>源码安装</h2><h3 id="安装编译工具及库文件"><a href="#安装编译工具及库文件" class="headerlink" title="安装编译工具及库文件"></a>安装编译工具及库文件</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装PCRE"><a href="#安装PCRE" class="headerlink" title="安装PCRE"></a>安装PCRE</h3><p>前往<a href="https://sourceforge.net/projects/pcre/files/pcre/">https://sourceforge.net/projects/pcre/files/pcre/</a>下载安装包</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /usr/local/src/</span><br><span class="line">wget https://sourceforge.net/projects/pcre/files/pcre/8.44/pcre-8.44.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>解压</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar zxvf pcre-8.44.tar.gz</span><br><span class="line">cd pcre-8.44</span><br></pre></td></tr></table></figure>
+
+<p>编译安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 编译</span><br><span class="line">./configure --prefix=/usr/local/pcre</span><br><span class="line"># 安装</span><br><span class="line">make &amp;amp;&amp;amp; make install</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><p>前往<a href="http://nginx.org/en/download.html">http://nginx.org/en/download.html</a>下载对应版本的源码包</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /usr/local/src/</span><br><span class="line">wget http://nginx.org/download/nginx-1.19.8.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>解压</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar zxvf nginx-1.19.8.tar.gz</span><br><span class="line">cd nginx-1.19.8</span><br></pre></td></tr></table></figure>
+
+<p>编译源文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./configure \</span><br><span class="line">      --prefix=/usr/local/nginx \</span><br><span class="line">      --sbin-path=/usr/local/nginx/nginx \</span><br><span class="line">      --conf-path=/usr/local/nginx/nginx.conf \</span><br><span class="line">      --pid-path=/usr/local/nginx/nginx.pid \</span><br><span class="line">      --with-http_ssl_module \</span><br><span class="line">      --with-pcre=/usr/local/src/pcre-8.44</span><br></pre></td></tr></table></figure>
+
+
+<p>详细的配置信息请参考 <a href="http://nginx.org/en/docs/configure.html">http://nginx.org/en/docs/configure.html</a> 和 <a href="http://nginx.org/en/docs/">http://nginx.org/en/docs/</a>  -&gt; <strong>Modules reference</strong></p>
+<p>安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<p>启动</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/usr/local/nginx/nginx</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker搭建WordPress</title>
+    <url>/Linux/docker-build-wordpress/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum -y install docker-ce docker-ce-cli containerd.io</span><br><span class="line">sudo systemctl enable docker</span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF &gt; wordpress.yml</span><br><span class="line">version: &#x27;3.1&#x27;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  mysql:</span><br><span class="line">    image: mysql:5.7</span><br><span class="line">    restart: always</span><br><span class="line">    ports:</span><br><span class="line">      - 3306:3306</span><br><span class="line">    container_name: wordpress_mysql</span><br><span class="line">    environment:</span><br><span class="line">      MYSQL_DATABASE: wordpress</span><br><span class="line">      MYSQL_USER: wordpress</span><br><span class="line">      MYSQL_PASSWORD: MyNewPass4!</span><br><span class="line">      MYSQL_RANDOM_ROOT_PASSWORD: &#x27;1&#x27;</span><br><span class="line">    volumes:</span><br><span class="line">      - mysql:/var/lib/mysql</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">  wordpress:</span><br><span class="line">    image: wordpress</span><br><span class="line">    restart: always</span><br><span class="line">    container_name: wordpress_server</span><br><span class="line">    environment:</span><br><span class="line">      WORDPRESS_DB_HOST: mysql</span><br><span class="line">      WORDPRESS_DB_USER: wordpress</span><br><span class="line">      WORDPRESS_DB_PASSWORD: MyNewPass4!</span><br><span class="line">      WORDPRESS_DB_NAME: wordpress</span><br><span class="line">    depends_on:</span><br><span class="line">      - mysql</span><br><span class="line">    volumes:</span><br><span class="line">      - wordpress:/var/www/html</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">  nginx:</span><br><span class="line">    image: nginx:1.20</span><br><span class="line">    restart: always</span><br><span class="line">    ports:</span><br><span class="line">      - 80:80</span><br><span class="line">      - 443:443</span><br><span class="line">    container_name: wordpress_nginx</span><br><span class="line">    links:</span><br><span class="line">      - wordpress</span><br><span class="line">    depends_on:</span><br><span class="line">      - wordpress</span><br><span class="line">    volumes:</span><br><span class="line">      - nginx:/etc/nginx</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">volumes:</span><br><span class="line">  wordpress:</span><br><span class="line">  mysql:</span><br><span class="line">  nginx:</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  wordpress:</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">docker-compose -f wordpress.yml up -d</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF &gt; /var/lib/docker/volumes/root_nginx/_data/conf.d/default.conf</span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    listen  [::]:80;</span><br><span class="line">    server_name  mllweb.com;</span><br><span class="line"></span><br><span class="line">    return 301 https://mllweb.com$request_uri;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl http2;</span><br><span class="line">    listen [::]:443 ssl http2;</span><br><span class="line"></span><br><span class="line">    server_name mllweb.com;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">          proxy_pass http://wordpress;</span><br><span class="line"></span><br><span class="line">          proxy_http_version    1.1;</span><br><span class="line">          proxy_cache_bypass    $http_upgrade;</span><br><span class="line"></span><br><span class="line">          proxy_set_header Upgrade            $http_upgrade;</span><br><span class="line">          proxy_set_header Connection         &quot;upgrade&quot;;</span><br><span class="line">          proxy_set_header Host               $host;</span><br><span class="line">          proxy_set_header X-Real-IP          $remote_addr;</span><br><span class="line">          proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;</span><br><span class="line">          proxy_set_header X-Forwarded-Proto  $scheme;</span><br><span class="line">          proxy_set_header X-Forwarded-Host   $host;</span><br><span class="line">          proxy_set_header X-Forwarded-Port   $server_port;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ssl_certificate cert/mllweb.com.pem;</span><br><span class="line">    ssl_certificate_key cert/mllweb.com.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    #表示使用的加密套件的类型。</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #表示使用的TLS协议的类型。</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Docker</tag>
+        <tag>WordPress</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Kubernetes安装IngressNginx</title>
+    <url>/Kubernetes/kubernetes-install-ingressnginx/</url>
+    <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.44.0/deploy/static/provider/baremetal/deploy.yaml</span><br></pre></td></tr></table></figure>
+
+<p>部署完，我们查看一下状态</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616755596-image.png"></p>
+<p>对应的service和deployment已经创建完毕，并且service以NodePort方式对外开放了32756端口</p>
+<h2 id="部署tomcat进行测试"><a href="#部署tomcat进行测试" class="headerlink" title="部署tomcat进行测试"></a>部署tomcat进行测试</h2><p>我准备了yaml文件，部署一个tomcat，并指定host信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: tomcat</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: tomcat</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      name: tomcat</span><br><span class="line">      labels:</span><br><span class="line">        app: tomcat</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">        - name: nginx</span><br><span class="line">          image: tomcat:6.0</span><br><span class="line">          ports:</span><br><span class="line">             - containerPort: 8080</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: tomcat</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    app: tomcat</span><br><span class="line">  ports:</span><br><span class="line">    - name: tomcat</span><br><span class="line">      protocol: TCP</span><br><span class="line">      port: 8080</span><br><span class="line">      targetPort: 8080</span><br><span class="line">---</span><br><span class="line">apiVersion: networking.k8s.io/v1beta1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: ingress-tomcat</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">    - host: tomcat.custom.com</span><br><span class="line">      http:</span><br><span class="line">        paths: </span><br><span class="line">          - path: /</span><br><span class="line">            backend:</span><br><span class="line">              serviceName: tomcat</span><br><span class="line">              servicePort: 8080</span><br></pre></td></tr></table></figure>
+
+<p>部署到集群</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kubectl apply -f tomcat.yaml</span><br></pre></td></tr></table></figure>
+
+<p>等部署完毕后，我们访问一下<a href="http://tomcat.custom.com:32756/%EF%BC%8Ctomcat.custom.com%E9%9A%8F%E6%84%8F%E6%98%A0%E5%B0%84%E9%9B%86%E7%BE%A4%E4%BB%BB%E4%BD%95%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9%E5%B0%B1%E5%8F%AF%E4%BB%A5">http://tomcat.custom.com:32756/，tomcat.custom.com随意映射集群任何一个节点就可以</a></p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616757837-image.png"></p>
+<p>说明ingressNginx已经成功代理了我们的域名服务</p>
+<p>但是还有一个我们访问的端口是ingressnginx生成的NodePort接口，我们更希望直接代理到80端口上，这种情况怎么处理呢</p>
+<p><a href="https://kubernetes.github.io/ingress-nginx/deploy/baremetal/">官方</a>给出了几种解决方法，我们来看一下</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><h3 id="通过NodePort服务"><a href="#通过NodePort服务" class="headerlink" title="通过NodePort服务"></a>通过NodePort服务</h3><p><strong>NodePort</strong>通过<strong>kube-proxy</strong>组件在每个主机节点上公开<strong>相同的非特权</strong>端口（默认值：30000-32767）。</p>
+<p>可以使用**–service-node-port-range<strong>API服务器标志重新配置NodePort范围以包括非特权端口并能够公开端口80和443听起来很诱人，但这样做可能会导致意外问题，包括（但不限于）使用否则保留给其他用户使用的端口系统守护程序，以及授予</strong>kube-proxy**它可能不需要的特权。</p>
+<p>这种方式可以指定监听80端口，但是<strong>不鼓励</strong>这种做法。</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616758664-40c23cd97a05b731ee2f84a3ae601646.jpeg"></p>
+<h3 id="主机网络"><a href="#主机网络" class="headerlink" title="主机网络"></a>主机网络</h3><p>可以将Pod配置<strong>ingress-nginx</strong>为使用其运行的主机的网络，而不是kubenetes内部网络。这种方法的好处是，NGINX Ingress控制器可以将端口80和443直接绑定到Kubernetes节点的网络接口，而无需由NodePort Services施加额外的网络转换。</p>
+<p>这可以通过启用<strong>hostNetwork</strong>Pods规范中的选项来实现。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">template:   </span><br><span class="line">  spec:     </span><br><span class="line">    hostNetwork: true</span><br></pre></td></tr></table></figure>
+
+<p>此部署方法的一个主要限制是，在每个群集节点上只能调度<strong>单个NGINX Ingress控制器Pod</strong>，因为从技术上讲，在同一网络接口上多次绑定同一端口是不可能的。由于这种情况只能每个节点启动唯一的pod</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616989777-ea6ae9a1cfe64bb59c4146b2960b5229.jpeg"></p>
+<h3 id="扩展组件-推荐"><a href="#扩展组件-推荐" class="headerlink" title="扩展组件(推荐)"></a>扩展组件(推荐)</h3><p>此部署方法需要第三方扩展组件为Kubernetes集群提供公共入口点。该组件可以是硬件（例如供应商设备）或软件（例如<strong>HAproxy</strong>），并且通常由运营团队在Kubernetes领域之外进行管理。</p>
+<p>这种部署建立在上面“基于NodePort服务”中描述的NodePort服务的基础上，有一个显着的区别：外部客户端不直接访问群集节点，只有边缘组件可以访问。这特别适用于没有任何节点具有公共IP地址的私有Kubernetes集群。</p>
+<p>在组件方面，唯一的要求是专用于将所有HTTP请求转发到Kubernetes节点和/或主节点的公共IP地址。TCP端口80和443上的传入流量被转发到目标节点上的相应HTTP和HTTPS NodePort，如下图所示：</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616989778-954a07cead8aa4a4610eb1727ccdd279.jpeg"></p>
+]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>Kubernetes</tag>
+        <tag>IngressNginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kubeadm搭建Kubernetes集群</title>
+    <url>/Kubernetes/kubeadm-build-kubernetes-cluster/</url>
+    <content><![CDATA[<p>官方文档</p>
+<p><a href="https://kubernetes.io/zh/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">https://kubernetes.io/zh/docs/setup/production-environment/tools/kubeadm/install-kubeadm/</a></p>
+<p><a href="https://kubernetes.io/zh/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/">https://kubernetes.io/zh/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/</a></p>
+<h2 id="准备条件"><a href="#准备条件" class="headerlink" title="准备条件"></a>准备条件</h2><ul>
+<li>一台或多台运行着下列系统的机器：<ul>
+<li>Ubuntu 16.04+</li>
+<li>Debian 9+</li>
+<li>CentOS 7+</li>
+<li>Red Hat Enterprise Linux (RHEL) 7+</li>
+<li>Fedora 25+</li>
+<li>HypriotOS v1.0.1+</li>
+<li>Flatcar Container Linux （使用 2512.3.0 版本测试通过</li>
+</ul>
+</li>
+<li>2GB内存或以上</li>
+<li>2核CPU或以上</li>
+<li>集群中所有机器的网络能相互连接</li>
+<li>可以访问外网，需要下载镜像</li>
+<li>节点之中不可以有重复的hostname</li>
+<li>开启机器上的某些端口。具体端口可<a href="https://kubernetes.io/zh/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#check-required-ports">看这里</a>（用于测试可以关闭防火墙）</li>
+<li>禁用交换分区。</li>
+</ul>
+<h2 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h2><p>准备两台虚拟机</p>
+<table>
+<thead>
+<tr>
+<th>hostname</th>
+<th>IP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ks-m</td>
+<td>172.16.193.11</td>
+</tr>
+<tr>
+<td>ks-n</td>
+<td>172.16.193.12</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 修改主机名</span><br><span class="line">hostnamectl set-hostname &lt;your-hostname&gt;</span><br><span class="line"></span><br><span class="line"># 关闭防火墙：</span><br><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld</span><br><span class="line"></span><br><span class="line"># 关闭selinux：</span><br><span class="line">setenforce 0</span><br><span class="line">sed -i &#x27;s/enforcing/disabled/&#x27;/etc/selinux/config</span><br><span class="line"># 或者将 SELinux 设置为 permissive 模式（相当于将其禁用）</span><br><span class="line">sed -i &#x27;s/^SELINUX=enforcing$/SELINUX=permissive/&#x27; /etc/selinux/config</span><br><span class="line"></span><br><span class="line"># 关闭swap：</span><br><span class="line">swapoff -a</span><br><span class="line">sed -i &#x27;/swap/s/^\(.*\)$/#\1/g&#x27; /etc/fstab</span><br><span class="line"></span><br><span class="line"># 允许iptables桥接流量</span><br><span class="line">cat &lt;&lt; EOF | sudo tee /etc/modules-load.d/k8s.conf</span><br><span class="line">br_netfilter</span><br><span class="line">EOF</span><br><span class="line">cat &lt;&lt; EOF | sudo tee /etc/sysctl.d/k8s.conf</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">EOF</span><br><span class="line">sudo sysctl --system</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h3><p>安装过程请参考<a href="https://www.mllweb.com/archives/93">CentOS安装Docker</a></p>
+<h3 id="安装kubeadm、kubelet、kubectl"><a href="#安装kubeadm、kubelet、kubectl" class="headerlink" title="安装kubeadm、kubelet、kubectl"></a>安装kubeadm、kubelet、kubectl</h3><ul>
+<li><code>kubeadm</code>：用来初始化集群的指令。</li>
+<li><code>kubelet</code>：在集群中的每个节点上用来启动 Pod 和容器等。 </li>
+<li><code>kubectl</code>：用来与集群通信的命令行工具。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 添加官方仓库如果网络允许，如果网络无法连接可选择阿里云镜像</span><br><span class="line">cat &lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">repo_gpgcheck=1</span><br><span class="line">gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg</span><br><span class="line">exclude=kubelet kubeadm kubectl</span><br><span class="line">EOF</span><br><span class="line"># 添加阿里云YUM源</span><br><span class="line">cat &lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=0</span><br><span class="line">repo_gpgcheck=0</span><br><span class="line">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line"># 安装kubelet kubeadm kubectl</span><br><span class="line">yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes</span><br><span class="line"># 启动kubelet</span><br><span class="line">systemctl enable --now kubelet</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="部署集群"><a href="#部署集群" class="headerlink" title="部署集群"></a>部署集群</h2><p>kubeadm初始化集群时可以指定参数，详细的参数请参见 <a href="https://kubernetes.io/zh/docs/reference/setup-tools/kubeadm/">kubeadm 参考指南</a>。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 部署集群这里指定阿里云镜像</span><br><span class="line">kubeadm init --image-repository=registry.aliyuncs.com/google_containers</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>kubeadm init</code> 首先运行一系列预检查以确保机器准备运行 Kubernetes。这些预检查会显示警告并在错误时退出。然后 <code>kubeadm init</code> 下载并安装集群组件。这可能会需要几分钟。 完成之后你应该看到：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Your Kubernetes control-plane has initialized successfully!</span><br><span class="line"> </span><br><span class="line">To start using your cluster, you need to run the following as a regular user:</span><br><span class="line"> </span><br><span class="line">   mkdir -p $HOME/.kube</span><br><span class="line">   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">   sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line"> </span><br><span class="line">Alternatively, if you are the root user, you can run:</span><br><span class="line"> </span><br><span class="line">   export KUBECONFIG=/etc/kubernetes/admin.conf</span><br><span class="line"> </span><br><span class="line">You should now deploy a pod network to the cluster.</span><br><span class="line">Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:</span><br><span class="line">   https://kubernetes.io/docs/concepts/cluster-administration/addons/</span><br><span class="line"> </span><br><span class="line">Then you can join any number of worker nodes by running the following on each as root:</span><br><span class="line"> </span><br><span class="line">kubeadm join 172.16.193.11:6443 --token hwlhrb.vpz1gwp2l1zbh29c \</span><br><span class="line">     --discovery-token-ca-cert-hash sha256:7b99fbbe7d5f3a07dc3db32ce89f6ec8089771a3bc09a1fc9c884e769f7ebf7c</span><br></pre></td></tr></table></figure>
+
+
+
+<p>要使非 root 用户可以运行 kubectl，请运行以下命令， 它们也是 <code>kubeadm init</code> 输出的一部分：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br></pre></td></tr></table></figure>
+
+
+
+<p>或者，如果你是 <code>root</code> 用户，则可以运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export KUBECONFIG=/etc/kubernetes/admin.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<p>记录 <code>kubeadm init</code> 输出的 <code>kubeadm join</code> 命令。 你需要此命令<a href="https://kubernetes.io/zh/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#join-nodes">将节点加入集群</a>。</p>
+<p>token用于master节点和worker节点之间的相互身份验证。 这里包含的token是密钥。请安全保存， 因为拥有此token的任何人都可以将经过身份验证的节点添加到你的集群中。 可以使用 <code>kubeadm token</code> 命令列出，创建和删除这些令牌。 </p>
+<h2 id="部署CNI网络"><a href="#部署CNI网络" class="headerlink" title="部署CNI网络"></a>部署CNI网络</h2><p>你必须部署一个基于 Pod 网络插件的容器网络接口 (CNI)，以便你的 Pod 可以相互通信。 在安装网络之前，集群 DNS (CoreDNS) 将不会启动。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看CoreDNS状态</span><br><span class="line">kubectl get pods --all-namespaces</span><br><span class="line"># STATUS=Pending代表未启动</span><br><span class="line">NAMESPACE     NAME                           READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-system   coredns-74ff55c5b-dlxg9        0/1     Pending   0          6m38s</span><br><span class="line">kube-system   coredns-74ff55c5b-n2xbk        0/1     Pending   0          6m38s</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>注意你的 Pod IP不得与任何主机IP相同</li>
+<li>默认情况下，<code>kubeadm</code> 将集群设置为使用和强制使用 RBAC（基于角色的访问控制）。 确保你的 Pod 网络插件支持 RBAC，以及用于部署它的 manifests 也是如此。</li>
+<li>如果要为集群使用 IPv6（双协议栈或仅单协议栈 IPv6 网络）， 请确保你的Pod网络插件支持 IPv6。 IPv6 支持已在 CNI v0.6.0 版本中添加。</li>
+</ul>
+<p>目前 Calico 是 kubeadm 项目中执行 e2e 测试的唯一 CNI 插件，你可以选择其他插件，详情见<a href="https://kubernetes.io/zh/docs/concepts/cluster-administration/networking/#how-to-implement-the-kubernetes-networking-model">Kubernetes 网络模型</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#【flannel 、calico部署一个就可以】</span><br><span class="line"># calico 网络插件</span><br><span class="line">wget https://docs.projectcalico.org/v3.11/manifests/calico.yaml</span><br><span class="line">kubectl apply -f calico.yaml</span><br><span class="line"></span><br><span class="line"># flannel 网络插件</span><br><span class="line">wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</span><br><span class="line">kubectl apply -f kube-flannel.yml</span><br></pre></td></tr></table></figure>
+
+
+
+<p>每个集群只能安装一个 Pod 网络。</p>
+<p>此过程可能持续几分钟，稍等片刻，再次通过 <code>kubectl get pods --all-namespaces</code> 查看CoreDNS状态</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kubectl get pods --all-namespaces</span><br><span class="line"># 此时STATUS=Running代表正在运行</span><br><span class="line">NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-system   calico-kube-controllers-6b8f6f78dc-h5q7z   1/1     Running   0          95s</span><br><span class="line">kube-system   calico-node-wvjmx                          1/1     Running   0          95s</span><br><span class="line">kube-system   coredns-74ff55c5b-dlxg9                    1/1     Running   0          10m</span><br><span class="line">kube-system   coredns-74ff55c5b-n2xbk                    1/1     Running   0          10m</span><br></pre></td></tr></table></figure>
+
+
+
+<p>安装 Pod 网络后， 确保 CoreDNS Pod 启用并运行，就可以继续加入其他节点。</p>
+<h2 id="加入Node节点服务器"><a href="#加入Node节点服务器" class="headerlink" title="加入Node节点服务器"></a>加入Node节点服务器</h2><p>这是 <code>kubeadm init</code> 输出的 <code>kubeadm join</code> 命令，根据输出日志在Node节点执行命令，加入集群</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 模版</span><br><span class="line"># kubeadm join &lt;control-plane-host&gt;:&lt;control-plane-port&gt; --token &lt;token&gt; \</span><br><span class="line">#     --discovery-token-ca-cert-hash sha256:&lt;hash&gt;</span><br><span class="line">kubeadm join 172.16.193.11:6443 --token hwlhrb.vpz1gwp2l1zbh29c \</span><br><span class="line">     --discovery-token-ca-cert-hash sha256:7b99fbbe7d5f3a07dc3db32ce89f6ec8089771a3bc09a1fc9c884e769f7ebf7c</span><br></pre></td></tr></table></figure>
+
+
+
+<p>稍等片刻后，查看节点信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kubectl get node</span><br><span class="line"># 可以看到worker节点已经成功加入到集群中</span><br><span class="line">NAME   STATUS   ROLES                  AGE   VERSION</span><br><span class="line">ks-m   Ready    control-plane,master   18m   v1.20.5</span><br><span class="line">ks-n   Ready    &lt;none&gt;                 62s   v1.20.5</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果没有令牌，可以通过在控制平面节点上运行以下命令来获取令牌：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kubeadm token list</span><br></pre></td></tr></table></figure>
+
+
+
+<p>输出类似于以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">TOKEN                     TTL         EXPIRES                     USAGES                   DESCRIPTION                                                EXTRA GROUPS</span><br><span class="line">hwlhrb.vpz1gwp2l1zbh29c   23h         2021-03-25T13:48:33+08:00   authentication,signing   The default bootstrap token generated by &#x27;kubeadm init&#x27;.   system:bootstrappers:kubeadm:default-node-token</span><br></pre></td></tr></table></figure>
+
+
+
+<p>默认情况下，令牌会在24小时后过期。如果要在当前令牌过期后将节点加入集群， 则可以通过在控制平面节点上运行以下命令来创建新令牌：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kubeadm token create</span><br></pre></td></tr></table></figure>
+
+
+
+<p>输出类似于以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0gaske.aqb6any6xs7cuq3s</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果你没有 <code>--discovery-token-ca-cert-hash</code> 的值，则可以通过在控制平面节点上执行以下命令链来获取它：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2&gt;/dev/null | \</span><br><span class="line">   openssl dgst -sha256 -hex | sed &#x27;s/^.* //&#x27; </span><br></pre></td></tr></table></figure>
+
+
+
+<p>输出类似于以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">7b99fbbe7d5f3a07dc3db32ce89f6ec8089771a3bc09a1fc9c884e769f7ebf7c</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="集群测试"><a href="#集群测试" class="headerlink" title="集群测试"></a>集群测试</h2><p>一个简单的集群已经搭建完毕，我们测试一下集群的运行</p>
+<p>下面我给大家准备了一个 <strong>nginx.yaml</strong> 部署文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: nginx</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      name: nginx</span><br><span class="line">      labels:</span><br><span class="line">        app: nginx</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">        - name: nginx</span><br><span class="line">          image: nginx:1.19</span><br><span class="line">          ports:</span><br><span class="line">            - containerPort: 80</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    app: nginx</span><br><span class="line">  type: NodePort</span><br><span class="line">  ports:</span><br><span class="line">    - name: nginx</span><br><span class="line">      protocol: TCP</span><br><span class="line">      port: 80</span><br><span class="line">      targetPort: 80</span><br><span class="line">      nodePort: 30001</span><br></pre></td></tr></table></figure>
+
+
+
+<p>将nginx运行到集群中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kubectl apply -f nginx.yaml</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看Deployment和Service信息</span><br><span class="line">kubectl get deployment,service</span><br><span class="line"># 当READY 3个副本全部准备完后说明成功</span><br><span class="line">NAME                    READY   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">deployment.apps/nginx   3/3     3            3           36s</span><br><span class="line"># service已经启动并将80端口映射到了30001端口</span><br><span class="line">NAME                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE</span><br><span class="line">service/kubernetes   ClusterIP   10.96.0.1                443/TCP        30m</span><br><span class="line">service/nginx        NodePort    10.110.236.239           80:30001/TCP   4m28s</span><br></pre></td></tr></table></figure>
+
+
+
+<p>此时我们打开浏览器访问一下服务 http://<ip>:30001</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616566920-image.png"></p>
+]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>Kubernetes</tag>
+        <tag>kubeadm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>haproxy.cfg示例</title>
+    <url>/Linux/haproxy.cfg/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 全局参数的设置</span><br><span class="line">global</span><br><span class="line">     log 127.0.0.1 local0 info # 全局的日志配置，local0 是日志设备，info 表示日志级别。其中日志级别有err、warning、info、debug 四种可选。这个配置表示使用 127.0.0.1 上的 rsyslog 服务中的local0 日志设备，记录日志等级为info。</span><br><span class="line">     maxconn 4096 # 设定每个 haproxy 进程可接受的最大并发连接数，此选项等同于 Linux命令行选项“ulimit -n”。</span><br><span class="line">     user nobody # 设置运行 haproxy 进程的用户，也可使用用户的 uid 值来替代。</span><br><span class="line">     group nobody # 设置运行 haproxy 进程的用户组，也可使用用户组的 gid 值来替代。</span><br><span class="line">     daemon # 设置 HAProxy 进程进入后台运行。这是推荐的运行模式。</span><br><span class="line">     nbproc 1 # 设置 HAProxy 启动时可创建的进程数，此参数要求将HAProxy 运行模式设置为“daemon”，默认只启动一个进程。根据使用经验，该值的设置应该小于服务器的 CPU 核数。创建多个进程，能够减少每个进程的任务队列，但是过多的进程可能会导致进程的崩溃。</span><br><span class="line">     pidfile /usr/local/haproxy/logs/haproxy.pid # 指定 HAProxy 进程的 pid 文件。启动进程的用户必须有访问此文件的权限。</span><br><span class="line">defaults</span><br><span class="line">     # 设置 HAProxy 实例默认的运行模式，有 tcp、http、health 三个可选值。</span><br><span class="line">     # tcp 模式    在此模式下，客户端和服务器端之间将建立一个全双工的连接，不会对七层报文做任何类型的检查，默认为 tcp 模式，经常用于 SSL、SSH、SMTP 等应用。</span><br><span class="line">    # http 模式    在此模式下，客户端请求在转发至后端服务器之前将会被深度分析，所有不与 RFC 格式兼容的请求都会被拒绝。</span><br><span class="line">    # health 模式    目前此模式基本已经废弃，不在多说。</span><br><span class="line">     mode http </span><br><span class="line">     # log global # 应用全局的日志配置</span><br><span class="line">     # option httplog # 启用日志记录HTTP请求，默认haproxy日志记录是不记录HTTP请求日志</span><br><span class="line">     # 启用该项，日志中将不会记录空连接。所谓空连接就是在上游的负载均衡器 或者监控系统为了探测该  服务是否存活可用时，需要定期的连接或者获取某 一固定的组件或页面，或者探测扫描端口是否在监 听或开放等动作被称为空连接； 官方文档中标注，如果该服务上游没有其他的负载均衡器的话，建议 不要使用 该参数，因为互联网上的恶意扫描或其他动作就不会被记录下来</span><br><span class="line">     # option dontlognull </span><br><span class="line">     # option http-server-close # 每次请求完毕后主动关闭http通道</span><br><span class="line">     # 如果服务器上的应用程序想记录发起请求的客户端的IP地址， 需要在HAProxy上配置此选项，这样  HAProxy会把客户端的IP信息发送给服务器，在HTTP请求中添加&quot;X-Forwarded-For&quot;字 段。  启用  X-Forwarded-For，在requests头部插入客户端IP发送给后端的server，使后端server获 取到客户端的真实IP。</span><br><span class="line">     # option forwardfor except 127.0.0.0/8</span><br><span class="line">     # 当使用了cookie时，haproxy将会将其请求的后端服务器的serverID插入到cookie中，以保证 会话的SESSION持久性；而此时，如果后端的服务器宕掉了， 但是客户端的cookie是不会刷新 的，如果设置此参数，将会将客户的请求强制定向到另外一个后端server上，以保证服务的正常。</span><br><span class="line">     # option redispatch </span><br><span class="line">     retries 3 # 设置连接后端服务器的失败重试次数，连接失败的次数如果超过这里设置的值，HAProxy 会将对应的后端服务器标记为不可用。此参数也可在后面部分进行设置。</span><br><span class="line">     # timeout http-request 10s # http请求超时时间</span><br><span class="line">     # timeout queue 1m # 一个请求在队列里的超时时间</span><br><span class="line">     # timeout http-keep-alive 10s # 设置http-keep-alive的超时时间</span><br><span class="line">     timeout connect 10s # 设置成功连接到一台服务器的最长等待时间，默认单位是毫秒，但也可以使用其他的时间单位后缀。</span><br><span class="line">     timeout client 20s # 设置连接客户端发送数据时最长等待时间，默认单位是毫秒，也可以使用其他的时间单位后缀。</span><br><span class="line">     timeout server 30s # 设置服务器端回应客户度数据发送的最长等待时间，默认单位是毫秒，也可以使用其他的时间单位后缀。</span><br><span class="line">     timeout check 5s # 设置对后端服务器的检测超时时间，默认单位是毫秒，也可以使用其他的时间单位后缀。</span><br><span class="line">     # maxconn 3000 # 每个进程可用的最大连接数</span><br><span class="line">frontend www</span><br><span class="line">     bind *:80  # 此选项只能在 frontend 和 listen 部分进行定义，用于定义一个或几个监听的套接字。bind 的使用格式为:bind [&amp;lt;address&gt;:&amp;lt;port_range&gt;] interface &amp;lt;interface&gt; 其中，address 为可选选项，其可以为主机名或IP 地址，如果将其设置为“*”或“0.0.0.0”，将监听当前系统的所有 IPv4 地址。port_range 可以是一个特定的 TCP 端口，也可是一个端口范围，小于 1024 的端口需要有特定权限的用户才能使用。interface 为可选选项，用来指定网络接口的名称，只能在 Linux 系统上使用。 </span><br><span class="line">     mode    http</span><br><span class="line">     option    httplog </span><br><span class="line">     option    forwardfor # 如果后端服务器需要获得客户端的真实  IP，就需要配置此参数。由于 HAProxy 工作于反向代理模式，因此发往后端真实服务器的请求中的客户端 IP 均为 HAProxy 主机的 IP，而非真正访问客户端的地址，这就导致真实服务器端无法记录客户端真正请求来源的 IP，而“X-Forwarded-For”则可用于解决此问题。通过使用“forwardfor”选项，HAProxy 就可以向每个发往后端真实服务器的请求添加“X-Forwarded-For”记录，这样后端真实服务器日志可以通过“X-Forwarded-For”信息来记录客户端来源 IP。</span><br><span class="line">     option    httpclose # 此选项表示在客户端和服务器端完成一次连接请求后，HAProxy 将主动关闭此 TCP 连接。这是对性能非常有帮助的一个参数。</span><br><span class="line">     log    global # 表示使用全局的日志配置，这里的“ global”表示引用在HAProxy 配置文件 global 部分中定义的 log 选项配置格式。</span><br><span class="line">     #acl host_www    hdr_dom(host)   -i  www.zb.com</span><br><span class="line">     #acl host_img    hdr_dom(host)   -i  img.zb.com</span><br><span class="line">     #use_backend htmpool    if  host_www </span><br><span class="line">     #use_backend imgpool    if  host_img </span><br><span class="line">     default_backend    htmpool # 指定默认的后端服务器池，也就是指定一组后端真实服务器，而这些真实服务器组将在 backend 段进行定义。这里的htmpool 就是一个后端服务器组。</span><br><span class="line"># 定义一个名为 my_webserver后端部分。PS：此处 my_webserver只是一个自定义名字而已， 但是需要与frontend里面 配置项default_backend 值相一致</span><br><span class="line">backend htmpool</span><br><span class="line">     mode http </span><br><span class="line">     # 此参数用于 cookie 保持的环境中。在默认情况下，HAProxy会将其请求的后端服务器的serverID 插入到 cookie 中，以保证会话的 SESSION 持久性。而如果后端的服务器出现故障，客户端的 cookie 是不会刷新的，这就出现了问题。此时，如果设置此参数，就会将客户的请求强制定向到另外一个健康的后端服务器上，以保证服务的正常。</span><br><span class="line">     option    redispatch </span><br><span class="line">     option    abortonclose  # 如果设置了此参数，可以在服务器负载很高的情况下， 自动结束掉当前队列中处理时间比较长的链接。</span><br><span class="line">     # 此关键字用来定义负载均衡算法。目前 HAProxy 支持多种负载均衡算法，常用的有如下几种</span><br><span class="line">     # roundrobin    是基于权重进行轮询调度的算法，在服务器的性能分布比较均匀的时候，这是一种最公平、最合理的算法。此算法经常使用。</span><br><span class="line">     # static-rr    也是基于权重进行轮询的调度算法，不过此算法为静态方法，在运行时调整其服务器权重不会生效。</span><br><span class="line">     # source    是基于请求源 IP 的算法。此算法先对请求的源 IP 进行 hash 运算， 然后将结果与后端服务器的权重总数相除后转发至某个匹配的后端服务器。这种方式可以使同一个客户端 IP 的请求始终被转发到某特定的后端服务器。</span><br><span class="line">     # leastconn    此算法会将新的连接请求转发到具有最少连接数目的后端服务器。在会话时间较长的场景中推荐使用此算法，例如数据库负载均衡等。此算法不  适合会话较短的环境中，例如基于 HTTP 的应用。</span><br><span class="line">     # uri    此算法会对部分或整个 URI 进行 hash 运算，再经过与服务器的总权重相除，最后转发到某台匹配的后端服务器上。</span><br><span class="line">     # uri_param    此算法会根据 URL 路径中的参数进行转发，这样可保证在后端真实服务器数量不变时，同一个用户的请求始终分发到同一台机器上。</span><br><span class="line">     # hdr():    此算法根据 http 头进行转发，如果指定的 http 头名称不存在，则使用 roundrobin 算法进行策略转发。</span><br><span class="line">     balance  static-rr </span><br><span class="line">     cookie    SERVERID # 表示允许向 cookie 插入 SERVERID，每台服务器的 SERVERID 可在下面的 server 关键字中使用 cookie 关键字定义。</span><br><span class="line">     # 此选项表示启用 HTTP 的服务状态检测功能。HAProxy 作为一款专业的负载均衡器，它支持对 backend 部分指定的后端服务节点的健康检查，以保证在后端 backend 中某个节点不能服务时，把从 frotend 端进来的客户端请求分配至 backend 中其他健康节点上，从而保证整体服务的可用性。“option httpchk”的用法如下：</span><br><span class="line">     # option httpchk &amp;lt;method&gt; &amp;lt;uri&gt; &amp;lt;version&gt; 其中，各个参数的含义如下：</span><br><span class="line">     # &amp;lt;method&gt;    表示 HTTP 请求的方式，常用的有 OPTIONS、GET、HEAD 几种方式。一般的健康检查可以采用 HEAD 方式进行，而不是才采用 GET 方式，这是因为 HEAD 方式没有数据返回，仅检查 Response 的 HEAD 是不是 200 状态。因此相对与 GET 来说，HEAD 方式更快，更简单。</span><br><span class="line">     # &amp;lt;uri&gt;    表示要检测的 URL 地址，通过执行此 URL，可以获取后端服务器的运行状态。在正常情况下将返回状态码 200，返回其他状态码均为异常状态。</span><br><span class="line">     # &amp;lt;version&gt;    指定心跳检测时的 HTTP 的版本号。</span><br><span class="line">     option    httpchk GET /index.jsp</span><br><span class="line">     # 这个关键字用来定义多个后端真实服务器，不能用于 defaults 和frontend部分。使用格式为：server &amp;lt;name&gt; &amp;lt;address&gt;[:port] [param*] 其中，每个参数含义如下：</span><br><span class="line">     # &amp;lt;name&gt; 为后端真实服务器指定一个内部名称，随便定义一个即可。</span><br><span class="line">     # &amp;lt;address&gt; 后端真实服务器的 IP 地址或主机名。</span><br><span class="line">     # &amp;lt;port&gt; 指定连接请求发往真实服务器时的目标端口。在未设定时，将使用客户端请求时的同一端口。</span><br><span class="line">     # [param*] 为后端服务器设定的一系参数，可用参数非常多，这里仅介绍常用的一些参数：</span><br><span class="line">     # check 表示启用对此后端服务器执行健康状态检查。</span><br><span class="line">     # inter 设置健康状态检查的时间间隔，单位为毫秒。</span><br><span class="line">     # rise 设置从故障状态转换至正常状态需要成功检查的次数，例如。“rise 2”表示 2 次检查正确就认为此服务器可用。</span><br><span class="line">     # fall 设置后端服务器从正常状态转换为不可用状态需要检查的次数，例如，“fall 3”表示 3 次检查失败就认为此服务器不可用。</span><br><span class="line">     # cookie 为指定的后端服务器设定 cookie 值，此处指定的值将在请求入站时被检查，第一次为此值挑选的后端服务器将在后续的请求中一直被选中，其目的在于实现持久连接的功能。上面 的“cookie server1”表示 web1 的 serverid 为 server1。同理， “cookie server2”表示 web2 的 serverid 为 server2。</span><br><span class="line">     # weight 设置后端真实服务器的权重，默认为 1，最大值为 256。设置为 0 表示不参与负载均衡。</span><br><span class="line">     # backup 设置后端真实服务器的备份服务器，仅仅在后端所有真实服务器均不可用的情况下才启用。 </span><br><span class="line">     server    237server 192.168.81.237:8080 cookie server1 weight 6 check inter 2000 rise 2 fall 3</span><br><span class="line">     server    iivey234 192.168.81.234:8080 cookie server2 weight 3 check inter 2000 rise 2 fall 3</span><br><span class="line">backend imgpool</span><br><span class="line">     mode        http </span><br><span class="line">     option    redispatch</span><br><span class="line">     option    abortonclose</span><br><span class="line">      balance  static-rr </span><br><span class="line">     cookie  SERVERID</span><br><span class="line">     option    httpchk GET /index.jsp</span><br><span class="line">     server    host236 192.168.81.236:8080 cookie server1 weight 6 check inter 2000 rise 2 fall 3</span><br><span class="line"># 这个部分通过listen 关键字定义了一个名为“admin_stats”的实例，其实就是定义了一个 HAProxy 的监控页面</span><br><span class="line">listen admin_stats</span><br><span class="line">     bind 0.0.0.0:9188 # 页面绑定访问端口</span><br><span class="line">     mode http # 实例默认的运行模式</span><br><span class="line">     log 127.0.0.1 local0 err # 记录日志，原理同global</span><br><span class="line">     stats refresh 30s # 设置 HAProxy 监控统计页面自动刷新的时间。</span><br><span class="line">     stats uri /haproxy-status # 设置 HAProxy 监控统计页面的URL 路径，可随意指定。例如、指定“stats uri /haproxy-status”，就可以过 http://IP:9188/haproxy-status  查看。</span><br><span class="line">     stats realm welcome login\ Haproxy # 设置登录 HAProxy 统计页面时密码框上的文本提示信息。</span><br><span class="line">     stats auth admin:admin # 设置登录 HAProxy 统计页面的用户名和密码。用户名和密码通过冒号分割。可为监控页面设置多个用户名和密码，每行一个。</span><br><span class="line">     stats hide-version # 用来隐藏统计页面上 HAProxy 的版本信息。</span><br><span class="line">     stats admin if TRUE # 通过设置此选项，可以在监控页面上手工启用或禁用后端真实服务器，仅在 haproxy1.4.9 以后版本有效。</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>haproxy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>.gitlab-ci.yml示例</title>
+    <url>/Linux/gitlab-ci.yml/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#定义 stages（阶段）。任务将按此顺序执行。</span><br><span class="line">stages: </span><br><span class="line">     - build </span><br><span class="line">     - test </span><br><span class="line">     - deploy </span><br><span class="line"></span><br><span class="line">#定义 job（任务）</span><br><span class="line">job1: </span><br><span class="line">     stage: test </span><br><span class="line">     tags: </span><br><span class="line">         - XX    #只有标签为XX的runner才会执行这个任务 </span><br><span class="line">     only: </span><br><span class="line">         - dev   #只有dev分支提交代码才会执行这个任务。也可以是分支名称或触发器名称 </span><br><span class="line">         - /^future-.*$/     #正则表达式，只有future-开头的分支才会执行 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job1&quot; </span><br><span class="line">         - echo &quot;I am in test stage&quot; </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">job2: </span><br><span class="line">     stage: test     #如果此处没有定义stage，其默认也是test </span><br><span class="line">     only: </span><br><span class="line">         - master    #只有master分支提交代码才会执行这个任务 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job2&quot; </span><br><span class="line">         - echo &quot;I am in test stage&quot; </span><br><span class="line">     allow_failure: true     #允许失败，即不影响下步构建 </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">job3: </span><br><span class="line">     stage: build </span><br><span class="line">     except: </span><br><span class="line">         - dev   #除了dev分支，其它分支提交代码都会执行这个任务 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job3&quot; </span><br><span class="line">         - echo &quot;I am in build stage&quot; </span><br><span class="line">     when: always    #不管前面几步成功与否，永远会执行这一步。它有几个值：on_success （默认值）\on_failure\always\manual（手动执行） </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">.job4:      #对于临时不想执行的job，可以选择在前面加个&quot;.&quot;，这样就会跳过此步任务，否则你除了要注释掉这个jobj外，还需要注释上面为deploy的stage </span><br><span class="line">     stage: deploy </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job4&quot; </span><br><span class="line"></span><br><span class="line">#模板，相当于公用函数，有重复任务时很有用</span><br><span class="line">.job_template: &amp;amp;job_definition      # 创建一个锚，&#x27;job_definition&#x27; </span><br><span class="line">     image: ruby:2.1 </span><br><span class="line">     services: </span><br><span class="line">         - postgres </span><br><span class="line">         - redis </span><br><span class="line"></span><br><span class="line">test1: </span><br><span class="line">     &amp;lt;&amp;lt;: *job_definition             # 利用锚&#x27;job_definition&#x27;来合并 </span><br><span class="line">     script: </span><br><span class="line">         - test1 project </span><br><span class="line"></span><br><span class="line">test2: </span><br><span class="line">     &amp;lt;&amp;lt;: *job_definition             # 利用锚&#x27;job_definition&#x27;来合并 </span><br><span class="line">     script: </span><br><span class="line">         - test2 project </span><br><span class="line"></span><br><span class="line">#下面几个都相当于全局变量，都可以添加到具体job中，这时会被子job的覆盖</span><br><span class="line">before_script: </span><br><span class="line">     - echo &quot;每个job之前都会执行&quot; </span><br><span class="line"> </span><br><span class="line">after_script: </span><br><span class="line">     - echo &quot;每个job之后都会执行&quot; </span><br><span class="line"> </span><br><span class="line">variables:      #变量 </span><br><span class="line">     DATABASE_URL: &quot;postgres://postgres@postgres/my_database&quot;    #在job中可以用$&#123;DATABASE_URL&#125;来使用这个变量。常用的预定义变量有CI_COMMIT_REF_NAME（项目所在的分支或标签名称），CI_JOB_NAME（任务名称），CI_JOB_STAGE（任务阶段） </span><br><span class="line">     GIT_STRATEGY: &quot;none&quot;    #GIT策略，定义拉取代码的方式，有3种：clone/fetch/none，默认为clone，速度最慢，每步job都会重新clone一次代码。我们一般将它设置为none，在具体任务里设置为fetch就可以满足需求，毕竟不是每步都需要新代码，那也不符合我们测试的流程 </span><br><span class="line"> </span><br><span class="line">cache:          #缓存 </span><br><span class="line">     #因为缓存为不同管道和任务间共享，可能会覆盖，所以有时需要设置key </span><br><span class="line">     key: $&#123;CI_COMMIT_REF_NAME&#125;                      # 启用每分支缓存。 </span><br><span class="line">     #key: &quot;$CI_JOB_NAME/$CI_COMMIT_REF_NAME&quot;        # 启用每个任务和每个分支缓存。需要注意的是，如果是在windows中运行这个脚本，需要把$换成% </span><br><span class="line">     untracked: true                                 #缓存所有Git未跟踪的文件 </span><br><span class="line">     paths:                                          #以下2个文件夹会被缓存起来，下次构建会解压出来 </span><br><span class="line">         - node_modules/ </span><br><span class="line">         - dist/</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>GitLab</tag>
+      </tags>
+  </entry>
 </search>
