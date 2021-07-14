@@ -1,3 +1,4 @@
+hexo clean
 hexo g
 git add .
 git commit -a -m "init"

@@ -66,18 +66,69 @@
       </tags>
   </entry>
   <entry>
-    <title>JAVA实现数字千位分隔符</title>
-    <url>/Java/java-number-separator/</url>
-    <content><![CDATA[<h3 id="DecimalFormat"><a href="#DecimalFormat" class="headerlink" title="DecimalFormat"></a>DecimalFormat</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">new DecimalFormat(&quot;,###&quot;).format(new BigDecimal(1234567890).longValue())</span><br></pre></td></tr></table></figure>
+    <title>CentOS安装GitLab</title>
+    <url>/Linux/centos-install-gitlab/</url>
+    <content><![CDATA[<h3 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h3><p>在CentOS中,以下命令将在系统防火墙中打开HTTP，HTTPS和SSH访问</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y curl policycoreutils-python openssh-server perl</span><br><span class="line">sudo systemctl enable sshd</span><br><span class="line">sudo systemctl start sshd</span><br><span class="line">sudo firewall-cmd --permanent --add-service=http</span><br><span class="line">sudo firewall-cmd --permanent --add-service=https</span><br><span class="line">sudo systemctl reload firewalld</span><br></pre></td></tr></table></figure>
 
-<h3 id="String-format"><a href="#String-format" class="headerlink" title="String.format"></a>String.format</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">String.format(&quot;%,d&quot;,new BigDecimal(1234567890).longValue())</span><br></pre></td></tr></table></figure>
+<p>接下来，安装Postfix用来发送通知电子邮件。如果要使用其他方式发送电子邮件，请跳过此步骤并在安装GitLab之后配置外部SMTP服务器</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install postfix</span><br><span class="line">sudo systemctl enable postfix</span><br><span class="line">sudo systemctl start postfix</span><br></pre></td></tr></table></figure>
 
-<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">String.valueOf(new BigDecimal(1234567890).longValue()).replaceAll(&quot;(\\d)(?=(\\d&#123;3&#125;)+\$)&quot;, &quot;\$1,&quot;)</span><br></pre></td></tr></table></figure>]]></content>
+<p>在安装Postfix的过程中，可能会出现一些配置选项。选择“ Internet Site”，然后按Enter。使用服务器的外部DNS作为“mail name”，然后按Enter。如果出现其他选项，请继续按Enter接受默认设置。</p>
+<h3 id="添加仓库并安装"><a href="#添加仓库并安装" class="headerlink" title="添加仓库并安装"></a>添加仓库并安装</h3><p>添加GitLab软件包存储库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure>
+
+<p>接下来，安装GitLab软件包。确保已正确设置DNS，然后更改 <a href="https://gitlab.example.com/">https://gitlab.example.com</a> 为要访问GitLab实例的URL。安装将自动配置并在该URL上启动GitLab。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo EXTERNAL_URL=&quot;http://gitlab.example.com&quot; </span><br><span class="line">sudo yum install -y gitlab-ee</span><br></pre></td></tr></table></figure>
+
+<h3 id="浏览登录"><a href="#浏览登录" class="headerlink" title="浏览登录"></a>浏览登录</h3><p>执行完以上操作,GitLab已经成功安装,可以直接访问设置的域名进行访问。首次访问时,将被重定向到密码重置界面。提供初始管理员帐户的密码，然后重定向到登录界面。使用默认帐户的用户名<code>root</code>进行登录。</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><table>
+<thead>
+<tr>
+<th>执行命令</th>
+<th>命令功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sudo gitlab-ctl reconfigure</td>
+<td>重启配置，并启动gitlab服务</td>
+</tr>
+<tr>
+<td>sudo gitlab-ctl start</td>
+<td>启动所有 gitlab</td>
+</tr>
+<tr>
+<td>sudo gitlab-ctl restart</td>
+<td>重新启动GitLab</td>
+</tr>
+<tr>
+<td>sudo gitlab-ctl stop</td>
+<td>停止所有 gitlab</td>
+</tr>
+<tr>
+<td>sudo gitlab-ctl status</td>
+<td>查看服务状态</td>
+</tr>
+<tr>
+<td>sudo gitlab-ctl tail</td>
+<td>查看Gitlab日志</td>
+</tr>
+<tr>
+<td>sudo vim /etc/gitlab/gitlab.rb</td>
+<td>修改默认的配置文件</td>
+</tr>
+<tr>
+<td>gitlab-rake gitlab:check SANITIZE=true –trace</td>
+<td>检查gitlab</td>
+</tr>
+</tbody></table>
+]]></content>
       <categories>
-        <category>Java</category>
+        <category>Linux</category>
       </categories>
       <tags>
-        <tag>Java</tag>
+        <tag>Linux</tag>
+        <tag>GitLab</tag>
       </tags>
   </entry>
   <entry>
@@ -150,69 +201,197 @@
       </tags>
   </entry>
   <entry>
-    <title>CentOS安装GitLab</title>
-    <url>/Linux/centos-install-gitlab/</url>
-    <content><![CDATA[<h3 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h3><p>在CentOS中,以下命令将在系统防火墙中打开HTTP，HTTPS和SSH访问</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install -y curl policycoreutils-python openssh-server perl</span><br><span class="line">sudo systemctl enable sshd</span><br><span class="line">sudo systemctl start sshd</span><br><span class="line">sudo firewall-cmd --permanent --add-service=http</span><br><span class="line">sudo firewall-cmd --permanent --add-service=https</span><br><span class="line">sudo systemctl reload firewalld</span><br></pre></td></tr></table></figure>
+    <title>CentOS安装Nginx</title>
+    <url>/Linux/centos-install-nginx/</url>
+    <content><![CDATA[<p>Nginx是一款轻量级的Web服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器，在BSD-like 协议下发行。其特点是占有内存少，并发能力强。</p>
+<p>通常的安装方式有两种：yum安装/源码安装</p>
+<p><strong>yum安装</strong> 优点：安装快捷方便，缺点：无法指定特殊版本、无法指定扩展功能</p>
+<p><strong>源码安装</strong> 优点：可完全定制化扩展，缺点：相当于yum安装繁琐一些</p>
+<h2 id="yum安装"><a href="#yum安装" class="headerlink" title="yum安装"></a>yum安装</h2><p>安装准备条件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum -y install yum-utils</span><br></pre></td></tr></table></figure>
 
-<p>接下来，安装Postfix用来发送通知电子邮件。如果要使用其他方式发送电子邮件，请跳过此步骤并在安装GitLab之后配置外部SMTP服务器</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install postfix</span><br><span class="line">sudo systemctl enable postfix</span><br><span class="line">sudo systemctl start postfix</span><br></pre></td></tr></table></figure>
+<p>配置仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt; EOF &gt; /etc/yum.repos.d/nginx.repo</span><br><span class="line">[nginx-stable]</span><br><span class="line">name=nginx stable repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/\$releasever/\$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://nginx.org/keys/nginx_signing.key</span><br><span class="line">module_hotfixes=true</span><br><span class="line">[nginx-mainline]</span><br><span class="line">name=nginx mainline repo</span><br><span class="line">baseurl=http://nginx.org/packages/mainline/centos/\$releasever/\$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=0</span><br><span class="line">gpgkey=https://nginx.org/keys/nginx_signing.key</span><br><span class="line">module_hotfixes=true</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
 
-<p>在安装Postfix的过程中，可能会出现一些配置选项。选择“ Internet Site”，然后按Enter。使用服务器的外部DNS作为“mail name”，然后按Enter。如果出现其他选项，请继续按Enter接受默认设置。</p>
-<h3 id="添加仓库并安装"><a href="#添加仓库并安装" class="headerlink" title="添加仓库并安装"></a>添加仓库并安装</h3><p>添加GitLab软件包存储库</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure>
+<p>默认情况下，使用稳定的nginx软件包的存储库。如果要使用主线nginx软件包，请运行以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum-config-manager --enable nginx-mainline</span><br></pre></td></tr></table></figure>
 
-<p>接下来，安装GitLab软件包。确保已正确设置DNS，然后更改 <a href="https://gitlab.example.com/">https://gitlab.example.com</a> 为要访问GitLab实例的URL。安装将自动配置并在该URL上启动GitLab。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo EXTERNAL_URL=&quot;http://gitlab.example.com&quot; </span><br><span class="line">sudo yum install -y gitlab-ee</span><br></pre></td></tr></table></figure>
+<p>安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum -y install nginx</span><br><span class="line">sudo systemctl enable --now nginx</span><br></pre></td></tr></table></figure>
 
-<h3 id="浏览登录"><a href="#浏览登录" class="headerlink" title="浏览登录"></a>浏览登录</h3><p>执行完以上操作,GitLab已经成功安装,可以直接访问设置的域名进行访问。首次访问时,将被重定向到密码重置界面。提供初始管理员帐户的密码，然后重定向到登录界面。使用默认帐户的用户名<code>root</code>进行登录。</p>
-<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><table>
-<thead>
-<tr>
-<th>执行命令</th>
-<th>命令功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>sudo gitlab-ctl reconfigure</td>
-<td>重启配置，并启动gitlab服务</td>
-</tr>
-<tr>
-<td>sudo gitlab-ctl start</td>
-<td>启动所有 gitlab</td>
-</tr>
-<tr>
-<td>sudo gitlab-ctl restart</td>
-<td>重新启动GitLab</td>
-</tr>
-<tr>
-<td>sudo gitlab-ctl stop</td>
-<td>停止所有 gitlab</td>
-</tr>
-<tr>
-<td>sudo gitlab-ctl status</td>
-<td>查看服务状态</td>
-</tr>
-<tr>
-<td>sudo gitlab-ctl tail</td>
-<td>查看Gitlab日志</td>
-</tr>
-<tr>
-<td>sudo vim /etc/gitlab/gitlab.rb</td>
-<td>修改默认的配置文件</td>
-</tr>
-<tr>
-<td>gitlab-rake gitlab:check SANITIZE=true –trace</td>
-<td>检查gitlab</td>
-</tr>
-</tbody></table>
+<h2 id="源码安装"><a href="#源码安装" class="headerlink" title="源码安装"></a>源码安装</h2><h3 id="安装编译工具及库文件"><a href="#安装编译工具及库文件" class="headerlink" title="安装编译工具及库文件"></a>安装编译工具及库文件</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装PCRE"><a href="#安装PCRE" class="headerlink" title="安装PCRE"></a>安装PCRE</h3><p>前往<a href="https://sourceforge.net/projects/pcre/files/pcre/">https://sourceforge.net/projects/pcre/files/pcre/</a>下载安装包</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /usr/local/src/</span><br><span class="line">wget https://sourceforge.net/projects/pcre/files/pcre/8.44/pcre-8.44.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>解压</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar zxvf pcre-8.44.tar.gz</span><br><span class="line">cd pcre-8.44</span><br></pre></td></tr></table></figure>
+
+<p>编译安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 编译</span><br><span class="line">./configure --prefix=/usr/local/pcre</span><br><span class="line"># 安装</span><br><span class="line">make &amp;amp;&amp;amp; make install</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><p>前往<a href="http://nginx.org/en/download.html">http://nginx.org/en/download.html</a>下载对应版本的源码包</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /usr/local/src/</span><br><span class="line">wget http://nginx.org/download/nginx-1.19.8.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>解压</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar zxvf nginx-1.19.8.tar.gz</span><br><span class="line">cd nginx-1.19.8</span><br></pre></td></tr></table></figure>
+
+<p>编译源文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./configure \</span><br><span class="line">      --prefix=/usr/local/nginx \</span><br><span class="line">      --sbin-path=/usr/local/nginx/nginx \</span><br><span class="line">      --conf-path=/usr/local/nginx/nginx.conf \</span><br><span class="line">      --pid-path=/usr/local/nginx/nginx.pid \</span><br><span class="line">      --with-http_ssl_module \</span><br><span class="line">      --with-pcre=/usr/local/src/pcre-8.44</span><br></pre></td></tr></table></figure>
+
+
+<p>详细的配置信息请参考 <a href="http://nginx.org/en/docs/configure.html">http://nginx.org/en/docs/configure.html</a> 和 <a href="http://nginx.org/en/docs/">http://nginx.org/en/docs/</a>  -&gt; <strong>Modules reference</strong></p>
+<p>安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<p>启动</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/usr/local/nginx/nginx</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Linux</category>
       </categories>
       <tags>
         <tag>Linux</tag>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS安装Harbor</title>
+    <url>/Linux/centos-install-harbor/</url>
+    <content><![CDATA[<p>Harbor是一个开源的容器管理项目，用于存储、签名和扫描容器。Harbor具备安全性、身份和管理功能来管理Docker容器。Harbor支持在服务之间复制映像，还提供高级安全功能，如用户管理、访问控制和活动审核。</p>
+<h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><p>安装过程请查看另一篇文章<a href="https://www.mllweb.com/archives/93">CentOS安装Docker</a>来进行安装</p>
+<p>安装完启动docker</p>
+<h2 id="安装docker-compose"><a href="#安装docker-compose" class="headerlink" title="安装docker-compose"></a>安装docker-compose</h2><p>运行以下命令下载Docker Compose的当前稳定版本：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>二进制文件添加执行权限</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Harbor"><a href="#安装Harbor" class="headerlink" title="安装Harbor"></a>安装Harbor</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>前往<a href="https://github.com/goharbor/harbor/releases">https://github.com/goharbor/harbor/releases</a>下载harbor的文件</p>
+<p>harbor分为离线安装和在线安装，选择离线安装即可</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://github.com/goharbor/harbor/releases/download/v2.1.4/harbor-offline-installer-v2.1.4.tgz</span><br></pre></td></tr></table></figure>
+
+<p>解压后文件列表如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">common.sh</span><br><span class="line">harbor.v2.1.4.tar.gz</span><br><span class="line">harbor.yml.tmpl</span><br><span class="line">install.sh</span><br><span class="line">LICENSE</span><br><span class="line">prepare</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h3><p>harbor提供了配置的模版文件，我们复制一份</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cp harbor.yml.tmpl cp harbor.yml</span><br></pre></td></tr></table></figure>
+
+<p>我们需要修改一下<strong>harbor.yml.tmpl</strong>配置信息，将<strong>hostname</strong>修改为本机当前IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#The IP address or hostname to access admin UI and registry service.</span><br><span class="line">#DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.</span><br><span class="line">hostname: 192.168.8.197</span><br></pre></td></tr></table></figure>
+
+<p>harbor默认开启了https访问，如果你有https证书可以配置一下，如果没有证书则可以注释掉相关配置信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#https related config</span><br><span class="line">#https:</span><br><span class="line">  # https port for harbor, default is 443</span><br><span class="line">  # port: 443</span><br><span class="line">  # The path of cert and key files for nginx</span><br><span class="line">  # certificate: /your/certificate/path</span><br><span class="line">  # private_key: /your/private/key/path</span><br></pre></td></tr></table></figure>
+
+<p>harbor默认的登陆密码是<strong>Harbor12345</strong>，如果需要更换，可以在配置信息中修改</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># The initial password of Harbor admin</span><br><span class="line"># It only works in first time to install harbor</span><br><span class="line"># Remember Change the admin password from UI after launching Harbor.</span><br><span class="line">harbor_admin_password: Harbor12345</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>修改完配置信息以后，执行<strong>install.sh</strong>安装脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./install.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-10.png"></p>
+<p>出现以上内容说明Harbor已经成功安装</p>
+<h2 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h2><p>harbor默认的登陆账号是<strong>admin</strong>，密码是<strong>Harbor12345</strong></p>
+<p>默认端口是80，我们直接在浏览器输入ip地址进行访问就可以</p>
+<h2 id="上传测试"><a href="#上传测试" class="headerlink" title="上传测试"></a>上传测试</h2><p>修改 **/etc/hosts **将本机ip映射到 harbor.custom.com 下 ,然后将本机已有的镜像push到仓库进行测试</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-11.png"></p>
+<p>说明镜像已经成功推送到harbor仓库，至此，我们的harbor搭建完成。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Harbor</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Docker部署Spring Boot</title>
+    <url>/Java/docker-build-spring-boot/</url>
+    <content><![CDATA[<p>随着云原生的普及以及成熟，越来越多的项目开始用容器装载。</p>
+<p>Docker已经是容器的准则了，我们学习如何将Spring Boot项目装载在Docker容器内，然后启动部署。</p>
+<h3 id="创建Spring-Boot项目"><a href="#创建Spring-Boot项目" class="headerlink" title="创建Spring Boot项目"></a>创建Spring Boot项目</h3><ol>
+<li>导航到<a href="https://start.spring.io/">https://start.spring.io</a>。该网站可以选择依赖关系，并自动为我们完成项目设置。</li>
+<li>选择<strong>Gradle</strong>或<strong>Maven</strong>以及要使用的语言。</li>
+<li>单击<strong>Dependencies</strong>，然后选择<strong>Spring Web依赖</strong>。</li>
+<li>点击<strong>生成</strong>。</li>
+<li>下载生成的ZIP文件，然后用IDEA打开项目</li>
+</ol>
+<h3 id="设置Spring-Web项目"><a href="#设置Spring-Web项目" class="headerlink" title="设置Spring Web项目"></a>设置Spring Web项目</h3><p>现在我们简单来创建一个API接口</p>
+<p>编辑src/main/java/hello/Application.java文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package hello;</span><br><span class="line"></span><br><span class="line">import org.springframework.boot.SpringApplication;</span><br><span class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line">@SpringBootApplication</span><br><span class="line">@RestController</span><br><span class="line">public class Application &#123;</span><br><span class="line"></span><br><span class="line">  @RequestMapping(&quot;/&quot;)</span><br><span class="line">  public String home() &#123;</span><br><span class="line">     return &quot;Hello World&quot;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static void main(String[] args) &#123;</span><br><span class="line">     SpringApplication.run(Application.class, args);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>项目已经准备完成，我们可以直接运行</p>
+<p>如果使用gradle，执行下面命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gradle build &amp;&amp; java -jar build/libs/spring-boot-docker-0.0.1.jar</span><br></pre></td></tr></table></figure>
+
+<p>如果使用maven，执行下面命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mvn package &amp;&amp; java -jar target/spring-boot-docker-0.0.1.jar</span><br></pre></td></tr></table></figure>
+
+<p>现在我们可以打开<a href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a>查看</p>
+<h3 id="容器化"><a href="#容器化" class="headerlink" title="容器化"></a>容器化</h3><p>Docker提供了简单的Dockerfile文件来构建镜像，首先在项目跟路径创建Dockerfile文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 指定基础镜像</span><br><span class="line">FROM java:8</span><br><span class="line"># 构建参数，默认是target/*.jar，如果指定则覆盖</span><br><span class="line">ARG JAR_FILE=target/*.jar</span><br><span class="line"># 将jar包添加进镜像中</span><br><span class="line">COPY $&#123;JAR_FILE&#125; app.jar</span><br><span class="line"># 镜像入口，部署镜像时将被执行</span><br><span class="line">ENTRYPOINT [&quot;java&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>如果使用gradle，执行下面命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker build --build-arg JAR_FILE=build/libs/\*.jar -t spring-boot-docker:0.0.1 .</span><br></pre></td></tr></table></figure>
+
+<p>如果使用maven，执行下面命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker build -t spring-boot-docker:0.0.1 .</span><br></pre></td></tr></table></figure>
+
+<p>这个命令会构建Docker镜像，镜像名称为spring-boot-docker，镜像版本为0.0.1</p>
+<h3 id="部署容器"><a href="#部署容器" class="headerlink" title="部署容器"></a>部署容器</h3><p>我们的Spring Boot项目已经构建成Docker镜像</p>
+<p>执行下面命令启动Docker镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -p 8080:8080 spring-boot-docker:0.0.1</span><br></pre></td></tr></table></figure>
+
+<p>现在我们可以打开<a href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a>查看</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>Java</tag>
+        <tag>Spring Boot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker搭建WordPress</title>
+    <url>/Linux/docker-build-wordpress/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum -y install docker-ce docker-ce-cli containerd.io</span><br><span class="line">sudo systemctl enable docker</span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF &gt; wordpress.yml</span><br><span class="line">version: &#x27;3.1&#x27;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  mysql:</span><br><span class="line">    image: mysql:5.7</span><br><span class="line">    restart: always</span><br><span class="line">    ports:</span><br><span class="line">      - 3306:3306</span><br><span class="line">    container_name: wordpress_mysql</span><br><span class="line">    environment:</span><br><span class="line">      MYSQL_DATABASE: wordpress</span><br><span class="line">      MYSQL_USER: wordpress</span><br><span class="line">      MYSQL_PASSWORD: MyNewPass4!</span><br><span class="line">      MYSQL_RANDOM_ROOT_PASSWORD: &#x27;1&#x27;</span><br><span class="line">    volumes:</span><br><span class="line">      - mysql:/var/lib/mysql</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">  wordpress:</span><br><span class="line">    image: wordpress</span><br><span class="line">    restart: always</span><br><span class="line">    container_name: wordpress_server</span><br><span class="line">    environment:</span><br><span class="line">      WORDPRESS_DB_HOST: mysql</span><br><span class="line">      WORDPRESS_DB_USER: wordpress</span><br><span class="line">      WORDPRESS_DB_PASSWORD: MyNewPass4!</span><br><span class="line">      WORDPRESS_DB_NAME: wordpress</span><br><span class="line">    depends_on:</span><br><span class="line">      - mysql</span><br><span class="line">    volumes:</span><br><span class="line">      - wordpress:/var/www/html</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">  nginx:</span><br><span class="line">    image: nginx:1.20</span><br><span class="line">    restart: always</span><br><span class="line">    ports:</span><br><span class="line">      - 80:80</span><br><span class="line">      - 443:443</span><br><span class="line">    container_name: wordpress_nginx</span><br><span class="line">    links:</span><br><span class="line">      - wordpress</span><br><span class="line">    depends_on:</span><br><span class="line">      - wordpress</span><br><span class="line">    volumes:</span><br><span class="line">      - nginx:/etc/nginx</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">volumes:</span><br><span class="line">  wordpress:</span><br><span class="line">  mysql:</span><br><span class="line">  nginx:</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  wordpress:</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">docker-compose -f wordpress.yml up -d</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF &gt; /var/lib/docker/volumes/root_nginx/_data/conf.d/default.conf</span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    listen  [::]:80;</span><br><span class="line">    server_name  mllweb.com;</span><br><span class="line"></span><br><span class="line">    return 301 https://mllweb.com$request_uri;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl http2;</span><br><span class="line">    listen [::]:443 ssl http2;</span><br><span class="line"></span><br><span class="line">    server_name mllweb.com;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">          proxy_pass http://wordpress;</span><br><span class="line"></span><br><span class="line">          proxy_http_version    1.1;</span><br><span class="line">          proxy_cache_bypass    $http_upgrade;</span><br><span class="line"></span><br><span class="line">          proxy_set_header Upgrade            $http_upgrade;</span><br><span class="line">          proxy_set_header Connection         &quot;upgrade&quot;;</span><br><span class="line">          proxy_set_header Host               $host;</span><br><span class="line">          proxy_set_header X-Real-IP          $remote_addr;</span><br><span class="line">          proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;</span><br><span class="line">          proxy_set_header X-Forwarded-Proto  $scheme;</span><br><span class="line">          proxy_set_header X-Forwarded-Host   $host;</span><br><span class="line">          proxy_set_header X-Forwarded-Port   $server_port;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ssl_certificate cert/mllweb.com.pem;</span><br><span class="line">    ssl_certificate_key cert/mllweb.com.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    #表示使用的加密套件的类型。</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #表示使用的TLS协议的类型。</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Docker</tag>
+        <tag>WordPress</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>.gitlab-ci.yml示例</title>
+    <url>/Linux/gitlab-ci.yml/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#定义 stages（阶段）。任务将按此顺序执行。</span><br><span class="line">stages: </span><br><span class="line">     - build </span><br><span class="line">     - test </span><br><span class="line">     - deploy </span><br><span class="line"></span><br><span class="line">#定义 job（任务）</span><br><span class="line">job1: </span><br><span class="line">     stage: test </span><br><span class="line">     tags: </span><br><span class="line">         - XX    #只有标签为XX的runner才会执行这个任务 </span><br><span class="line">     only: </span><br><span class="line">         - dev   #只有dev分支提交代码才会执行这个任务。也可以是分支名称或触发器名称 </span><br><span class="line">         - /^future-.*$/     #正则表达式，只有future-开头的分支才会执行 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job1&quot; </span><br><span class="line">         - echo &quot;I am in test stage&quot; </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">job2: </span><br><span class="line">     stage: test     #如果此处没有定义stage，其默认也是test </span><br><span class="line">     only: </span><br><span class="line">         - master    #只有master分支提交代码才会执行这个任务 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job2&quot; </span><br><span class="line">         - echo &quot;I am in test stage&quot; </span><br><span class="line">     allow_failure: true     #允许失败，即不影响下步构建 </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">job3: </span><br><span class="line">     stage: build </span><br><span class="line">     except: </span><br><span class="line">         - dev   #除了dev分支，其它分支提交代码都会执行这个任务 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job3&quot; </span><br><span class="line">         - echo &quot;I am in build stage&quot; </span><br><span class="line">     when: always    #不管前面几步成功与否，永远会执行这一步。它有几个值：on_success （默认值）\on_failure\always\manual（手动执行） </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">.job4:      #对于临时不想执行的job，可以选择在前面加个&quot;.&quot;，这样就会跳过此步任务，否则你除了要注释掉这个jobj外，还需要注释上面为deploy的stage </span><br><span class="line">     stage: deploy </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job4&quot; </span><br><span class="line"></span><br><span class="line">#模板，相当于公用函数，有重复任务时很有用</span><br><span class="line">.job_template: &amp;amp;job_definition      # 创建一个锚，&#x27;job_definition&#x27; </span><br><span class="line">     image: ruby:2.1 </span><br><span class="line">     services: </span><br><span class="line">         - postgres </span><br><span class="line">         - redis </span><br><span class="line"></span><br><span class="line">test1: </span><br><span class="line">     &amp;lt;&amp;lt;: *job_definition             # 利用锚&#x27;job_definition&#x27;来合并 </span><br><span class="line">     script: </span><br><span class="line">         - test1 project </span><br><span class="line"></span><br><span class="line">test2: </span><br><span class="line">     &amp;lt;&amp;lt;: *job_definition             # 利用锚&#x27;job_definition&#x27;来合并 </span><br><span class="line">     script: </span><br><span class="line">         - test2 project </span><br><span class="line"></span><br><span class="line">#下面几个都相当于全局变量，都可以添加到具体job中，这时会被子job的覆盖</span><br><span class="line">before_script: </span><br><span class="line">     - echo &quot;每个job之前都会执行&quot; </span><br><span class="line"> </span><br><span class="line">after_script: </span><br><span class="line">     - echo &quot;每个job之后都会执行&quot; </span><br><span class="line"> </span><br><span class="line">variables:      #变量 </span><br><span class="line">     DATABASE_URL: &quot;postgres://postgres@postgres/my_database&quot;    #在job中可以用$&#123;DATABASE_URL&#125;来使用这个变量。常用的预定义变量有CI_COMMIT_REF_NAME（项目所在的分支或标签名称），CI_JOB_NAME（任务名称），CI_JOB_STAGE（任务阶段） </span><br><span class="line">     GIT_STRATEGY: &quot;none&quot;    #GIT策略，定义拉取代码的方式，有3种：clone/fetch/none，默认为clone，速度最慢，每步job都会重新clone一次代码。我们一般将它设置为none，在具体任务里设置为fetch就可以满足需求，毕竟不是每步都需要新代码，那也不符合我们测试的流程 </span><br><span class="line"> </span><br><span class="line">cache:          #缓存 </span><br><span class="line">     #因为缓存为不同管道和任务间共享，可能会覆盖，所以有时需要设置key </span><br><span class="line">     key: $&#123;CI_COMMIT_REF_NAME&#125;                      # 启用每分支缓存。 </span><br><span class="line">     #key: &quot;$CI_JOB_NAME/$CI_COMMIT_REF_NAME&quot;        # 启用每个任务和每个分支缓存。需要注意的是，如果是在windows中运行这个脚本，需要把$换成% </span><br><span class="line">     untracked: true                                 #缓存所有Git未跟踪的文件 </span><br><span class="line">     paths:                                          #以下2个文件夹会被缓存起来，下次构建会解压出来 </span><br><span class="line">         - node_modules/ </span><br><span class="line">         - dist/</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
         <tag>GitLab</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JAVA实现数字千位分隔符</title>
+    <url>/Java/java-number-separator/</url>
+    <content><![CDATA[<h3 id="DecimalFormat"><a href="#DecimalFormat" class="headerlink" title="DecimalFormat"></a>DecimalFormat</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">new DecimalFormat(&quot;,###&quot;).format(new BigDecimal(1234567890).longValue())</span><br></pre></td></tr></table></figure>
+
+<h3 id="String-format"><a href="#String-format" class="headerlink" title="String.format"></a>String.format</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">String.format(&quot;%,d&quot;,new BigDecimal(1234567890).longValue())</span><br></pre></td></tr></table></figure>
+
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">String.valueOf(new BigDecimal(1234567890).longValue()).replaceAll(&quot;(\\d)(?=(\\d&#123;3&#125;)+\$)&quot;, &quot;\$1,&quot;)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -340,175 +519,20 @@
       </categories>
       <tags>
         <tag>Linux</tag>
+        <tag>Nginx</tag>
         <tag>Keepalived</tag>
-        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
-    <title>使用Docker部署Spring Boot</title>
-    <url>/Java/docker-build-spring-boot/</url>
-    <content><![CDATA[<p>随着云原生的普及以及成熟，越来越多的项目开始用容器装载。</p>
-<p>Docker已经是容器的准则了，我们学习如何将Spring Boot项目装载在Docker容器内，然后启动部署。</p>
-<h3 id="创建Spring-Boot项目"><a href="#创建Spring-Boot项目" class="headerlink" title="创建Spring Boot项目"></a>创建Spring Boot项目</h3><ol>
-<li>导航到<a href="https://start.spring.io/">https://start.spring.io</a>。该网站可以选择依赖关系，并自动为我们完成项目设置。</li>
-<li>选择<strong>Gradle</strong>或<strong>Maven</strong>以及要使用的语言。</li>
-<li>单击<strong>Dependencies</strong>，然后选择<strong>Spring Web依赖</strong>。</li>
-<li>点击<strong>生成</strong>。</li>
-<li>下载生成的ZIP文件，然后用IDEA打开项目</li>
-</ol>
-<h3 id="设置Spring-Web项目"><a href="#设置Spring-Web项目" class="headerlink" title="设置Spring Web项目"></a>设置Spring Web项目</h3><p>现在我们简单来创建一个API接口</p>
-<p>编辑src/main/java/hello/Application.java文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package hello;</span><br><span class="line"></span><br><span class="line">import org.springframework.boot.SpringApplication;</span><br><span class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line">@SpringBootApplication</span><br><span class="line">@RestController</span><br><span class="line">public class Application &#123;</span><br><span class="line"></span><br><span class="line">  @RequestMapping(&quot;/&quot;)</span><br><span class="line">  public String home() &#123;</span><br><span class="line">     return &quot;Hello World&quot;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static void main(String[] args) &#123;</span><br><span class="line">     SpringApplication.run(Application.class, args);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>项目已经准备完成，我们可以直接运行</p>
-<p>如果使用gradle，执行下面命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gradle build &amp;&amp; java -jar build/libs/spring-boot-docker-0.0.1.jar</span><br></pre></td></tr></table></figure>
-
-<p>如果使用maven，执行下面命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mvn package &amp;&amp; java -jar target/spring-boot-docker-0.0.1.jar</span><br></pre></td></tr></table></figure>
-
-<p>现在我们可以打开<a href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a>查看</p>
-<h3 id="容器化"><a href="#容器化" class="headerlink" title="容器化"></a>容器化</h3><p>Docker提供了简单的Dockerfile文件来构建镜像，首先在项目跟路径创建Dockerfile文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 指定基础镜像</span><br><span class="line">FROM java:8</span><br><span class="line"># 构建参数，默认是target/*.jar，如果指定则覆盖</span><br><span class="line">ARG JAR_FILE=target/*.jar</span><br><span class="line"># 将jar包添加进镜像中</span><br><span class="line">COPY $&#123;JAR_FILE&#125; app.jar</span><br><span class="line"># 镜像入口，部署镜像时将被执行</span><br><span class="line">ENTRYPOINT [&quot;java&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]</span><br></pre></td></tr></table></figure>
-
-<p>如果使用gradle，执行下面命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker build --build-arg JAR_FILE=build/libs/\*.jar -t spring-boot-docker:0.0.1 .</span><br></pre></td></tr></table></figure>
-
-<p>如果使用maven，执行下面命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker build -t spring-boot-docker:0.0.1 .</span><br></pre></td></tr></table></figure>
-
-<p>这个命令会构建Docker镜像，镜像名称为spring-boot-docker，镜像版本为0.0.1</p>
-<h3 id="部署容器"><a href="#部署容器" class="headerlink" title="部署容器"></a>部署容器</h3><p>我们的Spring Boot项目已经构建成Docker镜像</p>
-<p>执行下面命令启动Docker镜像</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -p 8080:8080 spring-boot-docker:0.0.1</span><br></pre></td></tr></table></figure>
-
-<p>现在我们可以打开<a href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a>查看</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>Java</tag>
-        <tag>Spring Boot</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CentOS安装Harbor</title>
-    <url>/Linux/centos-install-harbor/</url>
-    <content><![CDATA[<p>Harbor是一个开源的容器管理项目，用于存储、签名和扫描容器。Harbor具备安全性、身份和管理功能来管理Docker容器。Harbor支持在服务之间复制映像，还提供高级安全功能，如用户管理、访问控制和活动审核。</p>
-<h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><p>安装过程请查看另一篇文章<a href="https://www.mllweb.com/archives/93">CentOS安装Docker</a>来进行安装</p>
-<p>安装完启动docker</p>
-<h2 id="安装docker-compose"><a href="#安装docker-compose" class="headerlink" title="安装docker-compose"></a>安装docker-compose</h2><p>运行以下命令下载Docker Compose的当前稳定版本：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
-
-<p>二进制文件添加执行权限</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
-
-<h2 id="安装Harbor"><a href="#安装Harbor" class="headerlink" title="安装Harbor"></a>安装Harbor</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>前往<a href="https://github.com/goharbor/harbor/releases">https://github.com/goharbor/harbor/releases</a>下载harbor的文件</p>
-<p>harbor分为离线安装和在线安装，选择离线安装即可</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://github.com/goharbor/harbor/releases/download/v2.1.4/harbor-offline-installer-v2.1.4.tgz</span><br></pre></td></tr></table></figure>
-
-<p>解压后文件列表如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">common.sh</span><br><span class="line">harbor.v2.1.4.tar.gz</span><br><span class="line">harbor.yml.tmpl</span><br><span class="line">install.sh</span><br><span class="line">LICENSE</span><br><span class="line">prepare</span><br></pre></td></tr></table></figure>
-
-<h3 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h3><p>harbor提供了配置的模版文件，我们复制一份</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cp harbor.yml.tmpl cp harbor.yml</span><br></pre></td></tr></table></figure>
-
-<p>我们需要修改一下<strong>harbor.yml.tmpl</strong>配置信息，将<strong>hostname</strong>修改为本机当前IP地址</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#The IP address or hostname to access admin UI and registry service.</span><br><span class="line">#DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.</span><br><span class="line">hostname: 192.168.8.197</span><br></pre></td></tr></table></figure>
-
-<p>harbor默认开启了https访问，如果你有https证书可以配置一下，如果没有证书则可以注释掉相关配置信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#https related config</span><br><span class="line">#https:</span><br><span class="line">  # https port for harbor, default is 443</span><br><span class="line">  # port: 443</span><br><span class="line">  # The path of cert and key files for nginx</span><br><span class="line">  # certificate: /your/certificate/path</span><br><span class="line">  # private_key: /your/private/key/path</span><br></pre></td></tr></table></figure>
-
-<p>harbor默认的登陆密码是<strong>Harbor12345</strong>，如果需要更换，可以在配置信息中修改</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># The initial password of Harbor admin</span><br><span class="line"># It only works in first time to install harbor</span><br><span class="line"># Remember Change the admin password from UI after launching Harbor.</span><br><span class="line">harbor_admin_password: Harbor12345</span><br></pre></td></tr></table></figure>
-
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>修改完配置信息以后，执行<strong>install.sh</strong>安装脚本</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./install.sh</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-10.png"></p>
-<p>出现以上内容说明Harbor已经成功安装</p>
-<h2 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h2><p>harbor默认的登陆账号是<strong>admin</strong>，密码是<strong>Harbor12345</strong></p>
-<p>默认端口是80，我们直接在浏览器输入ip地址进行访问就可以</p>
-<h2 id="上传测试"><a href="#上传测试" class="headerlink" title="上传测试"></a>上传测试</h2><p>修改 **/etc/hosts **将本机ip映射到 harbor.custom.com 下 ,然后将本机已有的镜像push到仓库进行测试</p>
-<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-11.png"></p>
-<p>说明镜像已经成功推送到harbor仓库，至此，我们的harbor搭建完成。</p>
-]]></content>
+    <title>haproxy.cfg示例</title>
+    <url>/Linux/haproxy.cfg/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 全局参数的设置</span><br><span class="line">global</span><br><span class="line">     log 127.0.0.1 local0 info # 全局的日志配置，local0 是日志设备，info 表示日志级别。其中日志级别有err、warning、info、debug 四种可选。这个配置表示使用 127.0.0.1 上的 rsyslog 服务中的local0 日志设备，记录日志等级为info。</span><br><span class="line">     maxconn 4096 # 设定每个 haproxy 进程可接受的最大并发连接数，此选项等同于 Linux命令行选项“ulimit -n”。</span><br><span class="line">     user nobody # 设置运行 haproxy 进程的用户，也可使用用户的 uid 值来替代。</span><br><span class="line">     group nobody # 设置运行 haproxy 进程的用户组，也可使用用户组的 gid 值来替代。</span><br><span class="line">     daemon # 设置 HAProxy 进程进入后台运行。这是推荐的运行模式。</span><br><span class="line">     nbproc 1 # 设置 HAProxy 启动时可创建的进程数，此参数要求将HAProxy 运行模式设置为“daemon”，默认只启动一个进程。根据使用经验，该值的设置应该小于服务器的 CPU 核数。创建多个进程，能够减少每个进程的任务队列，但是过多的进程可能会导致进程的崩溃。</span><br><span class="line">     pidfile /usr/local/haproxy/logs/haproxy.pid # 指定 HAProxy 进程的 pid 文件。启动进程的用户必须有访问此文件的权限。</span><br><span class="line">defaults</span><br><span class="line">     # 设置 HAProxy 实例默认的运行模式，有 tcp、http、health 三个可选值。</span><br><span class="line">     # tcp 模式    在此模式下，客户端和服务器端之间将建立一个全双工的连接，不会对七层报文做任何类型的检查，默认为 tcp 模式，经常用于 SSL、SSH、SMTP 等应用。</span><br><span class="line">    # http 模式    在此模式下，客户端请求在转发至后端服务器之前将会被深度分析，所有不与 RFC 格式兼容的请求都会被拒绝。</span><br><span class="line">    # health 模式    目前此模式基本已经废弃，不在多说。</span><br><span class="line">     mode http </span><br><span class="line">     # log global # 应用全局的日志配置</span><br><span class="line">     # option httplog # 启用日志记录HTTP请求，默认haproxy日志记录是不记录HTTP请求日志</span><br><span class="line">     # 启用该项，日志中将不会记录空连接。所谓空连接就是在上游的负载均衡器 或者监控系统为了探测该  服务是否存活可用时，需要定期的连接或者获取某 一固定的组件或页面，或者探测扫描端口是否在监 听或开放等动作被称为空连接； 官方文档中标注，如果该服务上游没有其他的负载均衡器的话，建议 不要使用 该参数，因为互联网上的恶意扫描或其他动作就不会被记录下来</span><br><span class="line">     # option dontlognull </span><br><span class="line">     # option http-server-close # 每次请求完毕后主动关闭http通道</span><br><span class="line">     # 如果服务器上的应用程序想记录发起请求的客户端的IP地址， 需要在HAProxy上配置此选项，这样  HAProxy会把客户端的IP信息发送给服务器，在HTTP请求中添加&quot;X-Forwarded-For&quot;字 段。  启用  X-Forwarded-For，在requests头部插入客户端IP发送给后端的server，使后端server获 取到客户端的真实IP。</span><br><span class="line">     # option forwardfor except 127.0.0.0/8</span><br><span class="line">     # 当使用了cookie时，haproxy将会将其请求的后端服务器的serverID插入到cookie中，以保证 会话的SESSION持久性；而此时，如果后端的服务器宕掉了， 但是客户端的cookie是不会刷新 的，如果设置此参数，将会将客户的请求强制定向到另外一个后端server上，以保证服务的正常。</span><br><span class="line">     # option redispatch </span><br><span class="line">     retries 3 # 设置连接后端服务器的失败重试次数，连接失败的次数如果超过这里设置的值，HAProxy 会将对应的后端服务器标记为不可用。此参数也可在后面部分进行设置。</span><br><span class="line">     # timeout http-request 10s # http请求超时时间</span><br><span class="line">     # timeout queue 1m # 一个请求在队列里的超时时间</span><br><span class="line">     # timeout http-keep-alive 10s # 设置http-keep-alive的超时时间</span><br><span class="line">     timeout connect 10s # 设置成功连接到一台服务器的最长等待时间，默认单位是毫秒，但也可以使用其他的时间单位后缀。</span><br><span class="line">     timeout client 20s # 设置连接客户端发送数据时最长等待时间，默认单位是毫秒，也可以使用其他的时间单位后缀。</span><br><span class="line">     timeout server 30s # 设置服务器端回应客户度数据发送的最长等待时间，默认单位是毫秒，也可以使用其他的时间单位后缀。</span><br><span class="line">     timeout check 5s # 设置对后端服务器的检测超时时间，默认单位是毫秒，也可以使用其他的时间单位后缀。</span><br><span class="line">     # maxconn 3000 # 每个进程可用的最大连接数</span><br><span class="line">frontend www</span><br><span class="line">     bind *:80  # 此选项只能在 frontend 和 listen 部分进行定义，用于定义一个或几个监听的套接字。bind 的使用格式为:bind [&amp;lt;address&gt;:&amp;lt;port_range&gt;] interface &amp;lt;interface&gt; 其中，address 为可选选项，其可以为主机名或IP 地址，如果将其设置为“*”或“0.0.0.0”，将监听当前系统的所有 IPv4 地址。port_range 可以是一个特定的 TCP 端口，也可是一个端口范围，小于 1024 的端口需要有特定权限的用户才能使用。interface 为可选选项，用来指定网络接口的名称，只能在 Linux 系统上使用。 </span><br><span class="line">     mode    http</span><br><span class="line">     option    httplog </span><br><span class="line">     option    forwardfor # 如果后端服务器需要获得客户端的真实  IP，就需要配置此参数。由于 HAProxy 工作于反向代理模式，因此发往后端真实服务器的请求中的客户端 IP 均为 HAProxy 主机的 IP，而非真正访问客户端的地址，这就导致真实服务器端无法记录客户端真正请求来源的 IP，而“X-Forwarded-For”则可用于解决此问题。通过使用“forwardfor”选项，HAProxy 就可以向每个发往后端真实服务器的请求添加“X-Forwarded-For”记录，这样后端真实服务器日志可以通过“X-Forwarded-For”信息来记录客户端来源 IP。</span><br><span class="line">     option    httpclose # 此选项表示在客户端和服务器端完成一次连接请求后，HAProxy 将主动关闭此 TCP 连接。这是对性能非常有帮助的一个参数。</span><br><span class="line">     log    global # 表示使用全局的日志配置，这里的“ global”表示引用在HAProxy 配置文件 global 部分中定义的 log 选项配置格式。</span><br><span class="line">     #acl host_www    hdr_dom(host)   -i  www.zb.com</span><br><span class="line">     #acl host_img    hdr_dom(host)   -i  img.zb.com</span><br><span class="line">     #use_backend htmpool    if  host_www </span><br><span class="line">     #use_backend imgpool    if  host_img </span><br><span class="line">     default_backend    htmpool # 指定默认的后端服务器池，也就是指定一组后端真实服务器，而这些真实服务器组将在 backend 段进行定义。这里的htmpool 就是一个后端服务器组。</span><br><span class="line"># 定义一个名为 my_webserver后端部分。PS：此处 my_webserver只是一个自定义名字而已， 但是需要与frontend里面 配置项default_backend 值相一致</span><br><span class="line">backend htmpool</span><br><span class="line">     mode http </span><br><span class="line">     # 此参数用于 cookie 保持的环境中。在默认情况下，HAProxy会将其请求的后端服务器的serverID 插入到 cookie 中，以保证会话的 SESSION 持久性。而如果后端的服务器出现故障，客户端的 cookie 是不会刷新的，这就出现了问题。此时，如果设置此参数，就会将客户的请求强制定向到另外一个健康的后端服务器上，以保证服务的正常。</span><br><span class="line">     option    redispatch </span><br><span class="line">     option    abortonclose  # 如果设置了此参数，可以在服务器负载很高的情况下， 自动结束掉当前队列中处理时间比较长的链接。</span><br><span class="line">     # 此关键字用来定义负载均衡算法。目前 HAProxy 支持多种负载均衡算法，常用的有如下几种</span><br><span class="line">     # roundrobin    是基于权重进行轮询调度的算法，在服务器的性能分布比较均匀的时候，这是一种最公平、最合理的算法。此算法经常使用。</span><br><span class="line">     # static-rr    也是基于权重进行轮询的调度算法，不过此算法为静态方法，在运行时调整其服务器权重不会生效。</span><br><span class="line">     # source    是基于请求源 IP 的算法。此算法先对请求的源 IP 进行 hash 运算， 然后将结果与后端服务器的权重总数相除后转发至某个匹配的后端服务器。这种方式可以使同一个客户端 IP 的请求始终被转发到某特定的后端服务器。</span><br><span class="line">     # leastconn    此算法会将新的连接请求转发到具有最少连接数目的后端服务器。在会话时间较长的场景中推荐使用此算法，例如数据库负载均衡等。此算法不  适合会话较短的环境中，例如基于 HTTP 的应用。</span><br><span class="line">     # uri    此算法会对部分或整个 URI 进行 hash 运算，再经过与服务器的总权重相除，最后转发到某台匹配的后端服务器上。</span><br><span class="line">     # uri_param    此算法会根据 URL 路径中的参数进行转发，这样可保证在后端真实服务器数量不变时，同一个用户的请求始终分发到同一台机器上。</span><br><span class="line">     # hdr():    此算法根据 http 头进行转发，如果指定的 http 头名称不存在，则使用 roundrobin 算法进行策略转发。</span><br><span class="line">     balance  static-rr </span><br><span class="line">     cookie    SERVERID # 表示允许向 cookie 插入 SERVERID，每台服务器的 SERVERID 可在下面的 server 关键字中使用 cookie 关键字定义。</span><br><span class="line">     # 此选项表示启用 HTTP 的服务状态检测功能。HAProxy 作为一款专业的负载均衡器，它支持对 backend 部分指定的后端服务节点的健康检查，以保证在后端 backend 中某个节点不能服务时，把从 frotend 端进来的客户端请求分配至 backend 中其他健康节点上，从而保证整体服务的可用性。“option httpchk”的用法如下：</span><br><span class="line">     # option httpchk &amp;lt;method&gt; &amp;lt;uri&gt; &amp;lt;version&gt; 其中，各个参数的含义如下：</span><br><span class="line">     # &amp;lt;method&gt;    表示 HTTP 请求的方式，常用的有 OPTIONS、GET、HEAD 几种方式。一般的健康检查可以采用 HEAD 方式进行，而不是才采用 GET 方式，这是因为 HEAD 方式没有数据返回，仅检查 Response 的 HEAD 是不是 200 状态。因此相对与 GET 来说，HEAD 方式更快，更简单。</span><br><span class="line">     # &amp;lt;uri&gt;    表示要检测的 URL 地址，通过执行此 URL，可以获取后端服务器的运行状态。在正常情况下将返回状态码 200，返回其他状态码均为异常状态。</span><br><span class="line">     # &amp;lt;version&gt;    指定心跳检测时的 HTTP 的版本号。</span><br><span class="line">     option    httpchk GET /index.jsp</span><br><span class="line">     # 这个关键字用来定义多个后端真实服务器，不能用于 defaults 和frontend部分。使用格式为：server &amp;lt;name&gt; &amp;lt;address&gt;[:port] [param*] 其中，每个参数含义如下：</span><br><span class="line">     # &amp;lt;name&gt; 为后端真实服务器指定一个内部名称，随便定义一个即可。</span><br><span class="line">     # &amp;lt;address&gt; 后端真实服务器的 IP 地址或主机名。</span><br><span class="line">     # &amp;lt;port&gt; 指定连接请求发往真实服务器时的目标端口。在未设定时，将使用客户端请求时的同一端口。</span><br><span class="line">     # [param*] 为后端服务器设定的一系参数，可用参数非常多，这里仅介绍常用的一些参数：</span><br><span class="line">     # check 表示启用对此后端服务器执行健康状态检查。</span><br><span class="line">     # inter 设置健康状态检查的时间间隔，单位为毫秒。</span><br><span class="line">     # rise 设置从故障状态转换至正常状态需要成功检查的次数，例如。“rise 2”表示 2 次检查正确就认为此服务器可用。</span><br><span class="line">     # fall 设置后端服务器从正常状态转换为不可用状态需要检查的次数，例如，“fall 3”表示 3 次检查失败就认为此服务器不可用。</span><br><span class="line">     # cookie 为指定的后端服务器设定 cookie 值，此处指定的值将在请求入站时被检查，第一次为此值挑选的后端服务器将在后续的请求中一直被选中，其目的在于实现持久连接的功能。上面 的“cookie server1”表示 web1 的 serverid 为 server1。同理， “cookie server2”表示 web2 的 serverid 为 server2。</span><br><span class="line">     # weight 设置后端真实服务器的权重，默认为 1，最大值为 256。设置为 0 表示不参与负载均衡。</span><br><span class="line">     # backup 设置后端真实服务器的备份服务器，仅仅在后端所有真实服务器均不可用的情况下才启用。 </span><br><span class="line">     server    237server 192.168.81.237:8080 cookie server1 weight 6 check inter 2000 rise 2 fall 3</span><br><span class="line">     server    iivey234 192.168.81.234:8080 cookie server2 weight 3 check inter 2000 rise 2 fall 3</span><br><span class="line">backend imgpool</span><br><span class="line">     mode        http </span><br><span class="line">     option    redispatch</span><br><span class="line">     option    abortonclose</span><br><span class="line">      balance  static-rr </span><br><span class="line">     cookie  SERVERID</span><br><span class="line">     option    httpchk GET /index.jsp</span><br><span class="line">     server    host236 192.168.81.236:8080 cookie server1 weight 6 check inter 2000 rise 2 fall 3</span><br><span class="line"># 这个部分通过listen 关键字定义了一个名为“admin_stats”的实例，其实就是定义了一个 HAProxy 的监控页面</span><br><span class="line">listen admin_stats</span><br><span class="line">     bind 0.0.0.0:9188 # 页面绑定访问端口</span><br><span class="line">     mode http # 实例默认的运行模式</span><br><span class="line">     log 127.0.0.1 local0 err # 记录日志，原理同global</span><br><span class="line">     stats refresh 30s # 设置 HAProxy 监控统计页面自动刷新的时间。</span><br><span class="line">     stats uri /haproxy-status # 设置 HAProxy 监控统计页面的URL 路径，可随意指定。例如、指定“stats uri /haproxy-status”，就可以过 http://IP:9188/haproxy-status  查看。</span><br><span class="line">     stats realm welcome login\ Haproxy # 设置登录 HAProxy 统计页面时密码框上的文本提示信息。</span><br><span class="line">     stats auth admin:admin # 设置登录 HAProxy 统计页面的用户名和密码。用户名和密码通过冒号分割。可为监控页面设置多个用户名和密码，每行一个。</span><br><span class="line">     stats hide-version # 用来隐藏统计页面上 HAProxy 的版本信息。</span><br><span class="line">     stats admin if TRUE # 通过设置此选项，可以在监控页面上手工启用或禁用后端真实服务器，仅在 haproxy1.4.9 以后版本有效。</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>Linux</category>
       </categories>
       <tags>
         <tag>Linux</tag>
-        <tag>Harbor</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CentOS安装Nginx</title>
-    <url>/Linux/centos-install-nginx/</url>
-    <content><![CDATA[<p>Nginx是一款轻量级的Web服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器，在BSD-like 协议下发行。其特点是占有内存少，并发能力强。</p>
-<p>通常的安装方式有两种：yum安装/源码安装</p>
-<p><strong>yum安装</strong> 优点：安装快捷方便，缺点：无法指定特殊版本、无法指定扩展功能</p>
-<p><strong>源码安装</strong> 优点：可完全定制化扩展，缺点：相当于yum安装繁琐一些</p>
-<h2 id="yum安装"><a href="#yum安装" class="headerlink" title="yum安装"></a>yum安装</h2><p>安装准备条件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum -y install yum-utils</span><br></pre></td></tr></table></figure>
-
-<p>配置仓库</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt; EOF &gt; /etc/yum.repos.d/nginx.repo</span><br><span class="line">[nginx-stable]</span><br><span class="line">name=nginx stable repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/\$releasever/\$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://nginx.org/keys/nginx_signing.key</span><br><span class="line">module_hotfixes=true</span><br><span class="line">[nginx-mainline]</span><br><span class="line">name=nginx mainline repo</span><br><span class="line">baseurl=http://nginx.org/packages/mainline/centos/\$releasever/\$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=0</span><br><span class="line">gpgkey=https://nginx.org/keys/nginx_signing.key</span><br><span class="line">module_hotfixes=true</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
-
-<p>默认情况下，使用稳定的nginx软件包的存储库。如果要使用主线nginx软件包，请运行以下命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum-config-manager --enable nginx-mainline</span><br></pre></td></tr></table></figure>
-
-<p>安装</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum -y install nginx</span><br><span class="line">sudo systemctl enable --now nginx</span><br></pre></td></tr></table></figure>
-
-<h2 id="源码安装"><a href="#源码安装" class="headerlink" title="源码安装"></a>源码安装</h2><h3 id="安装编译工具及库文件"><a href="#安装编译工具及库文件" class="headerlink" title="安装编译工具及库文件"></a>安装编译工具及库文件</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel</span><br></pre></td></tr></table></figure>
-
-<h3 id="安装PCRE"><a href="#安装PCRE" class="headerlink" title="安装PCRE"></a>安装PCRE</h3><p>前往<a href="https://sourceforge.net/projects/pcre/files/pcre/">https://sourceforge.net/projects/pcre/files/pcre/</a>下载安装包</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /usr/local/src/</span><br><span class="line">wget https://sourceforge.net/projects/pcre/files/pcre/8.44/pcre-8.44.tar.gz</span><br></pre></td></tr></table></figure>
-
-<p>解压</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar zxvf pcre-8.44.tar.gz</span><br><span class="line">cd pcre-8.44</span><br></pre></td></tr></table></figure>
-
-<p>编译安装</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 编译</span><br><span class="line">./configure --prefix=/usr/local/pcre</span><br><span class="line"># 安装</span><br><span class="line">make &amp;amp;&amp;amp; make install</span><br></pre></td></tr></table></figure>
-
-<h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><p>前往<a href="http://nginx.org/en/download.html">http://nginx.org/en/download.html</a>下载对应版本的源码包</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /usr/local/src/</span><br><span class="line">wget http://nginx.org/download/nginx-1.19.8.tar.gz</span><br></pre></td></tr></table></figure>
-
-<p>解压</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tar zxvf nginx-1.19.8.tar.gz</span><br><span class="line">cd nginx-1.19.8</span><br></pre></td></tr></table></figure>
-
-<p>编译源文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./configure \</span><br><span class="line">      --prefix=/usr/local/nginx \</span><br><span class="line">      --sbin-path=/usr/local/nginx/nginx \</span><br><span class="line">      --conf-path=/usr/local/nginx/nginx.conf \</span><br><span class="line">      --pid-path=/usr/local/nginx/nginx.pid \</span><br><span class="line">      --with-http_ssl_module \</span><br><span class="line">      --with-pcre=/usr/local/src/pcre-8.44</span><br></pre></td></tr></table></figure>
-
-
-<p>详细的配置信息请参考 <a href="http://nginx.org/en/docs/configure.html">http://nginx.org/en/docs/configure.html</a> 和 <a href="http://nginx.org/en/docs/">http://nginx.org/en/docs/</a>  -&gt; <strong>Modules reference</strong></p>
-<p>安装</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
-
-<p>启动</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/usr/local/nginx/nginx</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker搭建WordPress</title>
-    <url>/Linux/docker-build-wordpress/</url>
-    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum -y install docker-ce docker-ce-cli containerd.io</span><br><span class="line">sudo systemctl enable docker</span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF &gt; wordpress.yml</span><br><span class="line">version: &#x27;3.1&#x27;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  mysql:</span><br><span class="line">    image: mysql:5.7</span><br><span class="line">    restart: always</span><br><span class="line">    ports:</span><br><span class="line">      - 3306:3306</span><br><span class="line">    container_name: wordpress_mysql</span><br><span class="line">    environment:</span><br><span class="line">      MYSQL_DATABASE: wordpress</span><br><span class="line">      MYSQL_USER: wordpress</span><br><span class="line">      MYSQL_PASSWORD: MyNewPass4!</span><br><span class="line">      MYSQL_RANDOM_ROOT_PASSWORD: &#x27;1&#x27;</span><br><span class="line">    volumes:</span><br><span class="line">      - mysql:/var/lib/mysql</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">  wordpress:</span><br><span class="line">    image: wordpress</span><br><span class="line">    restart: always</span><br><span class="line">    container_name: wordpress_server</span><br><span class="line">    environment:</span><br><span class="line">      WORDPRESS_DB_HOST: mysql</span><br><span class="line">      WORDPRESS_DB_USER: wordpress</span><br><span class="line">      WORDPRESS_DB_PASSWORD: MyNewPass4!</span><br><span class="line">      WORDPRESS_DB_NAME: wordpress</span><br><span class="line">    depends_on:</span><br><span class="line">      - mysql</span><br><span class="line">    volumes:</span><br><span class="line">      - wordpress:/var/www/html</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">  nginx:</span><br><span class="line">    image: nginx:1.20</span><br><span class="line">    restart: always</span><br><span class="line">    ports:</span><br><span class="line">      - 80:80</span><br><span class="line">      - 443:443</span><br><span class="line">    container_name: wordpress_nginx</span><br><span class="line">    links:</span><br><span class="line">      - wordpress</span><br><span class="line">    depends_on:</span><br><span class="line">      - wordpress</span><br><span class="line">    volumes:</span><br><span class="line">      - nginx:/etc/nginx</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">volumes:</span><br><span class="line">  wordpress:</span><br><span class="line">  mysql:</span><br><span class="line">  nginx:</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  wordpress:</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">docker-compose -f wordpress.yml up -d</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF &gt; /var/lib/docker/volumes/root_nginx/_data/conf.d/default.conf</span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    listen  [::]:80;</span><br><span class="line">    server_name  mllweb.com;</span><br><span class="line"></span><br><span class="line">    return 301 https://mllweb.com$request_uri;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl http2;</span><br><span class="line">    listen [::]:443 ssl http2;</span><br><span class="line"></span><br><span class="line">    server_name mllweb.com;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">          proxy_pass http://wordpress;</span><br><span class="line"></span><br><span class="line">          proxy_http_version    1.1;</span><br><span class="line">          proxy_cache_bypass    $http_upgrade;</span><br><span class="line"></span><br><span class="line">          proxy_set_header Upgrade            $http_upgrade;</span><br><span class="line">          proxy_set_header Connection         &quot;upgrade&quot;;</span><br><span class="line">          proxy_set_header Host               $host;</span><br><span class="line">          proxy_set_header X-Real-IP          $remote_addr;</span><br><span class="line">          proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;</span><br><span class="line">          proxy_set_header X-Forwarded-Proto  $scheme;</span><br><span class="line">          proxy_set_header X-Forwarded-Host   $host;</span><br><span class="line">          proxy_set_header X-Forwarded-Port   $server_port;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ssl_certificate cert/mllweb.com.pem;</span><br><span class="line">    ssl_certificate_key cert/mllweb.com.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    #表示使用的加密套件的类型。</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #表示使用的TLS协议的类型。</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Docker</tag>
-        <tag>WordPress</tag>
+        <tag>haproxy</tag>
       </tags>
   </entry>
   <entry>
@@ -717,30 +741,6 @@
       <tags>
         <tag>Kubernetes</tag>
         <tag>kubeadm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>haproxy.cfg示例</title>
-    <url>/Linux/haproxy.cfg/</url>
-    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 全局参数的设置</span><br><span class="line">global</span><br><span class="line">     log 127.0.0.1 local0 info # 全局的日志配置，local0 是日志设备，info 表示日志级别。其中日志级别有err、warning、info、debug 四种可选。这个配置表示使用 127.0.0.1 上的 rsyslog 服务中的local0 日志设备，记录日志等级为info。</span><br><span class="line">     maxconn 4096 # 设定每个 haproxy 进程可接受的最大并发连接数，此选项等同于 Linux命令行选项“ulimit -n”。</span><br><span class="line">     user nobody # 设置运行 haproxy 进程的用户，也可使用用户的 uid 值来替代。</span><br><span class="line">     group nobody # 设置运行 haproxy 进程的用户组，也可使用用户组的 gid 值来替代。</span><br><span class="line">     daemon # 设置 HAProxy 进程进入后台运行。这是推荐的运行模式。</span><br><span class="line">     nbproc 1 # 设置 HAProxy 启动时可创建的进程数，此参数要求将HAProxy 运行模式设置为“daemon”，默认只启动一个进程。根据使用经验，该值的设置应该小于服务器的 CPU 核数。创建多个进程，能够减少每个进程的任务队列，但是过多的进程可能会导致进程的崩溃。</span><br><span class="line">     pidfile /usr/local/haproxy/logs/haproxy.pid # 指定 HAProxy 进程的 pid 文件。启动进程的用户必须有访问此文件的权限。</span><br><span class="line">defaults</span><br><span class="line">     # 设置 HAProxy 实例默认的运行模式，有 tcp、http、health 三个可选值。</span><br><span class="line">     # tcp 模式    在此模式下，客户端和服务器端之间将建立一个全双工的连接，不会对七层报文做任何类型的检查，默认为 tcp 模式，经常用于 SSL、SSH、SMTP 等应用。</span><br><span class="line">    # http 模式    在此模式下，客户端请求在转发至后端服务器之前将会被深度分析，所有不与 RFC 格式兼容的请求都会被拒绝。</span><br><span class="line">    # health 模式    目前此模式基本已经废弃，不在多说。</span><br><span class="line">     mode http </span><br><span class="line">     # log global # 应用全局的日志配置</span><br><span class="line">     # option httplog # 启用日志记录HTTP请求，默认haproxy日志记录是不记录HTTP请求日志</span><br><span class="line">     # 启用该项，日志中将不会记录空连接。所谓空连接就是在上游的负载均衡器 或者监控系统为了探测该  服务是否存活可用时，需要定期的连接或者获取某 一固定的组件或页面，或者探测扫描端口是否在监 听或开放等动作被称为空连接； 官方文档中标注，如果该服务上游没有其他的负载均衡器的话，建议 不要使用 该参数，因为互联网上的恶意扫描或其他动作就不会被记录下来</span><br><span class="line">     # option dontlognull </span><br><span class="line">     # option http-server-close # 每次请求完毕后主动关闭http通道</span><br><span class="line">     # 如果服务器上的应用程序想记录发起请求的客户端的IP地址， 需要在HAProxy上配置此选项，这样  HAProxy会把客户端的IP信息发送给服务器，在HTTP请求中添加&quot;X-Forwarded-For&quot;字 段。  启用  X-Forwarded-For，在requests头部插入客户端IP发送给后端的server，使后端server获 取到客户端的真实IP。</span><br><span class="line">     # option forwardfor except 127.0.0.0/8</span><br><span class="line">     # 当使用了cookie时，haproxy将会将其请求的后端服务器的serverID插入到cookie中，以保证 会话的SESSION持久性；而此时，如果后端的服务器宕掉了， 但是客户端的cookie是不会刷新 的，如果设置此参数，将会将客户的请求强制定向到另外一个后端server上，以保证服务的正常。</span><br><span class="line">     # option redispatch </span><br><span class="line">     retries 3 # 设置连接后端服务器的失败重试次数，连接失败的次数如果超过这里设置的值，HAProxy 会将对应的后端服务器标记为不可用。此参数也可在后面部分进行设置。</span><br><span class="line">     # timeout http-request 10s # http请求超时时间</span><br><span class="line">     # timeout queue 1m # 一个请求在队列里的超时时间</span><br><span class="line">     # timeout http-keep-alive 10s # 设置http-keep-alive的超时时间</span><br><span class="line">     timeout connect 10s # 设置成功连接到一台服务器的最长等待时间，默认单位是毫秒，但也可以使用其他的时间单位后缀。</span><br><span class="line">     timeout client 20s # 设置连接客户端发送数据时最长等待时间，默认单位是毫秒，也可以使用其他的时间单位后缀。</span><br><span class="line">     timeout server 30s # 设置服务器端回应客户度数据发送的最长等待时间，默认单位是毫秒，也可以使用其他的时间单位后缀。</span><br><span class="line">     timeout check 5s # 设置对后端服务器的检测超时时间，默认单位是毫秒，也可以使用其他的时间单位后缀。</span><br><span class="line">     # maxconn 3000 # 每个进程可用的最大连接数</span><br><span class="line">frontend www</span><br><span class="line">     bind *:80  # 此选项只能在 frontend 和 listen 部分进行定义，用于定义一个或几个监听的套接字。bind 的使用格式为:bind [&amp;lt;address&gt;:&amp;lt;port_range&gt;] interface &amp;lt;interface&gt; 其中，address 为可选选项，其可以为主机名或IP 地址，如果将其设置为“*”或“0.0.0.0”，将监听当前系统的所有 IPv4 地址。port_range 可以是一个特定的 TCP 端口，也可是一个端口范围，小于 1024 的端口需要有特定权限的用户才能使用。interface 为可选选项，用来指定网络接口的名称，只能在 Linux 系统上使用。 </span><br><span class="line">     mode    http</span><br><span class="line">     option    httplog </span><br><span class="line">     option    forwardfor # 如果后端服务器需要获得客户端的真实  IP，就需要配置此参数。由于 HAProxy 工作于反向代理模式，因此发往后端真实服务器的请求中的客户端 IP 均为 HAProxy 主机的 IP，而非真正访问客户端的地址，这就导致真实服务器端无法记录客户端真正请求来源的 IP，而“X-Forwarded-For”则可用于解决此问题。通过使用“forwardfor”选项，HAProxy 就可以向每个发往后端真实服务器的请求添加“X-Forwarded-For”记录，这样后端真实服务器日志可以通过“X-Forwarded-For”信息来记录客户端来源 IP。</span><br><span class="line">     option    httpclose # 此选项表示在客户端和服务器端完成一次连接请求后，HAProxy 将主动关闭此 TCP 连接。这是对性能非常有帮助的一个参数。</span><br><span class="line">     log    global # 表示使用全局的日志配置，这里的“ global”表示引用在HAProxy 配置文件 global 部分中定义的 log 选项配置格式。</span><br><span class="line">     #acl host_www    hdr_dom(host)   -i  www.zb.com</span><br><span class="line">     #acl host_img    hdr_dom(host)   -i  img.zb.com</span><br><span class="line">     #use_backend htmpool    if  host_www </span><br><span class="line">     #use_backend imgpool    if  host_img </span><br><span class="line">     default_backend    htmpool # 指定默认的后端服务器池，也就是指定一组后端真实服务器，而这些真实服务器组将在 backend 段进行定义。这里的htmpool 就是一个后端服务器组。</span><br><span class="line"># 定义一个名为 my_webserver后端部分。PS：此处 my_webserver只是一个自定义名字而已， 但是需要与frontend里面 配置项default_backend 值相一致</span><br><span class="line">backend htmpool</span><br><span class="line">     mode http </span><br><span class="line">     # 此参数用于 cookie 保持的环境中。在默认情况下，HAProxy会将其请求的后端服务器的serverID 插入到 cookie 中，以保证会话的 SESSION 持久性。而如果后端的服务器出现故障，客户端的 cookie 是不会刷新的，这就出现了问题。此时，如果设置此参数，就会将客户的请求强制定向到另外一个健康的后端服务器上，以保证服务的正常。</span><br><span class="line">     option    redispatch </span><br><span class="line">     option    abortonclose  # 如果设置了此参数，可以在服务器负载很高的情况下， 自动结束掉当前队列中处理时间比较长的链接。</span><br><span class="line">     # 此关键字用来定义负载均衡算法。目前 HAProxy 支持多种负载均衡算法，常用的有如下几种</span><br><span class="line">     # roundrobin    是基于权重进行轮询调度的算法，在服务器的性能分布比较均匀的时候，这是一种最公平、最合理的算法。此算法经常使用。</span><br><span class="line">     # static-rr    也是基于权重进行轮询的调度算法，不过此算法为静态方法，在运行时调整其服务器权重不会生效。</span><br><span class="line">     # source    是基于请求源 IP 的算法。此算法先对请求的源 IP 进行 hash 运算， 然后将结果与后端服务器的权重总数相除后转发至某个匹配的后端服务器。这种方式可以使同一个客户端 IP 的请求始终被转发到某特定的后端服务器。</span><br><span class="line">     # leastconn    此算法会将新的连接请求转发到具有最少连接数目的后端服务器。在会话时间较长的场景中推荐使用此算法，例如数据库负载均衡等。此算法不  适合会话较短的环境中，例如基于 HTTP 的应用。</span><br><span class="line">     # uri    此算法会对部分或整个 URI 进行 hash 运算，再经过与服务器的总权重相除，最后转发到某台匹配的后端服务器上。</span><br><span class="line">     # uri_param    此算法会根据 URL 路径中的参数进行转发，这样可保证在后端真实服务器数量不变时，同一个用户的请求始终分发到同一台机器上。</span><br><span class="line">     # hdr():    此算法根据 http 头进行转发，如果指定的 http 头名称不存在，则使用 roundrobin 算法进行策略转发。</span><br><span class="line">     balance  static-rr </span><br><span class="line">     cookie    SERVERID # 表示允许向 cookie 插入 SERVERID，每台服务器的 SERVERID 可在下面的 server 关键字中使用 cookie 关键字定义。</span><br><span class="line">     # 此选项表示启用 HTTP 的服务状态检测功能。HAProxy 作为一款专业的负载均衡器，它支持对 backend 部分指定的后端服务节点的健康检查，以保证在后端 backend 中某个节点不能服务时，把从 frotend 端进来的客户端请求分配至 backend 中其他健康节点上，从而保证整体服务的可用性。“option httpchk”的用法如下：</span><br><span class="line">     # option httpchk &amp;lt;method&gt; &amp;lt;uri&gt; &amp;lt;version&gt; 其中，各个参数的含义如下：</span><br><span class="line">     # &amp;lt;method&gt;    表示 HTTP 请求的方式，常用的有 OPTIONS、GET、HEAD 几种方式。一般的健康检查可以采用 HEAD 方式进行，而不是才采用 GET 方式，这是因为 HEAD 方式没有数据返回，仅检查 Response 的 HEAD 是不是 200 状态。因此相对与 GET 来说，HEAD 方式更快，更简单。</span><br><span class="line">     # &amp;lt;uri&gt;    表示要检测的 URL 地址，通过执行此 URL，可以获取后端服务器的运行状态。在正常情况下将返回状态码 200，返回其他状态码均为异常状态。</span><br><span class="line">     # &amp;lt;version&gt;    指定心跳检测时的 HTTP 的版本号。</span><br><span class="line">     option    httpchk GET /index.jsp</span><br><span class="line">     # 这个关键字用来定义多个后端真实服务器，不能用于 defaults 和frontend部分。使用格式为：server &amp;lt;name&gt; &amp;lt;address&gt;[:port] [param*] 其中，每个参数含义如下：</span><br><span class="line">     # &amp;lt;name&gt; 为后端真实服务器指定一个内部名称，随便定义一个即可。</span><br><span class="line">     # &amp;lt;address&gt; 后端真实服务器的 IP 地址或主机名。</span><br><span class="line">     # &amp;lt;port&gt; 指定连接请求发往真实服务器时的目标端口。在未设定时，将使用客户端请求时的同一端口。</span><br><span class="line">     # [param*] 为后端服务器设定的一系参数，可用参数非常多，这里仅介绍常用的一些参数：</span><br><span class="line">     # check 表示启用对此后端服务器执行健康状态检查。</span><br><span class="line">     # inter 设置健康状态检查的时间间隔，单位为毫秒。</span><br><span class="line">     # rise 设置从故障状态转换至正常状态需要成功检查的次数，例如。“rise 2”表示 2 次检查正确就认为此服务器可用。</span><br><span class="line">     # fall 设置后端服务器从正常状态转换为不可用状态需要检查的次数，例如，“fall 3”表示 3 次检查失败就认为此服务器不可用。</span><br><span class="line">     # cookie 为指定的后端服务器设定 cookie 值，此处指定的值将在请求入站时被检查，第一次为此值挑选的后端服务器将在后续的请求中一直被选中，其目的在于实现持久连接的功能。上面 的“cookie server1”表示 web1 的 serverid 为 server1。同理， “cookie server2”表示 web2 的 serverid 为 server2。</span><br><span class="line">     # weight 设置后端真实服务器的权重，默认为 1，最大值为 256。设置为 0 表示不参与负载均衡。</span><br><span class="line">     # backup 设置后端真实服务器的备份服务器，仅仅在后端所有真实服务器均不可用的情况下才启用。 </span><br><span class="line">     server    237server 192.168.81.237:8080 cookie server1 weight 6 check inter 2000 rise 2 fall 3</span><br><span class="line">     server    iivey234 192.168.81.234:8080 cookie server2 weight 3 check inter 2000 rise 2 fall 3</span><br><span class="line">backend imgpool</span><br><span class="line">     mode        http </span><br><span class="line">     option    redispatch</span><br><span class="line">     option    abortonclose</span><br><span class="line">      balance  static-rr </span><br><span class="line">     cookie  SERVERID</span><br><span class="line">     option    httpchk GET /index.jsp</span><br><span class="line">     server    host236 192.168.81.236:8080 cookie server1 weight 6 check inter 2000 rise 2 fall 3</span><br><span class="line"># 这个部分通过listen 关键字定义了一个名为“admin_stats”的实例，其实就是定义了一个 HAProxy 的监控页面</span><br><span class="line">listen admin_stats</span><br><span class="line">     bind 0.0.0.0:9188 # 页面绑定访问端口</span><br><span class="line">     mode http # 实例默认的运行模式</span><br><span class="line">     log 127.0.0.1 local0 err # 记录日志，原理同global</span><br><span class="line">     stats refresh 30s # 设置 HAProxy 监控统计页面自动刷新的时间。</span><br><span class="line">     stats uri /haproxy-status # 设置 HAProxy 监控统计页面的URL 路径，可随意指定。例如、指定“stats uri /haproxy-status”，就可以过 http://IP:9188/haproxy-status  查看。</span><br><span class="line">     stats realm welcome login\ Haproxy # 设置登录 HAProxy 统计页面时密码框上的文本提示信息。</span><br><span class="line">     stats auth admin:admin # 设置登录 HAProxy 统计页面的用户名和密码。用户名和密码通过冒号分割。可为监控页面设置多个用户名和密码，每行一个。</span><br><span class="line">     stats hide-version # 用来隐藏统计页面上 HAProxy 的版本信息。</span><br><span class="line">     stats admin if TRUE # 通过设置此选项，可以在监控页面上手工启用或禁用后端真实服务器，仅在 haproxy1.4.9 以后版本有效。</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>haproxy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>.gitlab-ci.yml示例</title>
-    <url>/Linux/gitlab-ci.yml/</url>
-    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#定义 stages（阶段）。任务将按此顺序执行。</span><br><span class="line">stages: </span><br><span class="line">     - build </span><br><span class="line">     - test </span><br><span class="line">     - deploy </span><br><span class="line"></span><br><span class="line">#定义 job（任务）</span><br><span class="line">job1: </span><br><span class="line">     stage: test </span><br><span class="line">     tags: </span><br><span class="line">         - XX    #只有标签为XX的runner才会执行这个任务 </span><br><span class="line">     only: </span><br><span class="line">         - dev   #只有dev分支提交代码才会执行这个任务。也可以是分支名称或触发器名称 </span><br><span class="line">         - /^future-.*$/     #正则表达式，只有future-开头的分支才会执行 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job1&quot; </span><br><span class="line">         - echo &quot;I am in test stage&quot; </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">job2: </span><br><span class="line">     stage: test     #如果此处没有定义stage，其默认也是test </span><br><span class="line">     only: </span><br><span class="line">         - master    #只有master分支提交代码才会执行这个任务 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job2&quot; </span><br><span class="line">         - echo &quot;I am in test stage&quot; </span><br><span class="line">     allow_failure: true     #允许失败，即不影响下步构建 </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">job3: </span><br><span class="line">     stage: build </span><br><span class="line">     except: </span><br><span class="line">         - dev   #除了dev分支，其它分支提交代码都会执行这个任务 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job3&quot; </span><br><span class="line">         - echo &quot;I am in build stage&quot; </span><br><span class="line">     when: always    #不管前面几步成功与否，永远会执行这一步。它有几个值：on_success （默认值）\on_failure\always\manual（手动执行） </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">.job4:      #对于临时不想执行的job，可以选择在前面加个&quot;.&quot;，这样就会跳过此步任务，否则你除了要注释掉这个jobj外，还需要注释上面为deploy的stage </span><br><span class="line">     stage: deploy </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job4&quot; </span><br><span class="line"></span><br><span class="line">#模板，相当于公用函数，有重复任务时很有用</span><br><span class="line">.job_template: &amp;amp;job_definition      # 创建一个锚，&#x27;job_definition&#x27; </span><br><span class="line">     image: ruby:2.1 </span><br><span class="line">     services: </span><br><span class="line">         - postgres </span><br><span class="line">         - redis </span><br><span class="line"></span><br><span class="line">test1: </span><br><span class="line">     &amp;lt;&amp;lt;: *job_definition             # 利用锚&#x27;job_definition&#x27;来合并 </span><br><span class="line">     script: </span><br><span class="line">         - test1 project </span><br><span class="line"></span><br><span class="line">test2: </span><br><span class="line">     &amp;lt;&amp;lt;: *job_definition             # 利用锚&#x27;job_definition&#x27;来合并 </span><br><span class="line">     script: </span><br><span class="line">         - test2 project </span><br><span class="line"></span><br><span class="line">#下面几个都相当于全局变量，都可以添加到具体job中，这时会被子job的覆盖</span><br><span class="line">before_script: </span><br><span class="line">     - echo &quot;每个job之前都会执行&quot; </span><br><span class="line"> </span><br><span class="line">after_script: </span><br><span class="line">     - echo &quot;每个job之后都会执行&quot; </span><br><span class="line"> </span><br><span class="line">variables:      #变量 </span><br><span class="line">     DATABASE_URL: &quot;postgres://postgres@postgres/my_database&quot;    #在job中可以用$&#123;DATABASE_URL&#125;来使用这个变量。常用的预定义变量有CI_COMMIT_REF_NAME（项目所在的分支或标签名称），CI_JOB_NAME（任务名称），CI_JOB_STAGE（任务阶段） </span><br><span class="line">     GIT_STRATEGY: &quot;none&quot;    #GIT策略，定义拉取代码的方式，有3种：clone/fetch/none，默认为clone，速度最慢，每步job都会重新clone一次代码。我们一般将它设置为none，在具体任务里设置为fetch就可以满足需求，毕竟不是每步都需要新代码，那也不符合我们测试的流程 </span><br><span class="line"> </span><br><span class="line">cache:          #缓存 </span><br><span class="line">     #因为缓存为不同管道和任务间共享，可能会覆盖，所以有时需要设置key </span><br><span class="line">     key: $&#123;CI_COMMIT_REF_NAME&#125;                      # 启用每分支缓存。 </span><br><span class="line">     #key: &quot;$CI_JOB_NAME/$CI_COMMIT_REF_NAME&quot;        # 启用每个任务和每个分支缓存。需要注意的是，如果是在windows中运行这个脚本，需要把$换成% </span><br><span class="line">     untracked: true                                 #缓存所有Git未跟踪的文件 </span><br><span class="line">     paths:                                          #以下2个文件夹会被缓存起来，下次构建会解压出来 </span><br><span class="line">         - node_modules/ </span><br><span class="line">         - dist/</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>GitLab</tag>
       </tags>
   </entry>
 </search>
