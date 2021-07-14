@@ -41,7 +41,7 @@ defaults
      timeout check 5s # 设置对后端服务器的检测超时时间，默认单位是毫秒，也可以使用其他的时间单位后缀。
      # maxconn 3000 # 每个进程可用的最大连接数
 frontend www
-     bind *:80  # 此选项只能在 frontend 和 listen 部分进行定义，用于定义一个或几个监听的套接字。bind 的使用格式为:bind [&lt;address>:&lt;port_range>] interface &lt;interface> 其中，address 为可选选项，其可以为主机名或IP 地址，如果将其设置为“*”或“0.0.0.0”，将监听当前系统的所有 IPv4 地址。port_range 可以是一个特定的 TCP 端口，也可是一个端口范围，小于 1024 的端口需要有特定权限的用户才能使用。interface 为可选选项，用来指定网络接口的名称，只能在 Linux 系统上使用。 
+     bind *:80  # 此选项只能在 frontend 和 listen 部分进行定义，用于定义一个或几个监听的套接字。bind 的使用格式为:bind [<address>:<port_range>] interface <interface> 其中，address 为可选选项，其可以为主机名或IP 地址，如果将其设置为“*”或“0.0.0.0”，将监听当前系统的所有 IPv4 地址。port_range 可以是一个特定的 TCP 端口，也可是一个端口范围，小于 1024 的端口需要有特定权限的用户才能使用。interface 为可选选项，用来指定网络接口的名称，只能在 Linux 系统上使用。 
      mode    http
      option    httplog 
      option    forwardfor # 如果后端服务器需要获得客户端的真实  IP，就需要配置此参数。由于 HAProxy 工作于反向代理模式，因此发往后端真实服务器的请求中的客户端 IP 均为 HAProxy 主机的 IP，而非真正访问客户端的地址，这就导致真实服务器端无法记录客户端真正请求来源的 IP，而“X-Forwarded-For”则可用于解决此问题。通过使用“forwardfor”选项，HAProxy 就可以向每个发往后端真实服务器的请求添加“X-Forwarded-For”记录，这样后端真实服务器日志可以通过“X-Forwarded-For”信息来记录客户端来源 IP。
@@ -69,15 +69,15 @@ backend htmpool
      balance  static-rr 
      cookie    SERVERID # 表示允许向 cookie 插入 SERVERID，每台服务器的 SERVERID 可在下面的 server 关键字中使用 cookie 关键字定义。
      # 此选项表示启用 HTTP 的服务状态检测功能。HAProxy 作为一款专业的负载均衡器，它支持对 backend 部分指定的后端服务节点的健康检查，以保证在后端 backend 中某个节点不能服务时，把从 frotend 端进来的客户端请求分配至 backend 中其他健康节点上，从而保证整体服务的可用性。“option httpchk”的用法如下：
-     # option httpchk &lt;method> &lt;uri> &lt;version> 其中，各个参数的含义如下：
-     # &lt;method>    表示 HTTP 请求的方式，常用的有 OPTIONS、GET、HEAD 几种方式。一般的健康检查可以采用 HEAD 方式进行，而不是才采用 GET 方式，这是因为 HEAD 方式没有数据返回，仅检查 Response 的 HEAD 是不是 200 状态。因此相对与 GET 来说，HEAD 方式更快，更简单。
-     # &lt;uri>    表示要检测的 URL 地址，通过执行此 URL，可以获取后端服务器的运行状态。在正常情况下将返回状态码 200，返回其他状态码均为异常状态。
-     # &lt;version>    指定心跳检测时的 HTTP 的版本号。
+     # option httpchk <method> <uri> <version> 其中，各个参数的含义如下：
+     # <method>    表示 HTTP 请求的方式，常用的有 OPTIONS、GET、HEAD 几种方式。一般的健康检查可以采用 HEAD 方式进行，而不是才采用 GET 方式，这是因为 HEAD 方式没有数据返回，仅检查 Response 的 HEAD 是不是 200 状态。因此相对与 GET 来说，HEAD 方式更快，更简单。
+     # <uri>    表示要检测的 URL 地址，通过执行此 URL，可以获取后端服务器的运行状态。在正常情况下将返回状态码 200，返回其他状态码均为异常状态。
+     # <version>    指定心跳检测时的 HTTP 的版本号。
      option    httpchk GET /index.jsp
-     # 这个关键字用来定义多个后端真实服务器，不能用于 defaults 和frontend部分。使用格式为：server &lt;name> &lt;address>[:port] [param*] 其中，每个参数含义如下：
-     # &lt;name> 为后端真实服务器指定一个内部名称，随便定义一个即可。
-     # &lt;address> 后端真实服务器的 IP 地址或主机名。
-     # &lt;port> 指定连接请求发往真实服务器时的目标端口。在未设定时，将使用客户端请求时的同一端口。
+     # 这个关键字用来定义多个后端真实服务器，不能用于 defaults 和frontend部分。使用格式为：server <name> <address>[:port] [param*] 其中，每个参数含义如下：
+     # <name> 为后端真实服务器指定一个内部名称，随便定义一个即可。
+     # <address> 后端真实服务器的 IP 地址或主机名。
+     # <port> 指定连接请求发往真实服务器时的目标端口。在未设定时，将使用客户端请求时的同一端口。
      # [param*] 为后端服务器设定的一系参数，可用参数非常多，这里仅介绍常用的一些参数：
      # check 表示启用对此后端服务器执行健康状态检查。
      # inter 设置健康状态检查的时间间隔，单位为毫秒。

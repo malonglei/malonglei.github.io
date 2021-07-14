@@ -59,12 +59,12 @@ job3:
          - redis 
 
 test1: 
-     &lt;&lt;: *job_definition             # 利用锚'job_definition'来合并 
+     <<: *job_definition             # 利用锚'job_definition'来合并 
      script: 
          - test1 project 
 
 test2: 
-     &lt;&lt;: *job_definition             # 利用锚'job_definition'来合并 
+     <<: *job_definition             # 利用锚'job_definition'来合并 
      script: 
          - test2 project 
 
