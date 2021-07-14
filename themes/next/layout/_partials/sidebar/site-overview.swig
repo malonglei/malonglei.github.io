@@ -6,7 +6,9 @@
   {%- if showAuthor %}
     <p class="site-author-name" itemprop="name">{{ author }}</p>
   {%- else %}
+    <br/>
     <script type="text/javascript" src="https://api.uixsj.cn/hitokoto/w.php?code=js"></script><div id="xsjhitokoto"><script>xsjhitokoto()</script></div>
+    <br/>
   {%- endif %}
   <div class="site-description" itemprop="description">{{ description }}</div>
 </div>

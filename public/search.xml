@@ -1,71 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CentOS安装Docker</title>
-    <url>/Linux/centos-install-docker/</url>
-    <content><![CDATA[<h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><h4 id="系统要求"><a href="#系统要求" class="headerlink" title="系统要求"></a>系统要求</h4><p>安装Docker,推荐使用CentOS 7 或者 8 的稳定版本</p>
-<h4 id="卸载旧版本"><a href="#卸载旧版本" class="headerlink" title="卸载旧版本"></a>卸载旧版本</h4><p>如果已经安装了旧版本的Docker,或者不清楚是否已经安装了Docker想要重新安装最新版本,需要先卸载旧版本</p>
-<p>下面命令会卸载旧版本及相关依赖项</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
-
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>Docker的安装方式有以下几种,可以根据自身选择不同的安装方式</p>
-<ol>
-<li>设置 yum 仓库的方式安装,这种方式安装比较简单,有利于后续版本升级,也是<strong>最推荐</strong>的一种安装方式</li>
-<li>如果你希望手动管理升级,或者安装时没有网络,则可以选择RPM安装包的方式</li>
-<li>在测试环境,或者希望快速搭建Docker环境,可以使用一键安装脚本进行安装</li>
-</ol>
-<h4 id="仓库方式"><a href="#仓库方式" class="headerlink" title="仓库方式"></a>仓库方式</h4><p><strong>设置仓库</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 安装yum工具包,提供了一些管理工具</span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line"># 增加docker仓库源</span><br><span class="line"> sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
-
-<p>有些仓库模式是禁用状态,如果你有需要可以手动开启</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum-config-manager --enable docker-ce-nightly</span><br><span class="line">sudo yum-config-manager --enable docker-ce-test</span><br></pre></td></tr></table></figure>
-
-<p><strong>安装</strong></p>
-<p>安装最新版本,可以直接执行以下命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum -y install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
-
-<p>对版本有要求,想要安装指定版本,可以执行以下命令列出所有版本</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum list docker-ce --showduplicates | sort -r</span><br><span class="line"></span><br><span class="line">docker-ce.x86_64  3:18.09.1-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64  3:18.09.0-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64  18.06.1.ce-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.x86_64  18.06.0.ce-3.el7                    docker-ce-stable</span><br></pre></td></tr></table></figure>
-
-<p>可以选择需要的版本,然后安装指定的版本,例如 docker-ce-18.09.1</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum -y install docker-ce-&lt;VERSION_STRING&gt; docker-ce-cli-&lt;VERSION_STRING&gt; containerd.io</span><br></pre></td></tr></table></figure>
-
-<h4 id="RPM方式"><a href="#RPM方式" class="headerlink" title="RPM方式"></a>RPM方式</h4><p><strong>下载RPM安装包</strong></p>
-<p>跳转到<a href="https://download.docker.com/linux/centos/">https://download.docker.com/linux/centos/</a> 选择对应的CentOS版本,然后进入x86_64 /stable/Packages/目录下选择要安装的对应版本的RPM安装包</p>
-<p><strong>安装</strong></p>
-<p>将RPM安装包上传到服务器,然后执行以下命令进行安装</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install /path/to/package.rpm</span><br></pre></td></tr></table></figure>
-
-<h4 id="一键安装包方式"><a href="#一键安装包方式" class="headerlink" title="一键安装包方式"></a>一键安装包方式</h4><p>官方为了简化Docker的安装步骤,提供了一键安装包方式,但是不建议在生产环境中使用,如果为了测试或者快速搭建,可以选择此安装方式</p>
-<p><strong>潜在风险</strong></p>
-<ol>
-<li>脚本需要运行root或具有sudo特权。因此，在运行脚本之前，应仔细检查和审核脚本。</li>
-<li>这些脚本尝试检测Linux发行版和版本，并为您配置软件包管理系统。此外，脚本不允许您自定义任何安装参数。</li>
-<li>这些脚本将安装软件包管理器的所有依赖项和建议，而无需进行确认。根据主机的当前配置，这可能会安装大量软件包。</li>
-<li>该脚本未提供用于指定要安装哪个版本的Docker的选项，而是安装了发布的最新版本。</li>
-<li>如果已经使用其他方式在主机上安装了Docker，请不要使用便捷脚本。</li>
-</ol>
-<p><strong>安装</strong></p>
-<p>执行以下命令进行安装</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com -o get-docker.sh</span><br><span class="line">sudo sh get-docker.sh</span><br></pre></td></tr></table></figure>
-
-<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><h4 id="启动Docker"><a href="#启动Docker" class="headerlink" title="启动Docker"></a>启动Docker</h4><p>执行以下命令启动Docker</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 将Docker加入开启自启动</span><br><span class="line">sudo systemctl enable docker</span><br><span class="line"># 启动Docker</span><br><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
-
-<h4 id="验证Docker"><a href="#验证Docker" class="headerlink" title="验证Docker"></a>验证Docker</h4><p>Docker启动成功后,可以运行以下命令验证运行状态,保证Docker已经成功启动</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker version</span><br><span class="line"></span><br><span class="line">Client: Docker Engine - Community</span><br><span class="line"> Cloud integration: 1.0.7</span><br><span class="line"> Version:           20.10.2</span><br><span class="line"> API version:       1.41</span><br><span class="line"> Go version:        go1.13.15</span><br><span class="line"> Git commit:        2291f61</span><br><span class="line"> Built:             Mon Dec 28 16:12:42 2020</span><br><span class="line"> OS/Arch:           darwin/amd64</span><br><span class="line"> Context:           default</span><br><span class="line"> Experimental:      true</span><br><span class="line"></span><br><span class="line">Server: Docker Engine - Community</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          20.10.2</span><br><span class="line">  API version:      1.41 (minimum version 1.12)</span><br><span class="line">  Go version:       go1.13.15</span><br><span class="line">  Git commit:       8891c58</span><br><span class="line">  Built:            Mon Dec 28 16:15:28 2020</span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     false</span><br><span class="line"> containerd:</span><br><span class="line">  Version:          1.4.3</span><br><span class="line">  GitCommit:        269548fa27e0089a8b8278fc4fc781d7f65a939b</span><br><span class="line"> runc:</span><br><span class="line">  Version:          1.0.0-rc92</span><br><span class="line">  GitCommit:        ff819c7e9184c13b7c2607fe6c30ae19403a7aff</span><br><span class="line"> docker-init:</span><br><span class="line">  Version:          0.19.0</span><br><span class="line">  GitCommit:        de40ad0</span><br></pre></td></tr></table></figure>
-
-<p>Docker有服务端和客户端,两个全部成功打印说明启动成功</p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CentOS安装GitLab</title>
     <url>/Linux/centos-install-gitlab/</url>
     <content><![CDATA[<h3 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h3><p>在CentOS中,以下命令将在系统防火墙中打开HTTP，HTTPS和SSH访问</p>
@@ -129,6 +64,56 @@
       <tags>
         <tag>Linux</tag>
         <tag>GitLab</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS安装Harbor</title>
+    <url>/Linux/centos-install-harbor/</url>
+    <content><![CDATA[<p>Harbor是一个开源的容器管理项目，用于存储、签名和扫描容器。Harbor具备安全性、身份和管理功能来管理Docker容器。Harbor支持在服务之间复制映像，还提供高级安全功能，如用户管理、访问控制和活动审核。</p>
+<h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><p>安装过程请查看另一篇文章<a href="https://www.mllweb.com/archives/93">CentOS安装Docker</a>来进行安装</p>
+<p>安装完启动docker</p>
+<h2 id="安装docker-compose"><a href="#安装docker-compose" class="headerlink" title="安装docker-compose"></a>安装docker-compose</h2><p>运行以下命令下载Docker Compose的当前稳定版本：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>二进制文件添加执行权限</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Harbor"><a href="#安装Harbor" class="headerlink" title="安装Harbor"></a>安装Harbor</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>前往<a href="https://github.com/goharbor/harbor/releases">https://github.com/goharbor/harbor/releases</a>下载harbor的文件</p>
+<p>harbor分为离线安装和在线安装，选择离线安装即可</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://github.com/goharbor/harbor/releases/download/v2.1.4/harbor-offline-installer-v2.1.4.tgz</span><br></pre></td></tr></table></figure>
+
+<p>解压后文件列表如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">common.sh</span><br><span class="line">harbor.v2.1.4.tar.gz</span><br><span class="line">harbor.yml.tmpl</span><br><span class="line">install.sh</span><br><span class="line">LICENSE</span><br><span class="line">prepare</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h3><p>harbor提供了配置的模版文件，我们复制一份</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cp harbor.yml.tmpl cp harbor.yml</span><br></pre></td></tr></table></figure>
+
+<p>我们需要修改一下<strong>harbor.yml.tmpl</strong>配置信息，将<strong>hostname</strong>修改为本机当前IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#The IP address or hostname to access admin UI and registry service.</span><br><span class="line">#DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.</span><br><span class="line">hostname: 192.168.8.197</span><br></pre></td></tr></table></figure>
+
+<p>harbor默认开启了https访问，如果你有https证书可以配置一下，如果没有证书则可以注释掉相关配置信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#https related config</span><br><span class="line">#https:</span><br><span class="line">  # https port for harbor, default is 443</span><br><span class="line">  # port: 443</span><br><span class="line">  # The path of cert and key files for nginx</span><br><span class="line">  # certificate: /your/certificate/path</span><br><span class="line">  # private_key: /your/private/key/path</span><br></pre></td></tr></table></figure>
+
+<p>harbor默认的登陆密码是<strong>Harbor12345</strong>，如果需要更换，可以在配置信息中修改</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># The initial password of Harbor admin</span><br><span class="line"># It only works in first time to install harbor</span><br><span class="line"># Remember Change the admin password from UI after launching Harbor.</span><br><span class="line">harbor_admin_password: Harbor12345</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>修改完配置信息以后，执行<strong>install.sh</strong>安装脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./install.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-10.png"></p>
+<p>出现以上内容说明Harbor已经成功安装</p>
+<h2 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h2><p>harbor默认的登陆账号是<strong>admin</strong>，密码是<strong>Harbor12345</strong></p>
+<p>默认端口是80，我们直接在浏览器输入ip地址进行访问就可以</p>
+<h2 id="上传测试"><a href="#上传测试" class="headerlink" title="上传测试"></a>上传测试</h2><p>修改 **/etc/hosts **将本机ip映射到 harbor.custom.com 下 ,然后将本机已有的镜像push到仓库进行测试</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-11.png"></p>
+<p>说明镜像已经成功推送到harbor仓库，至此，我们的harbor搭建完成。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Harbor</tag>
       </tags>
   </entry>
   <entry>
@@ -201,56 +186,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CentOS安装Harbor</title>
-    <url>/Linux/centos-install-harbor/</url>
-    <content><![CDATA[<p>Harbor是一个开源的容器管理项目，用于存储、签名和扫描容器。Harbor具备安全性、身份和管理功能来管理Docker容器。Harbor支持在服务之间复制映像，还提供高级安全功能，如用户管理、访问控制和活动审核。</p>
-<h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><p>安装过程请查看另一篇文章<a href="https://www.mllweb.com/archives/93">CentOS安装Docker</a>来进行安装</p>
-<p>安装完启动docker</p>
-<h2 id="安装docker-compose"><a href="#安装docker-compose" class="headerlink" title="安装docker-compose"></a>安装docker-compose</h2><p>运行以下命令下载Docker Compose的当前稳定版本：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
-
-<p>二进制文件添加执行权限</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
-
-<h2 id="安装Harbor"><a href="#安装Harbor" class="headerlink" title="安装Harbor"></a>安装Harbor</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>前往<a href="https://github.com/goharbor/harbor/releases">https://github.com/goharbor/harbor/releases</a>下载harbor的文件</p>
-<p>harbor分为离线安装和在线安装，选择离线安装即可</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wget https://github.com/goharbor/harbor/releases/download/v2.1.4/harbor-offline-installer-v2.1.4.tgz</span><br></pre></td></tr></table></figure>
-
-<p>解压后文件列表如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">common.sh</span><br><span class="line">harbor.v2.1.4.tar.gz</span><br><span class="line">harbor.yml.tmpl</span><br><span class="line">install.sh</span><br><span class="line">LICENSE</span><br><span class="line">prepare</span><br></pre></td></tr></table></figure>
-
-<h3 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h3><p>harbor提供了配置的模版文件，我们复制一份</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cp harbor.yml.tmpl cp harbor.yml</span><br></pre></td></tr></table></figure>
-
-<p>我们需要修改一下<strong>harbor.yml.tmpl</strong>配置信息，将<strong>hostname</strong>修改为本机当前IP地址</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#The IP address or hostname to access admin UI and registry service.</span><br><span class="line">#DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.</span><br><span class="line">hostname: 192.168.8.197</span><br></pre></td></tr></table></figure>
-
-<p>harbor默认开启了https访问，如果你有https证书可以配置一下，如果没有证书则可以注释掉相关配置信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#https related config</span><br><span class="line">#https:</span><br><span class="line">  # https port for harbor, default is 443</span><br><span class="line">  # port: 443</span><br><span class="line">  # The path of cert and key files for nginx</span><br><span class="line">  # certificate: /your/certificate/path</span><br><span class="line">  # private_key: /your/private/key/path</span><br></pre></td></tr></table></figure>
-
-<p>harbor默认的登陆密码是<strong>Harbor12345</strong>，如果需要更换，可以在配置信息中修改</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># The initial password of Harbor admin</span><br><span class="line"># It only works in first time to install harbor</span><br><span class="line"># Remember Change the admin password from UI after launching Harbor.</span><br><span class="line">harbor_admin_password: Harbor12345</span><br></pre></td></tr></table></figure>
-
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>修改完配置信息以后，执行<strong>install.sh</strong>安装脚本</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./install.sh</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-10.png"></p>
-<p>出现以上内容说明Harbor已经成功安装</p>
-<h2 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h2><p>harbor默认的登陆账号是<strong>admin</strong>，密码是<strong>Harbor12345</strong></p>
-<p>默认端口是80，我们直接在浏览器输入ip地址进行访问就可以</p>
-<h2 id="上传测试"><a href="#上传测试" class="headerlink" title="上传测试"></a>上传测试</h2><p>修改 **/etc/hosts **将本机ip映射到 harbor.custom.com 下 ,然后将本机已有的镜像push到仓库进行测试</p>
-<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/image-11.png"></p>
-<p>说明镜像已经成功推送到harbor仓库，至此，我们的harbor搭建完成。</p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Harbor</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CentOS安装Nginx</title>
     <url>/Linux/centos-install-nginx/</url>
     <content><![CDATA[<p>Nginx是一款轻量级的Web服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器，在BSD-like 协议下发行。其特点是占有内存少，并发能力强。</p>
@@ -306,6 +241,19 @@
       </tags>
   </entry>
   <entry>
+    <title>Docker搭建WordPress</title>
+    <url>/Linux/docker-build-wordpress/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum -y install docker-ce docker-ce-cli containerd.io</span><br><span class="line">sudo systemctl enable docker</span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF &gt; wordpress.yml</span><br><span class="line">version: &#x27;3.1&#x27;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  mysql:</span><br><span class="line">    image: mysql:5.7</span><br><span class="line">    restart: always</span><br><span class="line">    ports:</span><br><span class="line">      - 3306:3306</span><br><span class="line">    container_name: wordpress_mysql</span><br><span class="line">    environment:</span><br><span class="line">      MYSQL_DATABASE: wordpress</span><br><span class="line">      MYSQL_USER: wordpress</span><br><span class="line">      MYSQL_PASSWORD: MyNewPass4!</span><br><span class="line">      MYSQL_RANDOM_ROOT_PASSWORD: &#x27;1&#x27;</span><br><span class="line">    volumes:</span><br><span class="line">      - mysql:/var/lib/mysql</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">  wordpress:</span><br><span class="line">    image: wordpress</span><br><span class="line">    restart: always</span><br><span class="line">    container_name: wordpress_server</span><br><span class="line">    environment:</span><br><span class="line">      WORDPRESS_DB_HOST: mysql</span><br><span class="line">      WORDPRESS_DB_USER: wordpress</span><br><span class="line">      WORDPRESS_DB_PASSWORD: MyNewPass4!</span><br><span class="line">      WORDPRESS_DB_NAME: wordpress</span><br><span class="line">    depends_on:</span><br><span class="line">      - mysql</span><br><span class="line">    volumes:</span><br><span class="line">      - wordpress:/var/www/html</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">  nginx:</span><br><span class="line">    image: nginx:1.20</span><br><span class="line">    restart: always</span><br><span class="line">    ports:</span><br><span class="line">      - 80:80</span><br><span class="line">      - 443:443</span><br><span class="line">    container_name: wordpress_nginx</span><br><span class="line">    links:</span><br><span class="line">      - wordpress</span><br><span class="line">    depends_on:</span><br><span class="line">      - wordpress</span><br><span class="line">    volumes:</span><br><span class="line">      - nginx:/etc/nginx</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">volumes:</span><br><span class="line">  wordpress:</span><br><span class="line">  mysql:</span><br><span class="line">  nginx:</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  wordpress:</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">docker-compose -f wordpress.yml up -d</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF &gt; /var/lib/docker/volumes/root_nginx/_data/conf.d/default.conf</span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    listen  [::]:80;</span><br><span class="line">    server_name  mllweb.com;</span><br><span class="line"></span><br><span class="line">    return 301 https://mllweb.com$request_uri;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl http2;</span><br><span class="line">    listen [::]:443 ssl http2;</span><br><span class="line"></span><br><span class="line">    server_name mllweb.com;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">          proxy_pass http://wordpress;</span><br><span class="line"></span><br><span class="line">          proxy_http_version    1.1;</span><br><span class="line">          proxy_cache_bypass    $http_upgrade;</span><br><span class="line"></span><br><span class="line">          proxy_set_header Upgrade            $http_upgrade;</span><br><span class="line">          proxy_set_header Connection         &quot;upgrade&quot;;</span><br><span class="line">          proxy_set_header Host               $host;</span><br><span class="line">          proxy_set_header X-Real-IP          $remote_addr;</span><br><span class="line">          proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;</span><br><span class="line">          proxy_set_header X-Forwarded-Proto  $scheme;</span><br><span class="line">          proxy_set_header X-Forwarded-Host   $host;</span><br><span class="line">          proxy_set_header X-Forwarded-Port   $server_port;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ssl_certificate cert/mllweb.com.pem;</span><br><span class="line">    ssl_certificate_key cert/mllweb.com.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    #表示使用的加密套件的类型。</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #表示使用的TLS协议的类型。</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Docker</tag>
+        <tag>WordPress</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用Docker部署Spring Boot</title>
     <url>/Java/docker-build-spring-boot/</url>
     <content><![CDATA[<p>随着云原生的普及以及成熟，越来越多的项目开始用容器装载。</p>
@@ -355,16 +303,15 @@
       </tags>
   </entry>
   <entry>
-    <title>Docker搭建WordPress</title>
-    <url>/Linux/docker-build-wordpress/</url>
-    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum -y update</span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum -y install docker-ce docker-ce-cli containerd.io</span><br><span class="line">sudo systemctl enable docker</span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF &gt; wordpress.yml</span><br><span class="line">version: &#x27;3.1&#x27;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  mysql:</span><br><span class="line">    image: mysql:5.7</span><br><span class="line">    restart: always</span><br><span class="line">    ports:</span><br><span class="line">      - 3306:3306</span><br><span class="line">    container_name: wordpress_mysql</span><br><span class="line">    environment:</span><br><span class="line">      MYSQL_DATABASE: wordpress</span><br><span class="line">      MYSQL_USER: wordpress</span><br><span class="line">      MYSQL_PASSWORD: MyNewPass4!</span><br><span class="line">      MYSQL_RANDOM_ROOT_PASSWORD: &#x27;1&#x27;</span><br><span class="line">    volumes:</span><br><span class="line">      - mysql:/var/lib/mysql</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">  wordpress:</span><br><span class="line">    image: wordpress</span><br><span class="line">    restart: always</span><br><span class="line">    container_name: wordpress_server</span><br><span class="line">    environment:</span><br><span class="line">      WORDPRESS_DB_HOST: mysql</span><br><span class="line">      WORDPRESS_DB_USER: wordpress</span><br><span class="line">      WORDPRESS_DB_PASSWORD: MyNewPass4!</span><br><span class="line">      WORDPRESS_DB_NAME: wordpress</span><br><span class="line">    depends_on:</span><br><span class="line">      - mysql</span><br><span class="line">    volumes:</span><br><span class="line">      - wordpress:/var/www/html</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">  nginx:</span><br><span class="line">    image: nginx:1.20</span><br><span class="line">    restart: always</span><br><span class="line">    ports:</span><br><span class="line">      - 80:80</span><br><span class="line">      - 443:443</span><br><span class="line">    container_name: wordpress_nginx</span><br><span class="line">    links:</span><br><span class="line">      - wordpress</span><br><span class="line">    depends_on:</span><br><span class="line">      - wordpress</span><br><span class="line">    volumes:</span><br><span class="line">      - nginx:/etc/nginx</span><br><span class="line">    networks:</span><br><span class="line">      - wordpress</span><br><span class="line"></span><br><span class="line">volumes:</span><br><span class="line">  wordpress:</span><br><span class="line">  mysql:</span><br><span class="line">  nginx:</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  wordpress:</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">docker-compose -f wordpress.yml up -d</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF &gt; /var/lib/docker/volumes/root_nginx/_data/conf.d/default.conf</span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    listen  [::]:80;</span><br><span class="line">    server_name  mllweb.com;</span><br><span class="line"></span><br><span class="line">    return 301 https://mllweb.com$request_uri;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl http2;</span><br><span class="line">    listen [::]:443 ssl http2;</span><br><span class="line"></span><br><span class="line">    server_name mllweb.com;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">          proxy_pass http://wordpress;</span><br><span class="line"></span><br><span class="line">          proxy_http_version    1.1;</span><br><span class="line">          proxy_cache_bypass    $http_upgrade;</span><br><span class="line"></span><br><span class="line">          proxy_set_header Upgrade            $http_upgrade;</span><br><span class="line">          proxy_set_header Connection         &quot;upgrade&quot;;</span><br><span class="line">          proxy_set_header Host               $host;</span><br><span class="line">          proxy_set_header X-Real-IP          $remote_addr;</span><br><span class="line">          proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;</span><br><span class="line">          proxy_set_header X-Forwarded-Proto  $scheme;</span><br><span class="line">          proxy_set_header X-Forwarded-Host   $host;</span><br><span class="line">          proxy_set_header X-Forwarded-Port   $server_port;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ssl_certificate cert/mllweb.com.pem;</span><br><span class="line">    ssl_certificate_key cert/mllweb.com.key;</span><br><span class="line">    ssl_session_timeout 5m;</span><br><span class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">    #表示使用的加密套件的类型。</span><br><span class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #表示使用的TLS协议的类型。</span><br><span class="line">    ssl_prefer_server_ciphers on;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>]]></content>
+    <title>.gitlab-ci.yml示例</title>
+    <url>/Linux/gitlab-ci.yml/</url>
+    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#定义 stages（阶段）。任务将按此顺序执行。</span><br><span class="line">stages: </span><br><span class="line">     - build </span><br><span class="line">     - test </span><br><span class="line">     - deploy </span><br><span class="line"></span><br><span class="line">#定义 job（任务）</span><br><span class="line">job1: </span><br><span class="line">     stage: test </span><br><span class="line">     tags: </span><br><span class="line">         - XX    #只有标签为XX的runner才会执行这个任务 </span><br><span class="line">     only: </span><br><span class="line">         - dev   #只有dev分支提交代码才会执行这个任务。也可以是分支名称或触发器名称 </span><br><span class="line">         - /^future-.*$/     #正则表达式，只有future-开头的分支才会执行 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job1&quot; </span><br><span class="line">         - echo &quot;I am in test stage&quot; </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">job2: </span><br><span class="line">     stage: test     #如果此处没有定义stage，其默认也是test </span><br><span class="line">     only: </span><br><span class="line">         - master    #只有master分支提交代码才会执行这个任务 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job2&quot; </span><br><span class="line">         - echo &quot;I am in test stage&quot; </span><br><span class="line">     allow_failure: true     #允许失败，即不影响下步构建 </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">job3: </span><br><span class="line">     stage: build </span><br><span class="line">     except: </span><br><span class="line">         - dev   #除了dev分支，其它分支提交代码都会执行这个任务 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job3&quot; </span><br><span class="line">         - echo &quot;I am in build stage&quot; </span><br><span class="line">     when: always    #不管前面几步成功与否，永远会执行这一步。它有几个值：on_success （默认值）\on_failure\always\manual（手动执行） </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">.job4:      #对于临时不想执行的job，可以选择在前面加个&quot;.&quot;，这样就会跳过此步任务，否则你除了要注释掉这个jobj外，还需要注释上面为deploy的stage </span><br><span class="line">     stage: deploy </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job4&quot; </span><br><span class="line"></span><br><span class="line">#模板，相当于公用函数，有重复任务时很有用</span><br><span class="line">.job_template: &amp;amp;job_definition      # 创建一个锚，&#x27;job_definition&#x27; </span><br><span class="line">     image: ruby:2.1 </span><br><span class="line">     services: </span><br><span class="line">         - postgres </span><br><span class="line">         - redis </span><br><span class="line"></span><br><span class="line">test1: </span><br><span class="line">     &amp;lt;&amp;lt;: *job_definition             # 利用锚&#x27;job_definition&#x27;来合并 </span><br><span class="line">     script: </span><br><span class="line">         - test1 project </span><br><span class="line"></span><br><span class="line">test2: </span><br><span class="line">     &amp;lt;&amp;lt;: *job_definition             # 利用锚&#x27;job_definition&#x27;来合并 </span><br><span class="line">     script: </span><br><span class="line">         - test2 project </span><br><span class="line"></span><br><span class="line">#下面几个都相当于全局变量，都可以添加到具体job中，这时会被子job的覆盖</span><br><span class="line">before_script: </span><br><span class="line">     - echo &quot;每个job之前都会执行&quot; </span><br><span class="line"> </span><br><span class="line">after_script: </span><br><span class="line">     - echo &quot;每个job之后都会执行&quot; </span><br><span class="line"> </span><br><span class="line">variables:      #变量 </span><br><span class="line">     DATABASE_URL: &quot;postgres://postgres@postgres/my_database&quot;    #在job中可以用$&#123;DATABASE_URL&#125;来使用这个变量。常用的预定义变量有CI_COMMIT_REF_NAME（项目所在的分支或标签名称），CI_JOB_NAME（任务名称），CI_JOB_STAGE（任务阶段） </span><br><span class="line">     GIT_STRATEGY: &quot;none&quot;    #GIT策略，定义拉取代码的方式，有3种：clone/fetch/none，默认为clone，速度最慢，每步job都会重新clone一次代码。我们一般将它设置为none，在具体任务里设置为fetch就可以满足需求，毕竟不是每步都需要新代码，那也不符合我们测试的流程 </span><br><span class="line"> </span><br><span class="line">cache:          #缓存 </span><br><span class="line">     #因为缓存为不同管道和任务间共享，可能会覆盖，所以有时需要设置key </span><br><span class="line">     key: $&#123;CI_COMMIT_REF_NAME&#125;                      # 启用每分支缓存。 </span><br><span class="line">     #key: &quot;$CI_JOB_NAME/$CI_COMMIT_REF_NAME&quot;        # 启用每个任务和每个分支缓存。需要注意的是，如果是在windows中运行这个脚本，需要把$换成% </span><br><span class="line">     untracked: true                                 #缓存所有Git未跟踪的文件 </span><br><span class="line">     paths:                                          #以下2个文件夹会被缓存起来，下次构建会解压出来 </span><br><span class="line">         - node_modules/ </span><br><span class="line">         - dist/</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>Linux</category>
       </categories>
       <tags>
         <tag>Linux</tag>
-        <tag>Docker</tag>
-        <tag>WordPress</tag>
+        <tag>GitLab</tag>
       </tags>
   </entry>
   <entry>
@@ -580,67 +527,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Kubernetes安装IngressNginx</title>
-    <url>/Kubernetes/kubernetes-install-ingressnginx/</url>
-    <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.44.0/deploy/static/provider/baremetal/deploy.yaml</span><br></pre></td></tr></table></figure>
-
-<p>部署完，我们查看一下状态</p>
-<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616755596-image.png"></p>
-<p>对应的service和deployment已经创建完毕，并且service以NodePort方式对外开放了32756端口</p>
-<h2 id="部署tomcat进行测试"><a href="#部署tomcat进行测试" class="headerlink" title="部署tomcat进行测试"></a>部署tomcat进行测试</h2><p>我准备了yaml文件，部署一个tomcat，并指定host信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: tomcat</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: tomcat</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      name: tomcat</span><br><span class="line">      labels:</span><br><span class="line">        app: tomcat</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">        - name: nginx</span><br><span class="line">          image: tomcat:6.0</span><br><span class="line">          ports:</span><br><span class="line">             - containerPort: 8080</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: tomcat</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    app: tomcat</span><br><span class="line">  ports:</span><br><span class="line">    - name: tomcat</span><br><span class="line">      protocol: TCP</span><br><span class="line">      port: 8080</span><br><span class="line">      targetPort: 8080</span><br><span class="line">---</span><br><span class="line">apiVersion: networking.k8s.io/v1beta1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: ingress-tomcat</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">    - host: tomcat.custom.com</span><br><span class="line">      http:</span><br><span class="line">        paths: </span><br><span class="line">          - path: /</span><br><span class="line">            backend:</span><br><span class="line">              serviceName: tomcat</span><br><span class="line">              servicePort: 8080</span><br></pre></td></tr></table></figure>
-
-<p>部署到集群</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kubectl apply -f tomcat.yaml</span><br></pre></td></tr></table></figure>
-
-<p>等部署完毕后，我们访问一下<a href="http://tomcat.custom.com:32756/%EF%BC%8Ctomcat.custom.com%E9%9A%8F%E6%84%8F%E6%98%A0%E5%B0%84%E9%9B%86%E7%BE%A4%E4%BB%BB%E4%BD%95%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9%E5%B0%B1%E5%8F%AF%E4%BB%A5">http://tomcat.custom.com:32756/，tomcat.custom.com随意映射集群任何一个节点就可以</a></p>
-<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616757837-image.png"></p>
-<p>说明ingressNginx已经成功代理了我们的域名服务</p>
-<p>但是还有一个我们访问的端口是ingressnginx生成的NodePort接口，我们更希望直接代理到80端口上，这种情况怎么处理呢</p>
-<p><a href="https://kubernetes.github.io/ingress-nginx/deploy/baremetal/">官方</a>给出了几种解决方法，我们来看一下</p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><h3 id="通过NodePort服务"><a href="#通过NodePort服务" class="headerlink" title="通过NodePort服务"></a>通过NodePort服务</h3><p><strong>NodePort</strong>通过<strong>kube-proxy</strong>组件在每个主机节点上公开<strong>相同的非特权</strong>端口（默认值：30000-32767）。</p>
-<p>可以使用**–service-node-port-range<strong>API服务器标志重新配置NodePort范围以包括非特权端口并能够公开端口80和443听起来很诱人，但这样做可能会导致意外问题，包括（但不限于）使用否则保留给其他用户使用的端口系统守护程序，以及授予</strong>kube-proxy**它可能不需要的特权。</p>
-<p>这种方式可以指定监听80端口，但是<strong>不鼓励</strong>这种做法。</p>
-<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616758664-40c23cd97a05b731ee2f84a3ae601646.jpeg"></p>
-<h3 id="主机网络"><a href="#主机网络" class="headerlink" title="主机网络"></a>主机网络</h3><p>可以将Pod配置<strong>ingress-nginx</strong>为使用其运行的主机的网络，而不是kubenetes内部网络。这种方法的好处是，NGINX Ingress控制器可以将端口80和443直接绑定到Kubernetes节点的网络接口，而无需由NodePort Services施加额外的网络转换。</p>
-<p>这可以通过启用<strong>hostNetwork</strong>Pods规范中的选项来实现。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">template:   </span><br><span class="line">  spec:     </span><br><span class="line">    hostNetwork: true</span><br></pre></td></tr></table></figure>
-
-<p>此部署方法的一个主要限制是，在每个群集节点上只能调度<strong>单个NGINX Ingress控制器Pod</strong>，因为从技术上讲，在同一网络接口上多次绑定同一端口是不可能的。由于这种情况只能每个节点启动唯一的pod</p>
-<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616989777-ea6ae9a1cfe64bb59c4146b2960b5229.jpeg"></p>
-<h3 id="扩展组件-推荐"><a href="#扩展组件-推荐" class="headerlink" title="扩展组件(推荐)"></a>扩展组件(推荐)</h3><p>此部署方法需要第三方扩展组件为Kubernetes集群提供公共入口点。该组件可以是硬件（例如供应商设备）或软件（例如<strong>HAproxy</strong>），并且通常由运营团队在Kubernetes领域之外进行管理。</p>
-<p>这种部署建立在上面“基于NodePort服务”中描述的NodePort服务的基础上，有一个显着的区别：外部客户端不直接访问群集节点，只有边缘组件可以访问。这特别适用于没有任何节点具有公共IP地址的私有Kubernetes集群。</p>
-<p>在组件方面，唯一的要求是专用于将所有HTTP请求转发到Kubernetes节点和/或主节点的公共IP地址。TCP端口80和443上的传入流量被转发到目标节点上的相应HTTP和HTTPS NodePort，如下图所示：</p>
-<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616989778-954a07cead8aa4a4610eb1727ccdd279.jpeg"></p>
-]]></content>
-      <categories>
-        <category>Kubernetes</category>
-      </categories>
-      <tags>
-        <tag>Kubernetes</tag>
-        <tag>IngressNginx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>二战纳粹德国T4计划</title>
-    <url>/Other/%E5%8E%86%E5%8F%B2/%E4%BA%8C%E6%88%98/nazi-germany-t4-plan/</url>
-    <content><![CDATA[<p>二战期间德国纳粹对犹太人进行了大规模的屠杀，因为在希特勒和纳粹眼中，犹太人是世界上最为低劣，下等的民族。而为了改善本民族血统，让日耳曼成为世界上最优秀的民族，从1939年开始，纳粹推行了罪恶的T4计划。</p>
-<p><img src="https://t12.baidu.com/it/u=3286440359,3847592051&fm=173&app=25&f=JPEG?w=500&h=400&s=ECC27A2384630FAD9385A9130100C090"></p>
-<p>1939年德国入侵波兰后不久，希特勒召见了首府办公厅主任菲利普·比勒和党卫军卫生部门负责人卡尔·勃兰特、莱奥纳多·康蒂，并向他们下达消灭国内重残病人的命令。</p>
-<p>希特勒认为，重残病人会污染日耳曼优秀的血统，这些人没有存在的价值，只会占据着大批病房，造成许多光荣负伤的战士得不到医治，所以这些重残病人应该为战争付出牺牲。</p>
-<p>为了完成希特勒的命令，纳粹开始秘密实行T4计划，希特勒主张采用使用毒气，将那些重残病人进行安乐死。根据这一计划，纳粹将精神病院，疗养院，儿科诊所等略加改造成为了消灭重残病人的刑场。</p>
-<p>同时，在纳粹的号召之下，无数年轻的德国女子穿上护士服，加入到了T4护士组，在培训掌握用医疗手段杀人技术后，奔赴各个疗养院进行工作。</p>
-<p><img src="https://t11.baidu.com/it/u=2869977838,3450023173&fm=173&app=25&f=JPEG?w=421&h=218&s=A8E27A230CF86596DBBC24DA01008091"></p>
-<p>据统计自1940年开始，T4护士组成立后半年内，便残害了10万精神病患者，重残病人。这其中还包括不少患有天生疾病的儿童，他们在护士的诱骗下注射服用毒剂。</p>
-<p>幸运的是，因为T4计划都是在大城市内的医院进行，因此，受害者被焚尸后产生的带有特殊臭味的黑烟，往往引起周围居民的怀疑。最终计划被泄露，遭到德国人抵制下，希特勒颁布停止T4计划的命令。</p>
-]]></content>
-      <categories>
-        <category>Other</category>
-        <category>历史</category>
-        <category>二战</category>
-      </categories>
-  </entry>
-  <entry>
     <title>kubeadm搭建Kubernetes集群</title>
     <url>/Kubernetes/kubeadm-build-kubernetes-cluster/</url>
     <content><![CDATA[<p>官方文档</p>
@@ -807,6 +693,167 @@
       </tags>
   </entry>
   <entry>
+    <title>Kubernetes安装IngressNginx</title>
+    <url>/Kubernetes/kubernetes-install-ingressnginx/</url>
+    <content><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.44.0/deploy/static/provider/baremetal/deploy.yaml</span><br></pre></td></tr></table></figure>
+
+<p>部署完，我们查看一下状态</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616755596-image.png"></p>
+<p>对应的service和deployment已经创建完毕，并且service以NodePort方式对外开放了32756端口</p>
+<h2 id="部署tomcat进行测试"><a href="#部署tomcat进行测试" class="headerlink" title="部署tomcat进行测试"></a>部署tomcat进行测试</h2><p>我准备了yaml文件，部署一个tomcat，并指定host信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: tomcat</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: tomcat</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      name: tomcat</span><br><span class="line">      labels:</span><br><span class="line">        app: tomcat</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">        - name: nginx</span><br><span class="line">          image: tomcat:6.0</span><br><span class="line">          ports:</span><br><span class="line">             - containerPort: 8080</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: tomcat</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    app: tomcat</span><br><span class="line">  ports:</span><br><span class="line">    - name: tomcat</span><br><span class="line">      protocol: TCP</span><br><span class="line">      port: 8080</span><br><span class="line">      targetPort: 8080</span><br><span class="line">---</span><br><span class="line">apiVersion: networking.k8s.io/v1beta1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: ingress-tomcat</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">    - host: tomcat.custom.com</span><br><span class="line">      http:</span><br><span class="line">        paths: </span><br><span class="line">          - path: /</span><br><span class="line">            backend:</span><br><span class="line">              serviceName: tomcat</span><br><span class="line">              servicePort: 8080</span><br></pre></td></tr></table></figure>
+
+<p>部署到集群</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kubectl apply -f tomcat.yaml</span><br></pre></td></tr></table></figure>
+
+<p>等部署完毕后，我们访问一下<a href="http://tomcat.custom.com:32756/%EF%BC%8Ctomcat.custom.com%E9%9A%8F%E6%84%8F%E6%98%A0%E5%B0%84%E9%9B%86%E7%BE%A4%E4%BB%BB%E4%BD%95%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9%E5%B0%B1%E5%8F%AF%E4%BB%A5">http://tomcat.custom.com:32756/，tomcat.custom.com随意映射集群任何一个节点就可以</a></p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616757837-image.png"></p>
+<p>说明ingressNginx已经成功代理了我们的域名服务</p>
+<p>但是还有一个我们访问的端口是ingressnginx生成的NodePort接口，我们更希望直接代理到80端口上，这种情况怎么处理呢</p>
+<p><a href="https://kubernetes.github.io/ingress-nginx/deploy/baremetal/">官方</a>给出了几种解决方法，我们来看一下</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><h3 id="通过NodePort服务"><a href="#通过NodePort服务" class="headerlink" title="通过NodePort服务"></a>通过NodePort服务</h3><p><strong>NodePort</strong>通过<strong>kube-proxy</strong>组件在每个主机节点上公开<strong>相同的非特权</strong>端口（默认值：30000-32767）。</p>
+<p>可以使用**–service-node-port-range<strong>API服务器标志重新配置NodePort范围以包括非特权端口并能够公开端口80和443听起来很诱人，但这样做可能会导致意外问题，包括（但不限于）使用否则保留给其他用户使用的端口系统守护程序，以及授予</strong>kube-proxy**它可能不需要的特权。</p>
+<p>这种方式可以指定监听80端口，但是<strong>不鼓励</strong>这种做法。</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616758664-40c23cd97a05b731ee2f84a3ae601646.jpeg"></p>
+<h3 id="主机网络"><a href="#主机网络" class="headerlink" title="主机网络"></a>主机网络</h3><p>可以将Pod配置<strong>ingress-nginx</strong>为使用其运行的主机的网络，而不是kubenetes内部网络。这种方法的好处是，NGINX Ingress控制器可以将端口80和443直接绑定到Kubernetes节点的网络接口，而无需由NodePort Services施加额外的网络转换。</p>
+<p>这可以通过启用<strong>hostNetwork</strong>Pods规范中的选项来实现。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">template:   </span><br><span class="line">  spec:     </span><br><span class="line">    hostNetwork: true</span><br></pre></td></tr></table></figure>
+
+<p>此部署方法的一个主要限制是，在每个群集节点上只能调度<strong>单个NGINX Ingress控制器Pod</strong>，因为从技术上讲，在同一网络接口上多次绑定同一端口是不可能的。由于这种情况只能每个节点启动唯一的pod</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616989777-ea6ae9a1cfe64bb59c4146b2960b5229.jpeg"></p>
+<h3 id="扩展组件-推荐"><a href="#扩展组件-推荐" class="headerlink" title="扩展组件(推荐)"></a>扩展组件(推荐)</h3><p>此部署方法需要第三方扩展组件为Kubernetes集群提供公共入口点。该组件可以是硬件（例如供应商设备）或软件（例如<strong>HAproxy</strong>），并且通常由运营团队在Kubernetes领域之外进行管理。</p>
+<p>这种部署建立在上面“基于NodePort服务”中描述的NodePort服务的基础上，有一个显着的区别：外部客户端不直接访问群集节点，只有边缘组件可以访问。这特别适用于没有任何节点具有公共IP地址的私有Kubernetes集群。</p>
+<p>在组件方面，唯一的要求是专用于将所有HTTP请求转发到Kubernetes节点和/或主节点的公共IP地址。TCP端口80和443上的传入流量被转发到目标节点上的相应HTTP和HTTPS NodePort，如下图所示：</p>
+<p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616989778-954a07cead8aa4a4610eb1727ccdd279.jpeg"></p>
+]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>Kubernetes</tag>
+        <tag>IngressNginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二战纳粹德国T4计划</title>
+    <url>/Other/%E5%8E%86%E5%8F%B2/%E4%BA%8C%E6%88%98/nazi-germany-t4-plan/</url>
+    <content><![CDATA[<p>二战期间德国纳粹对犹太人进行了大规模的屠杀，因为在希特勒和纳粹眼中，犹太人是世界上最为低劣，下等的民族。而为了改善本民族血统，让日耳曼成为世界上最优秀的民族，从1939年开始，纳粹推行了罪恶的T4计划。</p>
+<p><img src="https://t12.baidu.com/it/u=3286440359,3847592051&fm=173&app=25&f=JPEG?w=500&h=400&s=ECC27A2384630FAD9385A9130100C090"></p>
+<p>1939年德国入侵波兰后不久，希特勒召见了首府办公厅主任菲利普·比勒和党卫军卫生部门负责人卡尔·勃兰特、莱奥纳多·康蒂，并向他们下达消灭国内重残病人的命令。</p>
+<p>希特勒认为，重残病人会污染日耳曼优秀的血统，这些人没有存在的价值，只会占据着大批病房，造成许多光荣负伤的战士得不到医治，所以这些重残病人应该为战争付出牺牲。</p>
+<p>为了完成希特勒的命令，纳粹开始秘密实行T4计划，希特勒主张采用使用毒气，将那些重残病人进行安乐死。根据这一计划，纳粹将精神病院，疗养院，儿科诊所等略加改造成为了消灭重残病人的刑场。</p>
+<p>同时，在纳粹的号召之下，无数年轻的德国女子穿上护士服，加入到了T4护士组，在培训掌握用医疗手段杀人技术后，奔赴各个疗养院进行工作。</p>
+<p><img src="https://t11.baidu.com/it/u=2869977838,3450023173&fm=173&app=25&f=JPEG?w=421&h=218&s=A8E27A230CF86596DBBC24DA01008091"></p>
+<p>据统计自1940年开始，T4护士组成立后半年内，便残害了10万精神病患者，重残病人。这其中还包括不少患有天生疾病的儿童，他们在护士的诱骗下注射服用毒剂。</p>
+<p>幸运的是，因为T4计划都是在大城市内的医院进行，因此，受害者被焚尸后产生的带有特殊臭味的黑烟，往往引起周围居民的怀疑。最终计划被泄露，遭到德国人抵制下，希特勒颁布停止T4计划的命令。</p>
+]]></content>
+      <categories>
+        <category>Other</category>
+        <category>历史</category>
+        <category>二战</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CentOS安装Docker</title>
+    <url>/Linux/centos-install-docker/</url>
+    <content><![CDATA[<h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><h4 id="系统要求"><a href="#系统要求" class="headerlink" title="系统要求"></a>系统要求</h4><p>安装Docker,推荐使用CentOS 7 或者 8 的稳定版本</p>
+<h4 id="卸载旧版本"><a href="#卸载旧版本" class="headerlink" title="卸载旧版本"></a>卸载旧版本</h4><p>如果已经安装了旧版本的Docker,或者不清楚是否已经安装了Docker想要重新安装最新版本,需要先卸载旧版本</p>
+<p>下面命令会卸载旧版本及相关依赖项</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>Docker的安装方式有以下几种,可以根据自身选择不同的安装方式</p>
+<ol>
+<li>设置 yum 仓库的方式安装,这种方式安装比较简单,有利于后续版本升级,也是<strong>最推荐</strong>的一种安装方式</li>
+<li>如果你希望手动管理升级,或者安装时没有网络,则可以选择RPM安装包的方式</li>
+<li>在测试环境,或者希望快速搭建Docker环境,可以使用一键安装脚本进行安装</li>
+</ol>
+<h4 id="仓库方式"><a href="#仓库方式" class="headerlink" title="仓库方式"></a>仓库方式</h4><p><strong>设置仓库</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 安装yum工具包,提供了一些管理工具</span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line"># 增加docker仓库源</span><br><span class="line"> sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+
+<p>有些仓库模式是禁用状态,如果你有需要可以手动开启</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum-config-manager --enable docker-ce-nightly</span><br><span class="line">sudo yum-config-manager --enable docker-ce-test</span><br></pre></td></tr></table></figure>
+
+<p><strong>安装</strong></p>
+<p>安装最新版本,可以直接执行以下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum -y install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
+
+<p>对版本有要求,想要安装指定版本,可以执行以下命令列出所有版本</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yum list docker-ce --showduplicates | sort -r</span><br><span class="line"></span><br><span class="line">docker-ce.x86_64  3:18.09.1-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64  3:18.09.0-3.el7                     docker-ce-stable</span><br><span class="line">docker-ce.x86_64  18.06.1.ce-3.el7                    docker-ce-stable</span><br><span class="line">docker-ce.x86_64  18.06.0.ce-3.el7                    docker-ce-stable</span><br></pre></td></tr></table></figure>
+
+<p>可以选择需要的版本,然后安装指定的版本,例如 docker-ce-18.09.1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum -y install docker-ce-&lt;VERSION_STRING&gt; docker-ce-cli-&lt;VERSION_STRING&gt; containerd.io</span><br></pre></td></tr></table></figure>
+
+<h4 id="RPM方式"><a href="#RPM方式" class="headerlink" title="RPM方式"></a>RPM方式</h4><p><strong>下载RPM安装包</strong></p>
+<p>跳转到<a href="https://download.docker.com/linux/centos/">https://download.docker.com/linux/centos/</a> 选择对应的CentOS版本,然后进入x86_64 /stable/Packages/目录下选择要安装的对应版本的RPM安装包</p>
+<p><strong>安装</strong></p>
+<p>将RPM安装包上传到服务器,然后执行以下命令进行安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo yum install /path/to/package.rpm</span><br></pre></td></tr></table></figure>
+
+<h4 id="一键安装包方式"><a href="#一键安装包方式" class="headerlink" title="一键安装包方式"></a>一键安装包方式</h4><p>官方为了简化Docker的安装步骤,提供了一键安装包方式,但是不建议在生产环境中使用,如果为了测试或者快速搭建,可以选择此安装方式</p>
+<p><strong>潜在风险</strong></p>
+<ol>
+<li>脚本需要运行root或具有sudo特权。因此，在运行脚本之前，应仔细检查和审核脚本。</li>
+<li>这些脚本尝试检测Linux发行版和版本，并为您配置软件包管理系统。此外，脚本不允许您自定义任何安装参数。</li>
+<li>这些脚本将安装软件包管理器的所有依赖项和建议，而无需进行确认。根据主机的当前配置，这可能会安装大量软件包。</li>
+<li>该脚本未提供用于指定要安装哪个版本的Docker的选项，而是安装了发布的最新版本。</li>
+<li>如果已经使用其他方式在主机上安装了Docker，请不要使用便捷脚本。</li>
+</ol>
+<p><strong>安装</strong></p>
+<p>执行以下命令进行安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com -o get-docker.sh</span><br><span class="line">sudo sh get-docker.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><h4 id="启动Docker"><a href="#启动Docker" class="headerlink" title="启动Docker"></a>启动Docker</h4><p>执行以下命令启动Docker</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 将Docker加入开启自启动</span><br><span class="line">sudo systemctl enable docker</span><br><span class="line"># 启动Docker</span><br><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="验证Docker"><a href="#验证Docker" class="headerlink" title="验证Docker"></a>验证Docker</h4><p>Docker启动成功后,可以运行以下命令验证运行状态,保证Docker已经成功启动</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker version</span><br><span class="line"></span><br><span class="line">Client: Docker Engine - Community</span><br><span class="line"> Cloud integration: 1.0.7</span><br><span class="line"> Version:           20.10.2</span><br><span class="line"> API version:       1.41</span><br><span class="line"> Go version:        go1.13.15</span><br><span class="line"> Git commit:        2291f61</span><br><span class="line"> Built:             Mon Dec 28 16:12:42 2020</span><br><span class="line"> OS/Arch:           darwin/amd64</span><br><span class="line"> Context:           default</span><br><span class="line"> Experimental:      true</span><br><span class="line"></span><br><span class="line">Server: Docker Engine - Community</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          20.10.2</span><br><span class="line">  API version:      1.41 (minimum version 1.12)</span><br><span class="line">  Go version:       go1.13.15</span><br><span class="line">  Git commit:       8891c58</span><br><span class="line">  Built:            Mon Dec 28 16:15:28 2020</span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     false</span><br><span class="line"> containerd:</span><br><span class="line">  Version:          1.4.3</span><br><span class="line">  GitCommit:        269548fa27e0089a8b8278fc4fc781d7f65a939b</span><br><span class="line"> runc:</span><br><span class="line">  Version:          1.0.0-rc92</span><br><span class="line">  GitCommit:        ff819c7e9184c13b7c2607fe6c30ae19403a7aff</span><br><span class="line"> docker-init:</span><br><span class="line">  Version:          0.19.0</span><br><span class="line">  GitCommit:        de40ad0</span><br></pre></td></tr></table></figure>
+
+<p>Docker有服务端和客户端,两个全部成功打印说明启动成功</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>美国陆军第442步兵团</title>
+    <url>/Other/%E5%8E%86%E5%8F%B2/%E4%BA%8C%E6%88%98/us-442-infantry-regiment/</url>
+    <content><![CDATA[<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>美国陆军第442步兵团，正式编成于1943年4月，主要由日裔美国人组成，下辖第100独立步兵营、第522炮兵营，第232战斗工兵连等部队，隶属于第五军，主要战斗于意大利战场，是二战美军中著名的日裔战斗单位。</p>
+<p>这支部队在组建前曾饱受歧视，却也是二战中美军伤亡率最高的步兵团，也是美国陆军历史上获得荣誉最多的团级部队。</p>
+<h2 id="奖章"><a href="#奖章" class="headerlink" title="奖章"></a>奖章</h2><p>以日裔美国人组成的第442步兵团。编制只有3800人的第442团在整个二战共获得7次总统部队嘉奖（101空降师也只获得2次、陆战1师3次）、21枚荣誉勋章（其中20枚为战后追授，整个二战包括战后追授美军荣誉勋章总共只颁发464枚）、52枚优秀服役十字勋章（包括19枚后来转为荣誉勋章，美军整个二战共颁发5千枚优秀服役十字勋章）、1枚优秀服役勋章、560枚银星勋章、22枚军团优异勋章、15枚士兵勋章、4000枚铜星勋章（包括1枚后来转为荣誉勋章）、9486枚紫星勋章等。442步兵团的第100步兵营则被誉为“紫星营”。</p>
+<h2 id="作战经历"><a href="#作战经历" class="headerlink" title="作战经历"></a>作战经历</h2><p>在12月7日的珍珠港事件后，美国上下陷入了一种歇斯底里的气氛中无法自拔，当美国人开始向日本进行报复之前，日裔美国人却成为了复仇的对象。高达12万日裔美国人被强迫离开家园，而被关押在了集中营里包括了老人和孩子。</p>
+<p>在事件之前，许多第二代日裔美国人（Nisei）服务于夏威夷第298和299国民警卫步兵营。当然，在美日战争爆发后，美军当局也当然地判定这些人绝对不适宜继续逗留在夏威夷地区。按当时美军动听的说法，“我们并不是歧视他们，而是这里不仅不适合他们，也难以想象他们如何去在这个战场去战斗。”</p>
+<p>这些在第298和299国民警卫步兵营服役的日裔士兵们随即被扫除出了这两个部队，而被调派到了匆匆成立的“夏威夷临时步兵营”（Hawaiian Provisional Infantry Battalion）。</p>
+<p>军方对些日裔士兵的处理颇感头痛，一方面表示了对他们的极度不信任，一方面又不敢将他们遣散，因为当时不少人认为将这些熟悉美军内部事务又有很强军事能力的日裔士兵放出军营的危险太大。思前想后，陆军部最后决定把他们派往欧洲战场。</p>
+<p>1942年7月，夏威夷临时步兵营的士兵们在奥克兰登陆，在那里他们又被改编成了“第100独立步兵营”（100th Infantry Battalion Separate)。他们同时在那里接受欧战的战斗训练，直到1943年2月。</p>
+<p>同年3月，第100独立步兵营参加了北非作战，在阿尔及利亚的奥兰登陆。就在这些日裔士兵踏上北非土地的时候为他们的国家而战的时候，他们之中大部人的家属仍被扣留在集中营过着近乎囚犯的生活。</p>
+<p>在北非，第100独立步兵营并没有遭遇什么大的战斗，到了9月第100独立步兵营被划归第34步兵师的第113步兵团。很明显同师的其他部队并不怎么欢迎这群美国人中的“异类”，很快就为他们起了一个外号“土拨鼠营”，平日也是屡屡受到刁难。</p>
+<p>同月22日，第100独立步兵营参加了对意大利萨拉莫的作为34师的一部分参加了登陆战，这也是他们遇到的第一次激烈战斗。当日的一等兵Shizuya Hayashi回忆道“敌人的岸防炮火如此猛烈，好几次炮弹就在我的身边爆炸，之后自己如同是被埋在土里一样。”</p>
+<p>然而这只是第100独立步兵营血腥战斗的开始，在从萨拉莫到罗马推进的战役中，他们开始饱尝战争的残酷尤其是在卡斯诺战役（Cassino）中，他们被派往作为突击部队，第100独立步兵营的在进行了2次突击后，成功撕裂了敌方防线。然而他们之中阵亡48人，重伤144人，另有75人轻伤。</p>
+<p>在萨拉莫登陆的时候第100独立步兵营为1300人整编，而在到达罗马后只剩下了521人还能够继续战斗，成为了34步兵师中伤亡比率最高的部队。随着他们的英勇战斗，他们也开始赢得了尊重获得另一个新的外号“紫星营”。到了1944年4月，由全部日裔组成的第442步兵团编成并抵达了欧洲战场，第100独立步兵营被调往其下。</p>
+<p>100步兵营在密西西比的西尔菲营地集训时，442团就成立了，时间好像是1943年1月，成立442团是罗斯福的主意，罗斯福宣布这个命令的时候说了一句很脍炙人口的话：“美国精神不是，也永远不是种族主义和血统论的温床。（Americanism is not, and never was, a mater of race or ancestry）”</p>
+<p>442团和100步兵营在一起的时候不长，两个部队中的成员分为两派，来自夏威夷的为一派，来自美国大陆的“二世”为一派，二世们称夏威夷来的为“说蹩足英语的猪脑袋”，而夏威夷来的则回敬“二世”们是“死脑筋”，两派人为此没少在营地里打架。</p>
+<p>第442步兵团可能是二战中最为著名的日裔战斗团体,下辖第522炮兵营，第232战斗工兵连及另外三个步兵营，以及之后加入的第100独立步兵营。1944年5月，第442步兵团到达了意大利战场，成为了克拉克将军的第5军的一部分。</p>
+<p>他们中的大部分在萨维托（Suvereto）接受了首次炮火洗礼，做出了坚强的战斗，颇为引人注目。之后他们开始与德国山地部队在意大利的山丘地带展开了持续2个月的拉锯战斗，最终成功地将德国人驱赶到了亚诺河以北。这群小个子士兵的战斗力，让德军吃惊不小。</p>
+<p>同年10月至11月，第442步兵团被派往转战法国东北部，被划归第36步兵师。当他们刚到达就加入了瓦斯杰斯战役（Vosges），他们为了拯救遭到大批德军包围200名来自德克萨斯步兵的时候，付出了将近700人的伤亡，把这些被冻得发僵的德州牛仔硬是从鬼门关救了出来。</p>
+<p>按Yeiki Kobashigawa少尉的说法，“我们几乎是用三条人命救出了每一个人。”之后，第442步兵团事后被叫作“德克萨斯的拯救者”。第442团的士兵们大胆发起“万岁冲锋”（banzai charge)，也就是美军不敢尝试的自杀式冲锋一举突破德军防线。</p>
+<p>1945年4月，第442步兵团又被调回了意大利战场，被命令去进攻德军的哥特防线（German Gothic Line），这条防线足足抵挡了盟军的6个月的进攻。然而在这些由日裔组成的第442步兵团的迅猛攻击下，不到一天他们就已经渗透了德军的这条防线。</p>
+<p>之后的三个礼拜中，一路把德军驱赶到了波河流域（Po Valley），让克拉克将军看得目瞪口呆。到了5月2日，满脸疑惑的德军向这群长着黄种人面孔，平均身高矮他们一头的少见的美军士兵正式投降缴械。</p>
+<p>在二战结束后，第442步兵团成为第五军最出色的部队之一，被选派到了华盛顿特区参加了1946独立日的阅兵仪式。当日的美国总统杜鲁门很有感触地对些士兵说到“你们不仅仅要和残酷的敌人作战，还要面对友军的歧视，然而你们战胜了这一切。”</p>
+<h2 id="荣誉"><a href="#荣誉" class="headerlink" title="荣誉"></a>荣誉</h2><p>美国参众两院领导层日前宣布，根据奥巴马签署的第S.1055号总统令将于2011年11月2日举行仪式，向第二次世界大战中在欧洲英勇参战的日裔部队授予美国平民的最高荣誉—国会金质勋章。</p>
+<p>报道称，获得此项殊荣的是美国陆军第442步兵团，及军事情报机构（MIS）。</p>
+<p>在2000年6月，美国官方还曾经一次性向这支部队追授了20枚美国最高军事奖励——荣誉勋章。授勋日裔第442团在二战期间共有18143人次获颁各种勋奖章，其中包括7次总统部队嘉奖（美军著名的101空降师只获得2次，陆战1师仅获得3次）、21枚荣誉勋章、52枚优秀服役十字勋章、1枚优秀服役勋章、560枚银星勋章、22枚军团优异勋章、15枚士兵勋章、4000枚铜星勋章、9486枚紫星勋章等。442团成为了美国陆军历史上获得荣誉最多的团级部队。</p>
+]]></content>
+      <categories>
+        <category>Other</category>
+        <category>历史</category>
+        <category>二战</category>
+      </categories>
+  </entry>
+  <entry>
     <title>苏联间谍之王理查德·佐尔格</title>
     <url>/Other/%E5%8E%86%E5%8F%B2/%E4%BA%8C%E6%88%98/richard-sorge/</url>
     <content><![CDATA[<p>苏联间谍理查德·佐尔格被人们称为“红色谍王”，奉斯大林的命令潜入日本进行谍报工作，为斯大林提供了大量详实可信的情报。用一封电报改变世界历史格局的传奇人物。</p>
@@ -851,52 +898,5 @@
         <category>历史</category>
         <category>二战</category>
       </categories>
-  </entry>
-  <entry>
-    <title>美国陆军第442步兵团</title>
-    <url>/Other/%E5%8E%86%E5%8F%B2/%E4%BA%8C%E6%88%98/us-442-infantry-regiment/</url>
-    <content><![CDATA[<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>美国陆军第442步兵团，正式编成于1943年4月，主要由日裔美国人组成，下辖第100独立步兵营、第522炮兵营，第232战斗工兵连等部队，隶属于第五军，主要战斗于意大利战场，是二战美军中著名的日裔战斗单位。</p>
-<p>这支部队在组建前曾饱受歧视，却也是二战中美军伤亡率最高的步兵团，也是美国陆军历史上获得荣誉最多的团级部队。</p>
-<h2 id="奖章"><a href="#奖章" class="headerlink" title="奖章"></a>奖章</h2><p>以日裔美国人组成的第442步兵团。编制只有3800人的第442团在整个二战共获得7次总统部队嘉奖（101空降师也只获得2次、陆战1师3次）、21枚荣誉勋章（其中20枚为战后追授，整个二战包括战后追授美军荣誉勋章总共只颁发464枚）、52枚优秀服役十字勋章（包括19枚后来转为荣誉勋章，美军整个二战共颁发5千枚优秀服役十字勋章）、1枚优秀服役勋章、560枚银星勋章、22枚军团优异勋章、15枚士兵勋章、4000枚铜星勋章（包括1枚后来转为荣誉勋章）、9486枚紫星勋章等。442步兵团的第100步兵营则被誉为“紫星营”。</p>
-<h2 id="作战经历"><a href="#作战经历" class="headerlink" title="作战经历"></a>作战经历</h2><p>在12月7日的珍珠港事件后，美国上下陷入了一种歇斯底里的气氛中无法自拔，当美国人开始向日本进行报复之前，日裔美国人却成为了复仇的对象。高达12万日裔美国人被强迫离开家园，而被关押在了集中营里包括了老人和孩子。</p>
-<p>在事件之前，许多第二代日裔美国人（Nisei）服务于夏威夷第298和299国民警卫步兵营。当然，在美日战争爆发后，美军当局也当然地判定这些人绝对不适宜继续逗留在夏威夷地区。按当时美军动听的说法，“我们并不是歧视他们，而是这里不仅不适合他们，也难以想象他们如何去在这个战场去战斗。”</p>
-<p>这些在第298和299国民警卫步兵营服役的日裔士兵们随即被扫除出了这两个部队，而被调派到了匆匆成立的“夏威夷临时步兵营”（Hawaiian Provisional Infantry Battalion）。</p>
-<p>军方对些日裔士兵的处理颇感头痛，一方面表示了对他们的极度不信任，一方面又不敢将他们遣散，因为当时不少人认为将这些熟悉美军内部事务又有很强军事能力的日裔士兵放出军营的危险太大。思前想后，陆军部最后决定把他们派往欧洲战场。</p>
-<p>1942年7月，夏威夷临时步兵营的士兵们在奥克兰登陆，在那里他们又被改编成了“第100独立步兵营”（100th Infantry Battalion Separate)。他们同时在那里接受欧战的战斗训练，直到1943年2月。</p>
-<p>同年3月，第100独立步兵营参加了北非作战，在阿尔及利亚的奥兰登陆。就在这些日裔士兵踏上北非土地的时候为他们的国家而战的时候，他们之中大部人的家属仍被扣留在集中营过着近乎囚犯的生活。</p>
-<p>在北非，第100独立步兵营并没有遭遇什么大的战斗，到了9月第100独立步兵营被划归第34步兵师的第113步兵团。很明显同师的其他部队并不怎么欢迎这群美国人中的“异类”，很快就为他们起了一个外号“土拨鼠营”，平日也是屡屡受到刁难。</p>
-<p>同月22日，第100独立步兵营参加了对意大利萨拉莫的作为34师的一部分参加了登陆战，这也是他们遇到的第一次激烈战斗。当日的一等兵Shizuya Hayashi回忆道“敌人的岸防炮火如此猛烈，好几次炮弹就在我的身边爆炸，之后自己如同是被埋在土里一样。”</p>
-<p>然而这只是第100独立步兵营血腥战斗的开始，在从萨拉莫到罗马推进的战役中，他们开始饱尝战争的残酷尤其是在卡斯诺战役（Cassino）中，他们被派往作为突击部队，第100独立步兵营的在进行了2次突击后，成功撕裂了敌方防线。然而他们之中阵亡48人，重伤144人，另有75人轻伤。</p>
-<p>在萨拉莫登陆的时候第100独立步兵营为1300人整编，而在到达罗马后只剩下了521人还能够继续战斗，成为了34步兵师中伤亡比率最高的部队。随着他们的英勇战斗，他们也开始赢得了尊重获得另一个新的外号“紫星营”。到了1944年4月，由全部日裔组成的第442步兵团编成并抵达了欧洲战场，第100独立步兵营被调往其下。</p>
-<p>100步兵营在密西西比的西尔菲营地集训时，442团就成立了，时间好像是1943年1月，成立442团是罗斯福的主意，罗斯福宣布这个命令的时候说了一句很脍炙人口的话：“美国精神不是，也永远不是种族主义和血统论的温床。（Americanism is not, and never was, a mater of race or ancestry）”</p>
-<p>442团和100步兵营在一起的时候不长，两个部队中的成员分为两派，来自夏威夷的为一派，来自美国大陆的“二世”为一派，二世们称夏威夷来的为“说蹩足英语的猪脑袋”，而夏威夷来的则回敬“二世”们是“死脑筋”，两派人为此没少在营地里打架。</p>
-<p>第442步兵团可能是二战中最为著名的日裔战斗团体,下辖第522炮兵营，第232战斗工兵连及另外三个步兵营，以及之后加入的第100独立步兵营。1944年5月，第442步兵团到达了意大利战场，成为了克拉克将军的第5军的一部分。</p>
-<p>他们中的大部分在萨维托（Suvereto）接受了首次炮火洗礼，做出了坚强的战斗，颇为引人注目。之后他们开始与德国山地部队在意大利的山丘地带展开了持续2个月的拉锯战斗，最终成功地将德国人驱赶到了亚诺河以北。这群小个子士兵的战斗力，让德军吃惊不小。</p>
-<p>同年10月至11月，第442步兵团被派往转战法国东北部，被划归第36步兵师。当他们刚到达就加入了瓦斯杰斯战役（Vosges），他们为了拯救遭到大批德军包围200名来自德克萨斯步兵的时候，付出了将近700人的伤亡，把这些被冻得发僵的德州牛仔硬是从鬼门关救了出来。</p>
-<p>按Yeiki Kobashigawa少尉的说法，“我们几乎是用三条人命救出了每一个人。”之后，第442步兵团事后被叫作“德克萨斯的拯救者”。第442团的士兵们大胆发起“万岁冲锋”（banzai charge)，也就是美军不敢尝试的自杀式冲锋一举突破德军防线。</p>
-<p>1945年4月，第442步兵团又被调回了意大利战场，被命令去进攻德军的哥特防线（German Gothic Line），这条防线足足抵挡了盟军的6个月的进攻。然而在这些由日裔组成的第442步兵团的迅猛攻击下，不到一天他们就已经渗透了德军的这条防线。</p>
-<p>之后的三个礼拜中，一路把德军驱赶到了波河流域（Po Valley），让克拉克将军看得目瞪口呆。到了5月2日，满脸疑惑的德军向这群长着黄种人面孔，平均身高矮他们一头的少见的美军士兵正式投降缴械。</p>
-<p>在二战结束后，第442步兵团成为第五军最出色的部队之一，被选派到了华盛顿特区参加了1946独立日的阅兵仪式。当日的美国总统杜鲁门很有感触地对些士兵说到“你们不仅仅要和残酷的敌人作战，还要面对友军的歧视，然而你们战胜了这一切。”</p>
-<h2 id="荣誉"><a href="#荣誉" class="headerlink" title="荣誉"></a>荣誉</h2><p>美国参众两院领导层日前宣布，根据奥巴马签署的第S.1055号总统令将于2011年11月2日举行仪式，向第二次世界大战中在欧洲英勇参战的日裔部队授予美国平民的最高荣誉—国会金质勋章。</p>
-<p>报道称，获得此项殊荣的是美国陆军第442步兵团，及军事情报机构（MIS）。</p>
-<p>在2000年6月，美国官方还曾经一次性向这支部队追授了20枚美国最高军事奖励——荣誉勋章。授勋日裔第442团在二战期间共有18143人次获颁各种勋奖章，其中包括7次总统部队嘉奖（美军著名的101空降师只获得2次，陆战1师仅获得3次）、21枚荣誉勋章、52枚优秀服役十字勋章、1枚优秀服役勋章、560枚银星勋章、22枚军团优异勋章、15枚士兵勋章、4000枚铜星勋章、9486枚紫星勋章等。442团成为了美国陆军历史上获得荣誉最多的团级部队。</p>
-]]></content>
-      <categories>
-        <category>Other</category>
-        <category>历史</category>
-        <category>二战</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>.gitlab-ci.yml示例</title>
-    <url>/Linux/gitlab-ci.yml/</url>
-    <content><![CDATA[<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#定义 stages（阶段）。任务将按此顺序执行。</span><br><span class="line">stages: </span><br><span class="line">     - build </span><br><span class="line">     - test </span><br><span class="line">     - deploy </span><br><span class="line"></span><br><span class="line">#定义 job（任务）</span><br><span class="line">job1: </span><br><span class="line">     stage: test </span><br><span class="line">     tags: </span><br><span class="line">         - XX    #只有标签为XX的runner才会执行这个任务 </span><br><span class="line">     only: </span><br><span class="line">         - dev   #只有dev分支提交代码才会执行这个任务。也可以是分支名称或触发器名称 </span><br><span class="line">         - /^future-.*$/     #正则表达式，只有future-开头的分支才会执行 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job1&quot; </span><br><span class="line">         - echo &quot;I am in test stage&quot; </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">job2: </span><br><span class="line">     stage: test     #如果此处没有定义stage，其默认也是test </span><br><span class="line">     only: </span><br><span class="line">         - master    #只有master分支提交代码才会执行这个任务 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job2&quot; </span><br><span class="line">         - echo &quot;I am in test stage&quot; </span><br><span class="line">     allow_failure: true     #允许失败，即不影响下步构建 </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">job3: </span><br><span class="line">     stage: build </span><br><span class="line">     except: </span><br><span class="line">         - dev   #除了dev分支，其它分支提交代码都会执行这个任务 </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job3&quot; </span><br><span class="line">         - echo &quot;I am in build stage&quot; </span><br><span class="line">     when: always    #不管前面几步成功与否，永远会执行这一步。它有几个值：on_success （默认值）\on_failure\always\manual（手动执行） </span><br><span class="line"></span><br><span class="line">#定义 job</span><br><span class="line">.job4:      #对于临时不想执行的job，可以选择在前面加个&quot;.&quot;，这样就会跳过此步任务，否则你除了要注释掉这个jobj外，还需要注释上面为deploy的stage </span><br><span class="line">     stage: deploy </span><br><span class="line">     script: </span><br><span class="line">         - echo &quot;I am job4&quot; </span><br><span class="line"></span><br><span class="line">#模板，相当于公用函数，有重复任务时很有用</span><br><span class="line">.job_template: &amp;amp;job_definition      # 创建一个锚，&#x27;job_definition&#x27; </span><br><span class="line">     image: ruby:2.1 </span><br><span class="line">     services: </span><br><span class="line">         - postgres </span><br><span class="line">         - redis </span><br><span class="line"></span><br><span class="line">test1: </span><br><span class="line">     &amp;lt;&amp;lt;: *job_definition             # 利用锚&#x27;job_definition&#x27;来合并 </span><br><span class="line">     script: </span><br><span class="line">         - test1 project </span><br><span class="line"></span><br><span class="line">test2: </span><br><span class="line">     &amp;lt;&amp;lt;: *job_definition             # 利用锚&#x27;job_definition&#x27;来合并 </span><br><span class="line">     script: </span><br><span class="line">         - test2 project </span><br><span class="line"></span><br><span class="line">#下面几个都相当于全局变量，都可以添加到具体job中，这时会被子job的覆盖</span><br><span class="line">before_script: </span><br><span class="line">     - echo &quot;每个job之前都会执行&quot; </span><br><span class="line"> </span><br><span class="line">after_script: </span><br><span class="line">     - echo &quot;每个job之后都会执行&quot; </span><br><span class="line"> </span><br><span class="line">variables:      #变量 </span><br><span class="line">     DATABASE_URL: &quot;postgres://postgres@postgres/my_database&quot;    #在job中可以用$&#123;DATABASE_URL&#125;来使用这个变量。常用的预定义变量有CI_COMMIT_REF_NAME（项目所在的分支或标签名称），CI_JOB_NAME（任务名称），CI_JOB_STAGE（任务阶段） </span><br><span class="line">     GIT_STRATEGY: &quot;none&quot;    #GIT策略，定义拉取代码的方式，有3种：clone/fetch/none，默认为clone，速度最慢，每步job都会重新clone一次代码。我们一般将它设置为none，在具体任务里设置为fetch就可以满足需求，毕竟不是每步都需要新代码，那也不符合我们测试的流程 </span><br><span class="line"> </span><br><span class="line">cache:          #缓存 </span><br><span class="line">     #因为缓存为不同管道和任务间共享，可能会覆盖，所以有时需要设置key </span><br><span class="line">     key: $&#123;CI_COMMIT_REF_NAME&#125;                      # 启用每分支缓存。 </span><br><span class="line">     #key: &quot;$CI_JOB_NAME/$CI_COMMIT_REF_NAME&quot;        # 启用每个任务和每个分支缓存。需要注意的是，如果是在windows中运行这个脚本，需要把$换成% </span><br><span class="line">     untracked: true                                 #缓存所有Git未跟踪的文件 </span><br><span class="line">     paths:                                          #以下2个文件夹会被缓存起来，下次构建会解压出来 </span><br><span class="line">         - node_modules/ </span><br><span class="line">         - dist/</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>GitLab</tag>
-      </tags>
   </entry>
 </search>
