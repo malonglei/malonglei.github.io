@@ -52,7 +52,7 @@ job3:
          - echo "I am job4" 
 
 #模板，相当于公用函数，有重复任务时很有用
-.job_template: &amp;job_definition      # 创建一个锚，'job_definition' 
+.job_template: &job_definition      # 创建一个锚，'job_definition' 
      image: ruby:2.1 
      services: 
          - postgres 

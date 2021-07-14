@@ -88,7 +88,7 @@ cd pcre-8.44
 # 编译
 ./configure --prefix=/usr/local/pcre
 # 安装
-make &amp;&amp; make install
+make && make install
 ```
 
 ### 安装nginx
