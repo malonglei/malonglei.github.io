@@ -20,33 +20,28 @@
     var CONFIG = {"hostname":"www.malonglei.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitment","storage":true,"lazyload":false,"nav":null,"activeClass":"gitment"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="DecimalFormat1new DecimalFormat(&quot;,###&quot;).format(new BigDecimal(1234567890).longValue())  String.format1String.format(&quot;%,d&quot;,new BigDecimal(1234567890).longValue())  正则表达式1String.valu">
-<meta property="og:type" content="article">
-<meta property="og:title" content="JAVA实现数字千位分隔符">
-<meta property="og:url" content="https://www.malonglei.com/Java/java-number-separator/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="马大哈特勤局">
+<meta property="og:url" content="https://www.malonglei.com/page/11/index.html">
 <meta property="og:site_name" content="马大哈特勤局">
-<meta property="og:description" content="DecimalFormat1new DecimalFormat(&quot;,###&quot;).format(new BigDecimal(1234567890).longValue())  String.format1String.format(&quot;%,d&quot;,new BigDecimal(1234567890).longValue())  正则表达式1String.valu">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-07-13T09:44:03.137Z">
-<meta property="article:modified_time" content="2021-07-13T09:56:03.894Z">
 <meta property="article:author" content="Andy">
-<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://www.malonglei.com/Java/java-number-separator/">
+<link rel="canonical" href="https://www.malonglei.com/page/11/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
-    isPost : true,
+    isHome : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>JAVA实现数字千位分隔符 | 马大哈特勤局</title>
+  <title>马大哈特勤局</title>
   
 
 
@@ -187,14 +182,13 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content index posts-expand">
             
-
-    
+      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.malonglei.com/Java/java-number-separator/">
+    <link itemprop="mainEntityOfPage" href="https://www.malonglei.com/Linux/centos-install-jenkins/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://image.mllweb.com/avatar.jpg">
@@ -206,9 +200,10 @@
       <meta itemprop="name" content="马大哈特勤局">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          JAVA实现数字千位分隔符
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/Linux/centos-install-jenkins/" class="post-title-link" itemprop="url">CentOS安装Jenkins</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -218,7 +213,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-07-13 17:44:03 / 修改时间：17:56:03" itemprop="dateCreated datePublished" datetime="2021-07-13T17:44:03+08:00">2021-07-13</time>
+              <time title="创建时间：2021-07-13 17:57:21 / 修改时间：17:57:48" itemprop="dateCreated datePublished" datetime="2021-07-13T17:57:21+08:00">2021-07-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -226,7 +221,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
@@ -241,48 +236,88 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="DecimalFormat"><a href="#DecimalFormat" class="headerlink" title="DecimalFormat"></a>DecimalFormat</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new DecimalFormat(&quot;,###&quot;).format(new BigDecimal(1234567890).longValue())</span><br></pre></td></tr></table></figure>
+          <h3 id="系统要求"><a href="#系统要求" class="headerlink" title="系统要求"></a>系统要求</h3><p>最低推荐配置:</p>
+<ul>
+<li>256MB可用内存</li>
+<li>1GB可用磁盘空间(作为一个Docker容器运行jenkins的话推荐10GB)</li>
+</ul>
+<p>为小团队推荐的硬件配置:</p>
+<ul>
+<li>1GB+可用内存</li>
+<li>50 GB+ 可用磁盘空间</li>
+</ul>
+<p>Jenkins版本分为两条主线,长期支持版本和每周迭代版本</p>
+<h3 id="长期稳定版本"><a href="#长期稳定版本" class="headerlink" title="长期稳定版本"></a>长期稳定版本</h3><p>长期支持版本每12周发版一次稳定版本,建议生产环境使用,比较稳定</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo wget -O /etc/yum.repos.d/jenkins.repo \</span><br><span class="line">    https://pkg.jenkins.io/redhat-stable/jenkins.repo</span><br><span class="line">sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key</span><br><span class="line">sudo yum -y upgrade</span><br><span class="line"># java-11-openjdk-devel可选，如果已经有java环境则不用安装</span><br><span class="line">sudo yum install jenkins java-11-openjdk-devel</span><br><span class="line">sudo systemctl daemon-reload</span><br></pre></td></tr></table></figure>
 
-<h3 id="String-format"><a href="#String-format" class="headerlink" title="String.format"></a>String.format</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String.format(&quot;%,d&quot;,new BigDecimal(1234567890).longValue())</span><br></pre></td></tr></table></figure>
+<h3 id="每周更新版本"><a href="#每周更新版本" class="headerlink" title="每周更新版本"></a>每周更新版本</h3><p>每周迭代版本每周更新一次,主要面向开发人员修复一些功能,较为稳定</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo wget -O /etc/yum.repos.d/jenkins.repo \</span><br><span class="line">    https://pkg.jenkins.io/redhat/jenkins.repo</span><br><span class="line">sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key</span><br><span class="line">sudo yum -y upgrade</span><br><span class="line"># java-11-openjdk-devel可选，如果已经有java环境则不用安装</span><br><span class="line">sudo yum install jenkins java-11-openjdk-devel</span><br><span class="line">sudo systemctl daemon-reload</span><br></pre></td></tr></table></figure>
 
-<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String.valueOf(new BigDecimal(1234567890).longValue()).replaceAll(&quot;(\\d)(?=(\\d&#123;3&#125;)+\$)&quot;, &quot;\$1,&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="启动Jenkins"><a href="#启动Jenkins" class="headerlink" title="启动Jenkins"></a>启动Jenkins</h3><p>你可以使用下面命令启动jenkins</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 加入开机启动</span><br><span class="line">sudo systemctl enable jenkins</span><br><span class="line"># 启动Jenkins</span><br><span class="line">sudo systemctl start jenkins</span><br></pre></td></tr></table></figure>
+
+<p>你可以使用下面命令检查Jenkins状态</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status jenkins</span><br></pre></td></tr></table></figure>
+
+<p>当你成功启动以后,可以从控制台看到以下输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Loaded: loaded (/etc/rc.d/init.d/jenkins; generated)</span><br><span class="line">Active: active (running) since Tue 2018-11-13 16:19:01 +03; 4min 57s ago</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装向导"><a href="#安装向导" class="headerlink" title="安装向导"></a>安装向导</h3><p>下载安装并运行Jenkins后，开始进入安装向导。</p>
+<p>此安装向导会</p>
+<ul>
+<li>引导您解锁Jenkins</li>
+<li>自定义使用插件</li>
+<li>创建第一个Jenkins的管理员用户。</li>
+</ul>
+<h4 id="解锁-Jenkins"><a href="#解锁-Jenkins" class="headerlink" title="解锁 Jenkins"></a>解锁 Jenkins</h4><p>当您第一次访问Jenkins时，系统会要求您使用自动生成的密码对其进行解锁。</p>
+<p>浏览到 <a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080</a> （或安装时为Jenkins配置的任何端口），等待解锁 Jenkins 页面出现。</p>
+<p><img src="https://www.jenkins.io/zh/doc/book/resources/tutorials/setup-jenkins-01-unlock-jenkins-page.jpg"></p>
+<p>从Jenkins控制台日志输出中，复制自动生成的字母数字密码（在两组星号之间）。</p>
+<p><img src="https://www.jenkins.io/zh/doc/book/resources/tutorials/setup-jenkins-02-copying-initial-admin-password.png"></p>
+<p>将此 密码 粘贴到管理员密码字段中，然后单击 继续 。</p>
+<blockquote>
+<p>如果您在向导中跳过了后续的管理员用户创建步骤， 则此密码作为默认admininstrator帐户的密码（用户名“admin”）</p>
+</blockquote>
+<h4 id="自定义jenkins插件"><a href="#自定义jenkins插件" class="headerlink" title="自定义jenkins插件"></a>自定义jenkins插件</h4><p>解锁 Jenkins之后，在 Customize Jenkins 页面内， 您可以安装任何插件作为您初始步骤的一部分。</p>
+<p>两个选项可以设置:</p>
+<ul>
+<li>安装建议的插件 - 安装推荐的一组插件，这些插件基于最常见的用例</li>
+<li>选择要安装的插件 - 选择安装的插件集。当你第一次访问插件选择页面时，默认选择建议的插件</li>
+</ul>
+<blockquote>
+<p>如果您不确定需要哪些插件，请选择 安装建议的插件 。 您可以通过Jenkins中的Manage Jenkins &gt; Manage Plugins 页面在稍后的时间点安装（或删除）其他Jenkins插件</p>
+</blockquote>
+<h4 id="创建第一个管理员用户"><a href="#创建第一个管理员用户" class="headerlink" title="创建第一个管理员用户"></a>创建第一个管理员用户</h4><p>最后，在customizing Jenkins with plugins之后，Jenkins要求您创建第一个管理员用户。出现“ 创建第一个管理员用户 ”页面时， 请在各个字段中指定管理员用户的详细信息，然后单击 保存完成</p>
+<p>当 Jenkins准备好了 出现时，单击<em>开始使用 Jenkins</em>。</p>
+<blockquote>
+<p>如果该页面在一分钟后不会自动刷新，请使用Web浏览器手动刷新页面</p>
+</blockquote>
+<p>从这时起，你可以开始使用jenkins了。</p>
+
+      
     </div>
 
     
     
     
-
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/Linux/centos-install-docker/" rel="prev" title="CentOS安装Docker">
-      <i class="fa fa-chevron-left"></i> CentOS安装Docker
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/Linux/centos-install-jenkins/" rel="next" title="CentOS安装Jenkins">
-      CentOS安装Jenkins <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
+        <div class="post-eof"></div>
       </footer>
-    
   </article>
   
   
   
 
 
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
 
           </div>
           
-    <div id="container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -329,7 +364,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#DecimalFormat"><span class="nav-number">1.</span> <span class="nav-text">DecimalFormat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-format"><span class="nav-number">2.</span> <span class="nav-text">String.format</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">正则表达式</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -444,20 +478,5 @@
 
   
 
-<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
-<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
-
-<script>
-var gitment = new Gitment({
-  id: 'Java/java-number-separator/',
-  owner: 'malonglei',
-  repo: 'malonglei.github.io',
-  oauth: {
-    client_id: '95a6b54d1178a9b19672',
-    client_secret: 'a7de95a5c73cc6931db99e697eb4fc4e081c4b0e',
-  },
-})
-gitment.render('container')
-</script>
 </body>
 </html>

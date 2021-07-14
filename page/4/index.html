@@ -20,40 +20,28 @@
     var CONFIG = {"hostname":"www.malonglei.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitment","storage":true,"lazyload":false,"nav":null,"activeClass":"gitment"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="安装1kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kubernetes&#x2F;ingress-nginx&#x2F;controller-v0.44.0&#x2F;deploy&#x2F;static&#x2F;provider&#x2F;baremetal&#x2F;deploy.yaml  部署完，我们查看一下状态  对应的service和deployment已经创建完毕，并且service以Node">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Kubernetes安装IngressNginx">
-<meta property="og:url" content="https://www.malonglei.com/Kubernetes/kubernetes-install-ingressnginx/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="马大哈特勤局">
+<meta property="og:url" content="https://www.malonglei.com/page/4/index.html">
 <meta property="og:site_name" content="马大哈特勤局">
-<meta property="og:description" content="安装1kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kubernetes&#x2F;ingress-nginx&#x2F;controller-v0.44.0&#x2F;deploy&#x2F;static&#x2F;provider&#x2F;baremetal&#x2F;deploy.yaml  部署完，我们查看一下状态  对应的service和deployment已经创建完毕，并且service以Node">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://image.mllweb.com/wp-content/uploads/2021/03/1616755596-image.png">
-<meta property="og:image" content="https://image.mllweb.com/wp-content/uploads/2021/03/1616757837-image.png">
-<meta property="og:image" content="https://image.mllweb.com/wp-content/uploads/2021/03/1616758664-40c23cd97a05b731ee2f84a3ae601646.jpeg">
-<meta property="og:image" content="https://image.mllweb.com/wp-content/uploads/2021/03/1616989777-ea6ae9a1cfe64bb59c4146b2960b5229.jpeg">
-<meta property="og:image" content="https://image.mllweb.com/wp-content/uploads/2021/03/1616989778-954a07cead8aa4a4610eb1727ccdd279.jpeg">
-<meta property="article:published_time" content="2021-07-13T10:45:55.294Z">
-<meta property="article:modified_time" content="2021-07-13T11:21:04.158Z">
 <meta property="article:author" content="Andy">
-<meta property="article:tag" content="Kubernetes">
-<meta property="article:tag" content="IngressNginx">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://image.mllweb.com/wp-content/uploads/2021/03/1616755596-image.png">
 
-<link rel="canonical" href="https://www.malonglei.com/Kubernetes/kubernetes-install-ingressnginx/">
+<link rel="canonical" href="https://www.malonglei.com/page/4/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
-    isPost : true,
+    isHome : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Kubernetes安装IngressNginx | 马大哈特勤局</title>
+  <title>马大哈特勤局</title>
   
 
 
@@ -194,10 +182,9 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content index posts-expand">
             
-
-    
+      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -213,9 +200,10 @@
       <meta itemprop="name" content="马大哈特勤局">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Kubernetes安装IngressNginx
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/Kubernetes/kubernetes-install-ingressnginx/" class="post-title-link" itemprop="url">Kubernetes安装IngressNginx</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -248,7 +236,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.44.0/deploy/static/provider/baremetal/deploy.yaml</span><br></pre></td></tr></table></figure>
+          <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.44.0/deploy/static/provider/baremetal/deploy.yaml</span><br></pre></td></tr></table></figure>
 
 <p>部署完，我们查看一下状态</p>
 <p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616755596-image.png"></p>
@@ -279,44 +267,30 @@
 <p>在组件方面，唯一的要求是专用于将所有HTTP请求转发到Kubernetes节点和/或主节点的公共IP地址。TCP端口80和443上的传入流量被转发到目标节点上的相应HTTP和HTTPS NodePort，如下图所示：</p>
 <p><img src="https://image.mllweb.com/wp-content/uploads/2021/03/1616989778-954a07cead8aa4a4610eb1727ccdd279.jpeg"></p>
 
+      
     </div>
 
     
     
     
-
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Kubernetes/" rel="tag"><i class="fa fa-tag"></i> Kubernetes</a>
-              <a href="/tags/IngressNginx/" rel="tag"><i class="fa fa-tag"></i> IngressNginx</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/Linux/docker-build-wordpress/" rel="prev" title="Docker搭建WordPress">
-      <i class="fa fa-chevron-left"></i> Docker搭建WordPress
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/Kubernetes/kubeadm-build-kubernetes-cluster/" rel="next" title="kubeadm搭建Kubernetes集群">
-      kubeadm搭建Kubernetes集群 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
+        <div class="post-eof"></div>
       </footer>
-    
   </article>
   
   
   
 
 
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
 
           </div>
           
-    <div id="container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -363,7 +337,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2tomcat%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="nav-number">2.</span> <span class="nav-text">部署tomcat进行测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87NodePort%E6%9C%8D%E5%8A%A1"><span class="nav-number">3.1.</span> <span class="nav-text">通过NodePort服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="nav-number">3.2.</span> <span class="nav-text">主机网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%BB%84%E4%BB%B6-%E6%8E%A8%E8%8D%90"><span class="nav-number">3.3.</span> <span class="nav-text">扩展组件(推荐)</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -478,20 +451,5 @@
 
   
 
-<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
-<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
-
-<script>
-var gitment = new Gitment({
-  id: 'Kubernetes/kubernetes-install-ingressnginx/',
-  owner: 'malonglei',
-  repo: 'malonglei.github.io',
-  oauth: {
-    client_id: '95a6b54d1178a9b19672',
-    client_secret: 'a7de95a5c73cc6931db99e697eb4fc4e081c4b0e',
-  },
-})
-gitment.render('container')
-</script>
 </body>
 </html>
