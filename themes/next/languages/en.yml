@@ -5,12 +5,14 @@ title:
   category: Category
   tag: Tag
   schedule: Schedule
-
+category:
+  Other: Other 
 menu:
   java: Java
   go: Go
   linux: Linux
   kubernetes: Kubenetes
+  other: Other
   home: Home
   archives: Archives
   categories: Categories

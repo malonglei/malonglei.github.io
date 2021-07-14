@@ -15,7 +15,8 @@
     <div class="posts-collapse">
       <div class="collection-title">
         <h2 class="collection-header">
-          {{- page.category }}
+          {%- set category_prefix = 'category.' %}
+          {{- __(category_prefix+page.category).replace(category_prefix, '') }}
           <small>{{ __('title.category') }}</small>
         </h2>
       </div>

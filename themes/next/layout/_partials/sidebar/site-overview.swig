@@ -3,7 +3,11 @@
     <img class="site-author-image" itemprop="image" alt="{{ author }}"
       src="{{ url_for(theme.avatar.url) }}">
   {%- endif %}
-  <p class="site-author-name" itemprop="name">{{ author }}</p>
+  {%- if showAuthor %}
+    <p class="site-author-name" itemprop="name">{{ author }}</p>
+  {%- else %}
+    <script type="text/javascript" src="https://api.uixsj.cn/hitokoto/w.php?code=js"></script><div id="xsjhitokoto"><script>xsjhitokoto()</script></div>
+  {%- endif %}
   <div class="site-description" itemprop="description">{{ description }}</div>
 </div>
 

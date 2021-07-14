@@ -5,11 +5,14 @@ title:
   category: 分类
   tag: 标签
   schedule: 日程表
+category:
+  Other: 其他  
 menu:
   java: Java
   go: Go
   linux: Linux
   kubernetes: Kubenetes
+  other: 其他
   home: 首页
   archives: 归档
   categories: 分类

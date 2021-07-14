@@ -107,6 +107,8 @@ search:
   format: html
   limit: 50
 
+showAuthor: false
+
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
