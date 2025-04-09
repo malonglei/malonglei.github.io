@@ -1,0 +1,35 @@
+---
+---
+
+@use 'main
+{%- if jekyll.environment == 'production' -%}
+  .bundle
+{%- endif -%}
+';
+
+/* append your custom style below */
+
+* {
+    font-family: "LXGW WenKai", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+header .post-desc, #toc-bar .label, #search-results a, h1, h2, h3, h4, h5 {
+    font-family: "LXGW WenKai", cursive !important; 
+}
+
+
+
+.sidebar-hide {
+  animation: slideHide 0.8s forwards;
+}
+
+@keyframes slideHide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
