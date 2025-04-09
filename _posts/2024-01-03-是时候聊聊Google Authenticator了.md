@@ -4,7 +4,6 @@ date: 2024-01-03 00:00:00 +0800
 categories: [Algorithms]
 tags: [algorithms,totp,hotp]     # TAG names should always be lowercase
 slug: '1429935389'
-author: longlei
 ---
 
 我们平常在进行账号安全设置的时候，平台都会建议设置二次验证。
