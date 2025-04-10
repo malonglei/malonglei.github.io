@@ -9,17 +9,11 @@
 
 /* append your custom style below */
 
-* {
-    font-family: "LXGW WenKai", cursive;
+* :not(i){
+    font-family: "LXGW WenKai", cursive !important;
     font-weight: 400;
     font-style: normal;
 }
-
-header .post-desc, #toc-bar .label, #search-results a, h1, h2, h3, h4, h5 {
-    font-family: "LXGW WenKai", cursive !important; 
-}
-
-
 
 .sidebar-hide {
   animation: slideHide 0.8s forwards;
