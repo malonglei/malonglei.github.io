@@ -362,3 +362,10 @@ systemctl restart keepalived
 此时我们的使用Keepalived搭建Nginx高可用集群已经完成
 
 我们可以关闭nginx服务来进行测试，验证一下
+
+
+
+参考资料:
+
+- [keepalived官网](https://www.keepalived.org/)
+- [nginx官网](https://nginx.org/)
