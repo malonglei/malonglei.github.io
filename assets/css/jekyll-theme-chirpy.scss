@@ -27,6 +27,10 @@ header .post-desc, #toc-bar .label, #search-results a, h1, h2, h3, h4, h5 {
   background: #ffffff;
 }
 
+blockquote > p {
+  margin: 0;
+}
+
 @keyframes slideHide {
   0% {
     transform: translateX(0);
